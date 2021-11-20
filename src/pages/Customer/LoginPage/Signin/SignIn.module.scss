@@ -1,0 +1,43 @@
+@import "styles/variables";
+
+.container {
+  height: 100vh;
+  width: 100%;
+  background-color: $bg-gray;
+  border: 1px solid $bg-secondary;
+  display: flex;
+
+  .picturePortion {
+    flex: 1;
+    display: flex;
+    height: 100%;
+    width: 50%;
+    position: relative;
+    .bgImage {
+      position: absolute;
+      left: -5%;
+      top: 0;
+      background-repeat: no-repeat;
+      background-position: center;
+      height: 100%;
+      mix-blend-mode: multiply;
+      filter: revert;
+    }
+  }
+  .formPortion {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .form {
+        height: 75%;
+        width: 70%;
+        border: 1px solid $bg-dark;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2rem;
+    }
+  }
+}
