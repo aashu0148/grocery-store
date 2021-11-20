@@ -1,0 +1,127 @@
+@import "styles/variables";
+
+.button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    width: fit-content;
+    border: none;
+    font-size: 1rem;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: $bg-primary;
+    color: $white;
+    cursor: pointer;
+    font-style: normal;
+    margin: 3px;
+    transition: 100ms;
+    white-space: nowrap;
+
+    &:hover {
+        background-color: $bg-secondary;
+    }
+
+    &:active {
+        transform: translateY(2px);
+    }
+
+    img {
+        height: 20px;
+        width: 20px;
+        margin-left: 5px;
+    }
+
+    .icon {
+        height: 16px;
+        width: 16px;
+        margin-left: 8px;
+    }
+}
+
+.button-outline {
+    background-color: $bg-light-gray;
+    color: $black;
+
+    &:hover {
+        background-color: $bg-light-gray;
+    }
+
+    .icon {
+        color: $black;
+    }
+}
+
+.button-bordered {
+    background-color: $white;
+    color: $text-primary;
+    border: 1px solid $bg-secondary;
+
+    &:hover {
+        background-color: $white;
+        color: $text-secondary;
+    }
+
+    .icon {
+        color: $bg-light-gray;
+    }
+}
+
+.button-cancel {
+    border: 1px solid transparent;
+    background: transparent;
+    color: $text-dark-gray;
+
+    &:hover {
+        background-color: $bg-light-gray;
+        border: 1px solid $bg-medium-gray;
+    }
+
+    .icon {
+        color: $bg-light-gray;
+    }
+}
+
+.button-disabled {
+    background-color: $bg-light-gray;
+    width: fit-content;
+
+    &:hover {
+        background-color: $bg-light-gray;
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+.button-bordered-disabled {
+    background-color: $white;
+    color: $text-light-gray;
+    border: 1px solid $bg-light-gray;
+    width: fit-content;
+
+    &:hover {
+        background-color: $white;
+        color: $text-light-gray;
+    }
+}
+
+.outline-button-disabled {
+    width: fit-content;
+    border: 1px solid $text-light-gray !important;
+    color: $text-dark-gray !important;
+}
+
+.buttonDelete {
+    width: fit-content;
+    border: 1px solid $bg-red;
+    color: $text-red;
+    background-color: $white;
+
+    &:hover {
+        background-color: $bg-red;
+        color: $white;
+    }
+}
