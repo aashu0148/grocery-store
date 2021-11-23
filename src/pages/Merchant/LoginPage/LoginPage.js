@@ -1,21 +1,41 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 import styles from "./LoginPage.module.scss";
 
 import Button from "components/Button/Button";
 import PasswordInput from "components/InputControl/InputControl";
+import InputControl from "components/InputControl/InputControl";
 
 function LoginPage() {
   const emailRef = useRef();
   const passRef = useRef();
+  const [errors, setErrors] = useState({});
 
-  const handleSubmit = () => {
-    console.log(emailRef.current);
+  const validateForm = () => {
+    const dummyErrors = {};
+    if (emailRef.current.value === "") {
+      dummyErrors.email = "Enter email";
+      setErrors(dummyErrors);
+    } else {
+      if (
+        !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+          emailRef.current.value
+        )
+      ) {
+        dummyErrors.email = "Enter valid email";
+        setErrors(dummyErrors);
+      }
+    }
+    if (passRef.current.value === "") {
+      dummyErrors.password = "Enter password";
+      setErrors(dummyErrors);
+    }
   };
 
-  // const validateEmail = () => {
-
-  // }
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    validateForm();
+  };
 
   return (
     <div className={styles.login}>
@@ -29,18 +49,27 @@ function LoginPage() {
         <div className={styles.loginLeftPanelIcons}></div>
       </div>
       <div className={styles.loginRightPanel}>
-        <form className={styles.loginForm} onSubmit={handleSubmit}>
+        <form className={styles.loginForm} onSubmit={handleFormSubmit}>
           <div className={styles["loginRightPanel-mainBody"]}>
             <h2>Login</h2>
 
             <div className={styles["loginRightPanel-inputWrapper"]}>
-              <label>Email</label>
-              <input ref={emailRef} placeholder="Enter Email" />
+              <InputControl
+                label="Email"
+                placeholder="Enter Email"
+                ref={emailRef}
+                error={errors?.email}
+              />
             </div>
 
             <div className={styles["loginRightPanel-inputWrapper"]}>
-              <label>Password</label>
-              <PasswordInput placeholder={`Enter Password`} />
+              <InputControl
+                label="Password"
+                placeholder="Enter password"
+                ref={passRef}
+                error={errors?.password}
+                password="true"
+              />
             </div>
             <span
               className={styles["loginRightPanel_helper-text"]}

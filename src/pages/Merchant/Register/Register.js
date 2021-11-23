@@ -16,33 +16,77 @@ function Register() {
   const passRef = useRef();
   const confirmpassRef = useRef();
 
-  // const ValidateEmail = (mail) => {
-  //   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
-  //     return true;
-  //   }
-  //   return false;
-  // };
+  const validateForm = () => {
+    const dummyErrors = {};
+    if (fnameRef.current.value === "") {
+      dummyErrors.fname = "Enter first name";
+      setErrors(dummyErrors);
+    }
 
-  // const validateInputs = (value, name) => {
-  //   if (value === "") {
-  //     const dummyErrors = {};
-  //     dummyErrors.name = `Enter ${name}`;
-  //     setErrors(dummyErrors);
-  //     return;
-  //   }
-  // };
+    if (lnameRef.current.value === "") {
+      dummyErrors.lname = "Enter last name";
+      setErrors(dummyErrors);
+    }
+
+    if (mobileRef.current.value === "") {
+      dummyErrors.mobile = "Enter mobile number";
+      setErrors(dummyErrors);
+    } else {
+      if (
+        mobileRef.current.value.length !== 10 &&
+        !/^\d{10}$/.test(mobileRef.current.value)
+      ) {
+        dummyErrors.mobile = "enter valid mobile number";
+        setErrors(dummyErrors);
+      }
+    }
+
+    if (emailRef.current.value === "") {
+      dummyErrors.email = "Enter email";
+      setErrors(dummyErrors);
+    } else {
+      if (
+        !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+          emailRef.current.value
+        )
+      ) {
+        dummyErrors.email = "Enter valid email";
+        setErrors(dummyErrors);
+      }
+    }
+
+    if (passRef.current.value === "") {
+      dummyErrors.password = "Enter password";
+      setErrors(dummyErrors);
+    } else {
+      if (passRef.current.value.length < 8) {
+        dummyErrors.password = "Must be at least 8 characters";
+        setErrors(dummyErrors);
+      }
+      if (passRef.current.value.search(/[a-z]/i) < 0) {
+        dummyErrors.password = "Must contain at least one letter";
+        setErrors(dummyErrors);
+      }
+      if (passRef.current.value.search(/[0-9]/) < 0) {
+        dummyErrors.password = "Must contain at least one digit";
+        setErrors(dummyErrors);
+      }
+    }
+
+    if (confirmpassRef.current.value === "") {
+      dummyErrors.confirmpass = "Confirm password";
+      setErrors(dummyErrors);
+    } else {
+      if (confirmpassRef.current.value !== passRef.current.value) {
+        dummyErrors.confirmpass = "passwords must be same";
+        setErrors(dummyErrors);
+      }
+    }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // validateInputs(fnameRef.current.value, "fname");
-    // validateInputs(lnameRef.current.value, "lname");
-    // validateInputs(mobileRef.current.value, "mobile");
-    // validateInputs(passRef.current.value, "password");
-    // validateInputs(confirmpassRef.current.value, "confirmpass");
-    // validateInputs(emailRef.current.value, "email");
-    // if (!ValidateEmail(emailRef.current.value)) {
-    //   return;
-    // }
+    validateForm();
   };
 
   const navigate = useNavigate();
@@ -106,7 +150,7 @@ function Register() {
                   placeholder="Enter password"
                   label="Password"
                   ref={passRef}
-                  error={errors?.pass}
+                  error={errors?.password}
                 />
               </div>
               <div className={styles["registerRightPanel-inputWrapper"]}>
@@ -114,7 +158,7 @@ function Register() {
                   placeholder={`Confirm Password`}
                   label={`Confirm Password`}
                   ref={confirmpassRef}
-                  errors={errors?.confirmpass}
+                  error={errors?.confirmpass}
                   password="true"
                 />
               </div>
