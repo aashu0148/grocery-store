@@ -1,0 +1,43 @@
+@import "styles/_variables";
+
+.container {
+  .label {
+    font-size: 1rem;
+    font-weight: 700;
+    color: $bg-tertiary;
+  }
+
+  .inputContainer {
+    position: relative;
+    width: 100%;
+    height: fit-content;
+    margin: 3px 0;
+
+    input {
+      margin: 0;
+      padding-right: 31px;
+    }
+
+    .eye {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      cursor: pointer;
+      height: 18px;
+      width: 18px;
+      transform: translateY(-50%);
+
+      svg {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+
+  .errorMsg {
+    color: $text-red;
+    font-weight: bold;
+    font-size: 0.875rem;
+    padding-left: 3px;
+  }
+}
