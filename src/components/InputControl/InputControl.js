@@ -19,7 +19,7 @@ const InputControl = forwardRef((props, ref) => {
         />
         {props.password && (
           <div className={styles.eye} onClick={() => setVisible(!visible)}>
-            {visible ? <EyeOff /> : <Eye />}
+            {visible ? <Eye /> : <EyeOff />}
           </div>
         )}
       </div>
