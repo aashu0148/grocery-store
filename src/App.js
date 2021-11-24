@@ -1,9 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
-import "styles/main.scss";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Register from "pages/Merchant/Register/Register";
 import LoginPage from "pages/Merchant/LoginPage/LoginPage";
+
+import "styles/main.scss";
 
 function App() {
   return (

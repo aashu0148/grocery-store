@@ -16,6 +16,10 @@
     input {
       margin: 0;
       padding-right: 31px;
+
+      &::placeholder {
+        color: $bg-medium-gray;
+      }
     }
 
     .eye {
