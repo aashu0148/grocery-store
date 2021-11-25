@@ -10,3 +10,8 @@ export const mobileRegex = /^[0-9]{10}$/g;
 
 export const authLeftPanelImage =
   "https://image.shutterstock.com/z/stock-vector-set-of-fruit-and-vegetables-logo-for-groceries-agriculture-stores-packaging-and-advertising-318421853.jpg";
+
+const authenticatingToken = localStorage.getItem("token");
+export const axiosConfig = {
+  headers: { Authorization: `${authenticatingToken}` },
+};
