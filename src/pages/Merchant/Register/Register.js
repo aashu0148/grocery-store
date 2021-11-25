@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import Button from "components/Button/Button";
 import InputControl from "components/InputControl/InputControl";
 
+import { validateEmail, validateMobile } from "utils/util";
+import { authLeftPanelImage } from "utils/constants";
+
 import styles from "./Register.module.scss";
 
 function Register() {
-  const leftPanelImage =
-    "https://image.shutterstock.com/z/stock-vector-set-of-fruit-and-vegetables-logo-for-groceries-agriculture-stores-packaging-and-advertising-318421853.jpg";
-
   const [errors, setErrors] = useState({});
 
   const fnameRef = useRef();
@@ -37,10 +37,7 @@ function Register() {
     if (mobileRef.current.value === "") {
       dummyErrors.mobile = "Enter mobile number";
     } else {
-      if (
-        mobileRef.current.value.length !== 10 &&
-        !/^\d{10}$/.test(mobileRef.current.value)
-      ) {
+      if (!validateMobile(mobileRef.current.value)) {
         dummyErrors.mobile = "enter valid mobile number";
       }
     }
@@ -48,9 +45,7 @@ function Register() {
     if (emailRef.current.value === "") {
       dummyErrors.email = "Enter email";
     } else {
-      if (
-        !/^\w+([-]?\w+)*@\w+([-]?\w+)*(\w{2,3})+$/.test(emailRef.current.value)
-      ) {
+      if (!validateEmail(emailRef.current.value)) {
         dummyErrors.email = "Enter valid email";
       }
     }
@@ -98,7 +93,7 @@ function Register() {
         <span>100+ products available at best price</span>
         <img
           className={styles.registerLeftPanelImage}
-          src={leftPanelImage}
+          src={authLeftPanelImage}
           alt=""
         ></img>
         <div className={styles.registerLeftPanelIcons}></div>
@@ -159,7 +154,7 @@ function Register() {
                 Login now
               </span>
             </p>
-            <Button type={`submit`}>Create Account</Button>
+            <Button type={`submit`}>Register</Button>
           </div>
         </form>
       </div>

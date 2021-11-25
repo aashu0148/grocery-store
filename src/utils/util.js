@@ -17,6 +17,6 @@ export const validateEmail = (email) => {
 
 export const validateMobile = (mobile) => {
   if (!mobile) return false;
-  if (mobileRegex.test(mobile.toLowerCase())) return true;
+  if (mobileRegex.test(mobile)) return true;
   else return false;
 };

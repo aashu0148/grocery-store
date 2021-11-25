@@ -3,12 +3,12 @@ import React, { useRef, useState } from "react";
 import Button from "components/Button/Button";
 import InputControl from "components/InputControl/InputControl";
 
+import { authLeftPanelImage } from "utils/constants";
+import { validateEmail } from "utils/util";
+
 import styles from "./LoginPage.module.scss";
 
 function LoginPage() {
-  const leftPanelImage =
-    "https://image.shutterstock.com/z/stock-vector-set-of-fruit-and-vegetables-logo-for-groceries-agriculture-stores-packaging-and-advertising-318421853.jpg";
-
   const emailRef = useRef();
   const passRef = useRef();
   const [errors, setErrors] = useState({});
@@ -18,14 +18,16 @@ function LoginPage() {
     if (emailRef.current.value === "") {
       dummyErrors.email = "Enter email";
     } else {
-      if (
-        !/^\w+([-]?\w+)*@\w+([-]?\w+)*(\w{2,3})+$/.test(emailRef.current.value)
-      ) {
+      if (!validateEmail(emailRef.current.value)) {
         dummyErrors.email = "Enter valid email";
       }
     }
     if (passRef.current.value === "") {
       dummyErrors.password = "Enter password";
+    } else {
+      if (passRef.current.value.length < 8) {
+        dummyErrors.password = "Enter valid password";
+      }
     }
     setErrors(dummyErrors);
     if (Object.keys(dummyErrors).length !== 0) {
@@ -49,7 +51,7 @@ function LoginPage() {
         <span>100+ products available at best price</span>
         <img
           className={styles.loginLeftImage}
-          src={leftPanelImage}
+          src={authLeftPanelImage}
           alt=""
         ></img>
       </div>
