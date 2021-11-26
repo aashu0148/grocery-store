@@ -1,26 +1,32 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Button from "components/Button/Button";
 import InputControl from "components/InputControl/InputControl";
 
-import { validateEmail, validateMobile } from "utils/util";
-// import { sendOtp, verifyOtp } from "utils/firebase";
-import { authLeftPanelImage } from "utils/constants";
-import { checkRegisterDetails } from "api/user/register";
+import { validateEmail, validateMobile, validateOtp } from "utils/util";
+import { sendOtp, verifyOtp } from "utils/firebase";
+import { checkRegisterDetails, registerMerchant } from "api/user/register";
+
+import authLeftPanelImage from "assets/images/leftPanelImage.png";
 
 import styles from "./Register.module.scss";
 
 function Register() {
   const [errors, setErrors] = useState({});
-
   const [otpPage, setOtpPage] = useState(false);
-  const fnameRef = useRef();
-  const lnameRef = useRef();
-  const emailRef = useRef();
-  const mobileRef = useRef();
-  const passRef = useRef();
-  const confirmpassRef = useRef();
+  const [registerDetails, setRegisterDetails] = useState({});
+  const [otpObj, setOtpObj] = useState({});
+  const [values, setValues] = useState({
+    fname: "",
+    lname: "",
+    email: "",
+    mobile: "",
+    password: "",
+    confirmpass: "",
+    otp: "",
+  });
+
   const navigate = useNavigate();
 
   const changeURl = () => {
@@ -29,46 +35,46 @@ function Register() {
 
   const validateForm = () => {
     const dummyErrors = {};
-    if (fnameRef.current.value === "") {
+    if (values.fname === "") {
       dummyErrors.fname = "Enter first name";
     }
 
-    if (lnameRef.current.value === "") {
+    if (values.lname === "") {
       dummyErrors.lname = "Enter last name";
     }
 
-    if (mobileRef.current.value === "") {
+    if (values.mobile === "") {
       dummyErrors.mobile = "Enter mobile number";
-    } else if (!validateMobile(mobileRef.current.value)) {
+    } else if (!validateMobile(values.mobile)) {
       dummyErrors.mobile = "Enter valid mobile number";
     }
 
-    if (emailRef.current.value === "") {
+    if (values.email === "") {
       dummyErrors.email = "Enter email";
     } else {
-      if (!validateEmail(emailRef.current.value)) {
+      if (!validateEmail(values.email)) {
         dummyErrors.email = "Enter valid email";
       }
     }
 
-    if (passRef.current.value === "") {
+    if (values.password === "") {
       dummyErrors.password = "Enter password";
     } else {
-      if (passRef.current.value.length < 8) {
+      if (values.password.length < 6) {
         dummyErrors.password = "Must be at least 8 characters";
       }
-      if (passRef.current.value.search(/[a-z]/i) < 0) {
+      if (values.password.search(/[a-z]/i) < 0) {
         dummyErrors.password = "Must contain at least one letter";
       }
-      if (passRef.current.value.search(/[0-9]/) < 0) {
+      if (values.password.search(/[0-9]/) < 0) {
         dummyErrors.password = "Must contain at least one digit";
       }
     }
 
-    if (confirmpassRef.current.value === "") {
+    if (values.confirmpass === "") {
       dummyErrors.confirmpass = "Confirm password";
     } else {
-      if (confirmpassRef.current.value !== passRef.current.value) {
+      if (values.confirmpass !== values.password) {
         dummyErrors.confirmpass = "passwords must be same";
       }
     }
@@ -80,36 +86,50 @@ function Register() {
     }
   };
 
-  const handleOtpVerification = () => {
-    // if()
-    // verifyOtp()
+  const handleOtpVerification = async (event) => {
+    event.preventDefault();
+    const dummyErrors = {};
+    if (!validateOtp(values.otp)) {
+      dummyErrors.otp = "Enter valid OTP";
+      setErrors(dummyErrors);
+      return;
+    }
+    if (values.otp)
+      if (!otpObj) return;
+      else {
+        const user = await verifyOtp(otpObj, values.otp);
+        if (user === "") return;
+        registerMerchant(registerDetails);
+      }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!validateForm()) {
-      return;
-    }
-    const registerDetails = {
-      firstName: fnameRef.current.value,
-      lastName: lnameRef.current.value,
-      mobile: mobileRef.current.value,
-      isMerchant: true,
-      password: passRef.current.value,
-      email: emailRef.current.value,
-    };
+    if (!validateForm()) return;
 
-    checkRegisterDetails(registerDetails).then((res) => {
+    setRegisterDetails({
+      firstName: values.fname,
+      lastName: values.lname,
+      mobile: values.mobile,
+      isMerchant: true,
+      password: values.password,
+      email: values.email,
+    });
+
+    checkRegisterDetails(registerDetails).then(async (res) => {
       if (!res) {
         setOtpPage(false);
         return;
+      } else {
+        if (res?.status) {
+          const optResult = await sendOtp(values.mobile);
+          if (!optResult) return;
+
+          setOtpObj(optResult);
+          setOtpPage(true);
+        }
       }
-      setOtpPage(true);
     });
-    // const optStatus = sendOtp(mobileRef.current.value);
-    // if (optStatus) {
-    // }
-    // setOtpPage(true);
   };
 
   return (
@@ -132,27 +152,39 @@ function Register() {
                 <InputControl
                   placeholder="Enter first name"
                   label="First name"
-                  ref={fnameRef}
+                  onChange={(event) =>
+                    setValues({ ...values, fname: event.target.value })
+                  }
+                  value={values.fname}
                   error={errors?.fname}
                 />
                 <InputControl
                   label="Last name"
                   placeholder="Enter last name"
-                  ref={lnameRef}
+                  onChange={(event) =>
+                    setValues({ ...values, lname: event.target.value })
+                  }
+                  value={values.lname}
                   error={errors?.lname}
                 />
               </div>
               <InputControl
                 placeholder="Enter mobile number"
                 label="Mobile number"
-                ref={mobileRef}
+                onChange={(event) =>
+                  setValues({ ...values, mobile: event.target.value })
+                }
+                value={values.mobile}
                 error={errors?.mobile}
                 maxLength={10}
               />
               <InputControl
                 label="Email"
                 placeholder="Enter email"
-                ref={emailRef}
+                onChange={(event) =>
+                  setValues({ ...values, email: event.target.value })
+                }
+                value={values.email}
                 error={errors?.email}
               />
               <div className={styles["registerRightPanel-inputContainer"]}>
@@ -160,14 +192,20 @@ function Register() {
                   password="true"
                   placeholder="Enter password"
                   label="Password"
-                  ref={passRef}
+                  onChange={(event) =>
+                    setValues({ ...values, password: event.target.value })
+                  }
+                  value={values.password}
                   error={errors?.password}
                 />
 
                 <InputControl
                   placeholder={`Confirm Password`}
                   label={`Confirm Password`}
-                  ref={confirmpassRef}
+                  onChange={(event) =>
+                    setValues({ ...values, confirmpass: event.target.value })
+                  }
+                  value={values.confirmpass}
                   error={errors?.confirmpass}
                   password="true"
                 />
@@ -183,6 +221,7 @@ function Register() {
               </p>
               <Button type={`submit`}>Register</Button>
             </div>
+            <div id="recaptcha"></div>
           </form>
         </div>
       ) : (
@@ -193,10 +232,15 @@ function Register() {
               <InputControl
                 label="OTP"
                 placeholder="Enter OTP"
+                maxLength={6}
+                onChange={(event) =>
+                  setValues({ ...values, otp: event.target.value })
+                }
+                value={values.otp}
                 error={errors?.otp}
               />
               <p>
-                <span>Resend OTP</span>
+                <span onClick={handleSubmit}>Resend OTP</span>
               </p>
               <Button type={`submit`}>Verify OTP</Button>
             </div>

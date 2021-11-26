@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 
-import { mobileRegex, emailRegex } from "./constants";
+import { mobileRegex, emailRegex, otpRegex } from "./constants";
 
 export const errorToastLogger = (error, message) => {
   if (message) toast.error(message);
@@ -19,5 +19,11 @@ export const validateEmail = (email) => {
 export const validateMobile = (mobile) => {
   if (!mobile) return false;
   if (mobileRegex.test(mobile)) return true;
+  else return false;
+};
+
+export const validateOtp = (otp) => {
+  if (!otp) return false;
+  if (otpRegex.test(otp)) return true;
   else return false;
 };

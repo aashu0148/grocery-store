@@ -3,8 +3,10 @@ import React, { useRef, useState } from "react";
 import Button from "components/Button/Button";
 import InputControl from "components/InputControl/InputControl";
 
-import { authLeftPanelImage } from "utils/constants";
 import { validateEmail } from "utils/util";
+import { loginMerchant } from "api/user/login";
+
+import authLeftPanelImage from "assets/images/leftPanelImage.png";
 
 import styles from "./LoginPage.module.scss";
 
@@ -25,7 +27,7 @@ function LoginPage() {
     if (passRef.current.value === "") {
       dummyErrors.password = "Enter password";
     } else {
-      if (passRef.current.value.length < 8) {
+      if (passRef.current.value.length < 6) {
         dummyErrors.password = "Enter valid password";
       }
     }
@@ -39,9 +41,17 @@ function LoginPage() {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
+
+    const loginDetails = {
+      mobile: "",
+      isMerchant: true,
+      password: passRef.current.value,
+      email: emailRef.current.value,
+    };
+    loginMerchant(loginDetails).then(async (res) => {
+      console.log(res);
+    });
   };
 
   return (

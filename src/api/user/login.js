@@ -20,3 +20,20 @@ export const checkMobile = async (mobile) => {
     return false;
   }
 };
+
+export const loginMerchant = async (body) => {
+  try {
+    const reqUrl = `${backendApiUrl}/user/auth/login`;
+    const result = await axios.post(reqUrl, body);
+
+    if (!result.data?.status) {
+      errorToastLogger("", result.data?.message);
+      return false;
+    } else {
+      return result.data;
+    }
+  } catch (error) {
+    errorToastLogger(error, "Login failed");
+    return false;
+  }
+};

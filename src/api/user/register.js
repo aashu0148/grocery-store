@@ -9,9 +9,31 @@ export const checkRegisterDetails = async (body) => {
     const reqUrl = `${backendApiUrl}/user/auth/check-register-details`;
     const result = await axios.post(reqUrl, body);
 
-    return result.data;
+    if (!result.data?.status) {
+      errorToastLogger("", result.data?.message);
+      return false;
+    } else {
+      return result.data;
+    }
   } catch (error) {
-    errorToastLogger(error);
+    errorToastLogger(error, "Request failed for Email");
+    return false;
+  }
+};
+
+export const registerMerchant = async (body) => {
+  try {
+    const reqUrl = `${backendApiUrl}/user/auth/register`;
+    const result = await axios.post(reqUrl, body);
+
+    if (!result.data?.status) {
+      errorToastLogger("", result.data?.message);
+      return false;
+    } else {
+      return result.data;
+    }
+  } catch (error) {
+    errorToastLogger(error, "Failed to register");
     return false;
   }
 };
