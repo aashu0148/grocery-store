@@ -5,13 +5,16 @@ import Button from "components/Button/Button";
 import InputControl from "components/InputControl/InputControl";
 
 import { validateEmail, validateMobile } from "utils/util";
+// import { sendOtp, verifyOtp } from "utils/firebase";
 import { authLeftPanelImage } from "utils/constants";
+import { checkRegisterDetails } from "api/user/register";
 
 import styles from "./Register.module.scss";
 
 function Register() {
   const [errors, setErrors] = useState({});
 
+  const [otpPage, setOtpPage] = useState(false);
   const fnameRef = useRef();
   const lnameRef = useRef();
   const emailRef = useRef();
@@ -21,7 +24,7 @@ function Register() {
   const navigate = useNavigate();
 
   const changeURl = () => {
-    navigate("/login");
+    navigate("/merchant/login");
   };
 
   const validateForm = () => {
@@ -38,7 +41,7 @@ function Register() {
       dummyErrors.mobile = "Enter mobile number";
     } else {
       if (!validateMobile(mobileRef.current.value)) {
-        dummyErrors.mobile = "enter valid mobile number";
+        dummyErrors.mobile = "Enter valid mobile number";
       }
     }
 
@@ -79,11 +82,36 @@ function Register() {
     }
   };
 
+  const handleOtpVerification = () => {
+    // if()
+    // verifyOtp()
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!validateForm()) {
       return;
     }
+    const registerDetails = {
+      firstName: fnameRef.current.value,
+      lastName: lnameRef.current.value,
+      mobile: mobileRef.current.value,
+      isMerchant: true,
+      password: passRef.current.value,
+      email: emailRef.current.value,
+    };
+
+    checkRegisterDetails(registerDetails).then((res) => {
+      if (!res) {
+        setOtpPage(false);
+        return;
+      }
+      setOtpPage(true);
+    });
+    // const optStatus = sendOtp(mobileRef.current.value);
+    // if (optStatus) {
+    // }
+    // setOtpPage(true);
   };
 
   return (
@@ -96,68 +124,86 @@ function Register() {
           src={authLeftPanelImage}
           alt=""
         ></img>
-        <div className={styles.registerLeftPanelIcons}></div>
       </div>
-      <div className={styles.registerRightPanel}>
-        <form onSubmit={handleSubmit}>
-          <div className={styles["registerRightPanel-mainBody"]}>
-            <h2>Create an account</h2>
-            <div className={styles["registerRightPanel-inputContainer"]}>
+      {!otpPage ? (
+        <div className={styles.registerRightPanel}>
+          <form onSubmit={handleSubmit}>
+            <div className={styles["registerRightPanel-mainBody"]}>
+              <h2>Create an account</h2>
+              <div className={styles["registerRightPanel-inputContainer"]}>
+                <InputControl
+                  placeholder="Enter first name"
+                  label="First name"
+                  ref={fnameRef}
+                  error={errors?.fname}
+                />
+                <InputControl
+                  label="Last name"
+                  placeholder="Enter last name"
+                  ref={lnameRef}
+                  error={errors?.lname}
+                />
+              </div>
               <InputControl
-                placeholder="Enter first name"
-                label="First name"
-                ref={fnameRef}
-                error={errors?.fname}
+                placeholder="Enter mobile number"
+                label="Mobile number"
+                ref={mobileRef}
+                error={errors?.mobile}
               />
               <InputControl
-                label="Last name"
-                placeholder="Enter last name"
-                ref={lnameRef}
-                error={errors?.lname}
+                label="Email"
+                placeholder="Enter email"
+                ref={emailRef}
+                error={errors?.email}
               />
-            </div>
-            <InputControl
-              placeholder="Enter mobile number"
-              label="Mobile number"
-              ref={mobileRef}
-              error={errors?.mobile}
-            />
-            <InputControl
-              label="Email"
-              placeholder="Enter email"
-              ref={emailRef}
-              error={errors?.email}
-            />
-            <div className={styles["registerRightPanel-inputContainer"]}>
-              <InputControl
-                password="true"
-                placeholder="Enter password"
-                label="Password"
-                ref={passRef}
-                error={errors?.password}
-              />
+              <div className={styles["registerRightPanel-inputContainer"]}>
+                <InputControl
+                  password="true"
+                  placeholder="Enter password"
+                  label="Password"
+                  ref={passRef}
+                  error={errors?.password}
+                />
 
-              <InputControl
-                placeholder={`Confirm Password`}
-                label={`Confirm Password`}
-                ref={confirmpassRef}
-                error={errors?.confirmpass}
-                password="true"
-              />
+                <InputControl
+                  placeholder={`Confirm Password`}
+                  label={`Confirm Password`}
+                  ref={confirmpassRef}
+                  error={errors?.confirmpass}
+                  password="true"
+                />
+              </div>
+              <p>
+                Already have an account.&nbsp;
+                <span
+                  className={styles["registerRightPanel_helper-text"]}
+                  onClick={changeURl}
+                >
+                  Login now
+                </span>
+              </p>
+              <Button type={`submit`}>Register</Button>
             </div>
-            <p>
-              Already have an account.&nbsp;
-              <span
-                className={styles["registerRightPanel_helper-text"]}
-                onClick={changeURl}
-              >
-                Login now
-              </span>
-            </p>
-            <Button type={`submit`}>Register</Button>
-          </div>
-        </form>
-      </div>
+          </form>
+        </div>
+      ) : (
+        <div className={styles["registerRightPanel_otp"]}>
+          <form onSubmit={handleOtpVerification} className={styles.otpForm}>
+            <div className={styles["registerRightPanel-mainBody"]}>
+              <h2>Verify OTP</h2>
+              <InputControl
+                label="OTP"
+                placeholder="Enter OTP"
+                error={errors?.otp}
+              />
+              <p>
+                <span>Resend OTP</span>
+              </p>
+              <Button type={`submit`}>Verify OTP</Button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

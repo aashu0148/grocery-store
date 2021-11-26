@@ -53,3 +53,14 @@
     color: $bg-secondary;
   }
 }
+.otpForm {
+  width: 100%;
+}
+.registerRightPanel_otp {
+  width: 50%;
+  height: 100vh;
+  min-height: 100%;
+  padding: 0rem 1.5rem 0rem 1.5rem;
+  display: flex;
+  align-items: center;
+}

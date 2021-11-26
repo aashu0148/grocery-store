@@ -19,8 +19,8 @@ function App() {
       />
       <Router>
         <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/merchant/register" element={<Register />} />
+          <Route path="/merchant/login" element={<LoginPage />} />
         </Routes>
       </Router>
     </div>
