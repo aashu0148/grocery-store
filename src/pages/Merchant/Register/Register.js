@@ -39,10 +39,8 @@ function Register() {
 
     if (mobileRef.current.value === "") {
       dummyErrors.mobile = "Enter mobile number";
-    } else {
-      if (!validateMobile(mobileRef.current.value)) {
-        dummyErrors.mobile = "Enter valid mobile number";
-      }
+    } else if (!validateMobile(mobileRef.current.value)) {
+      dummyErrors.mobile = "Enter valid mobile number";
     }
 
     if (emailRef.current.value === "") {
@@ -149,6 +147,7 @@ function Register() {
                 label="Mobile number"
                 ref={mobileRef}
                 error={errors?.mobile}
+                maxLength={10}
               />
               <InputControl
                 label="Email"
