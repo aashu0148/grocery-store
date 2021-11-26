@@ -9,9 +9,14 @@ export const checkMobile = async (mobile) => {
     const reqUrl = `${backendApiUrl}/user/auth/checkMobile/${mobile}`;
     const result = await axios.get(reqUrl, axiosConfig);
 
-    return result.data;
+    if (!result.data?.status) {
+      errorToastLogger("", result.data?.message);
+      return false;
+    } else {
+      return result.data;
+    }
   } catch (error) {
-    errorToastLogger(error);
+    errorToastLogger(error, "Request failed to Mobile number");
     return false;
   }
 };
