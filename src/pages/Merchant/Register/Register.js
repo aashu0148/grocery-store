@@ -99,7 +99,9 @@ function Register() {
       else {
         const user = await verifyOtp(otpObj, values.otp);
         if (user === "") return;
-        registerMerchant(registerDetails);
+        registerMerchant(registerDetails).then((res) => {
+          console.log(res);
+        });
       }
   };
 
@@ -122,10 +124,10 @@ function Register() {
         return;
       } else {
         if (res?.status) {
-          const optResult = await sendOtp(values.mobile);
-          if (!optResult) return;
+          const otpResult = await sendOtp(values.mobile);
+          if (!otpResult) return;
 
-          setOtpObj(optResult);
+          setOtpObj(otpResult);
           setOtpPage(true);
         }
       }

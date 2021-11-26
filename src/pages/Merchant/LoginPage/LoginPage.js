@@ -40,6 +40,7 @@ function LoginPage() {
   };
 
   const handleFormSubmit = (event) => {
+    console.log("inside login handler");
     event.preventDefault();
     if (!validateForm()) return;
 
@@ -50,7 +51,8 @@ function LoginPage() {
       email: emailRef.current.value,
     };
     loginMerchant(loginDetails).then(async (res) => {
-      console.log(res);
+      if (!res) return;
+      console.log("logged in");
     });
   };
 
