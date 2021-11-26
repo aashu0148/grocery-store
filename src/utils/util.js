@@ -4,9 +4,10 @@ import { mobileRegex, emailRegex } from "./constants";
 
 export const errorToastLogger = (error, message) => {
   if (message) toast.error(message);
-  else toast.error(error);
-
-  console.error(error);
+  else {
+    const errorMessage = error?.message ? error.message : error + "";
+    toast.error(errorMessage);
+  }
 };
 
 export const validateEmail = (email) => {
