@@ -1,4 +1,5 @@
-import LoginPage from "pages/Customer/LoginPage/LoginPage/LoginPage";
+import LoginPage from "pages/Customer/LoginPage/LoginPage";
+import Register from "pages/Customer/Register/Register";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
@@ -18,6 +19,8 @@ function App() {
           style: { marginBottom: "30px", marginLeft: "30px" },
         }}
       />
+      {/* <LoginPage /> */}
+      {/* <Register /> */}
       <Router>
         <Routes>
           <Route path="/register" element={<Register />} />
