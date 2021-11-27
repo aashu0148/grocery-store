@@ -107,6 +107,7 @@ async function signInWithPhone(mobile) {
 export const sendOtp = async (mobile) => {
   if (!mobile) return false;
   if (!validateMobile(mobile)) return false;
+  console.log(mobile);
 
   await fireBaseCaptchVerification();
 

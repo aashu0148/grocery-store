@@ -21,10 +21,11 @@ export const checkMobile = async (mobile) => {
   }
 };
 
-export const login = async (mobile) => {
+export const login = async (body) => {
   try {
     const reqUrl = `${backendApiUrl}/user/auth/login`;
-    const result = await axios.post(reqUrl, mobile);
+    const result = await axios.post(reqUrl, body);
+
     if (!result.data?.status) {
       errorToastLogger("", result.data?.message);
       return false;
@@ -32,7 +33,7 @@ export const login = async (mobile) => {
       return result.data;
     }
   } catch (error) {
-    errorToastLogger(error,"Failed to login");
+    errorToastLogger(error, "Login failed");
     return false;
   }
 };

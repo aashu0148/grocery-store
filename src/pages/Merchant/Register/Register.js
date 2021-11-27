@@ -1,78 +1,73 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Button from "components/Button/Button";
 import InputControl from "components/InputControl/InputControl";
+import VerifyOtp from "components/verifyOtp/VerifyOtp";
+
+import { validateEmail, validateMobile, validatePassword } from "utils/util";
+import { checkRegisterDetails, register } from "api/user/register";
+
+import authLeftPanelImage from "assets/images/leftPanelImage.png";
 
 import styles from "./Register.module.scss";
 
 function Register() {
-  const leftPanelImage =
-    "https://image.shutterstock.com/z/stock-vector-set-of-fruit-and-vegetables-logo-for-groceries-agriculture-stores-packaging-and-advertising-318421853.jpg";
-
   const [errors, setErrors] = useState({});
+  const [otpPage, setOtpPage] = useState(false);
+  const [values, setValues] = useState({
+    fname: "",
+    lname: "",
+    email: "",
+    mobile: "",
+    password: "",
+    confirmpass: "",
+  });
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
 
-  const fnameRef = useRef();
-  const lnameRef = useRef();
-  const emailRef = useRef();
-  const mobileRef = useRef();
-  const passRef = useRef();
-  const confirmpassRef = useRef();
   const navigate = useNavigate();
 
   const changeURl = () => {
-    navigate("/login");
+    navigate("/merchant/login");
   };
 
   const validateForm = () => {
     const dummyErrors = {};
-    if (fnameRef.current.value === "") {
+    if (values.fname === "") {
       dummyErrors.fname = "Enter first name";
     }
 
-    if (lnameRef.current.value === "") {
+    if (values.lname === "") {
       dummyErrors.lname = "Enter last name";
     }
 
-    if (mobileRef.current.value === "") {
+    if (values.mobile === "") {
       dummyErrors.mobile = "Enter mobile number";
-    } else {
-      if (
-        mobileRef.current.value.length !== 10 &&
-        !/^\d{10}$/.test(mobileRef.current.value)
-      ) {
-        dummyErrors.mobile = "enter valid mobile number";
-      }
+    } else if (!validateMobile(values.mobile)) {
+      dummyErrors.mobile = "Enter valid mobile number";
     }
 
-    if (emailRef.current.value === "") {
+    if (values.email === "") {
       dummyErrors.email = "Enter email";
     } else {
-      if (
-        !/^\w+([-]?\w+)*@\w+([-]?\w+)*(\w{2,3})+$/.test(emailRef.current.value)
-      ) {
+      if (!validateEmail(values.email)) {
         dummyErrors.email = "Enter valid email";
       }
     }
 
-    if (passRef.current.value === "") {
+    if (values.password === "") {
       dummyErrors.password = "Enter password";
     } else {
-      if (passRef.current.value.length < 8) {
-        dummyErrors.password = "Must be at least 8 characters";
-      }
-      if (passRef.current.value.search(/[a-z]/i) < 0) {
-        dummyErrors.password = "Must contain at least one letter";
-      }
-      if (passRef.current.value.search(/[0-9]/) < 0) {
-        dummyErrors.password = "Must contain at least one digit";
+      if (!validatePassword(values.password)) {
+        dummyErrors.password =
+          "Enter valid password i.e minimum length 6, must include 1 numeric and 1 alphabet ";
       }
     }
 
-    if (confirmpassRef.current.value === "") {
+    if (values.confirmpass === "") {
       dummyErrors.confirmpass = "Confirm password";
     } else {
-      if (confirmpassRef.current.value !== passRef.current.value) {
+      if (values.confirmpass !== values.password) {
         dummyErrors.confirmpass = "passwords must be same";
       }
     }
@@ -86,9 +81,46 @@ function Register() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
+
+    const registerDetails = {
+      firstName: values.fname,
+      lastName: values.lname,
+      mobile: values.mobile,
+      isMerchant: true,
+      password: values.password,
+      email: values.email,
+    };
+
+    checkRegisterDetails(registerDetails).then((res) => {
+      if (!res) {
+        setOtpPage(false);
+        return;
+      }
+      if (res?.status) {
+        setOtpPage(true);
+      }
+    });
+  };
+
+  const handleRegisterMerchant = () => {
+    register({
+      firstName: values.fname,
+      lastName: values.lname,
+      mobile: values.mobile,
+      isMerchant: true,
+      password: values.password,
+      email: values.email,
+    }).then((res) => {
+      console.log(res);
+    });
+  };
+
+  const handleOtpVerification = (isVerified) => {
+    console.log(isVerified);
+    setIsOtpVerified(isVerified);
+    if (isOtpVerified) handleRegisterMerchant();
+    else return;
   };
 
   return (
@@ -98,71 +130,99 @@ function Register() {
         <span>100+ products available at best price</span>
         <img
           className={styles.registerLeftPanelImage}
-          src={leftPanelImage}
-          alt=""
+          src={authLeftPanelImage}
+          alt="Left panel img"
         ></img>
-        <div className={styles.registerLeftPanelIcons}></div>
       </div>
-      <div className={styles.registerRightPanel}>
-        <form onSubmit={handleSubmit}>
-          <div className={styles["registerRightPanel-mainBody"]}>
-            <h2>Create an account</h2>
-            <div className={styles["registerRightPanel-inputContainer"]}>
+      {!otpPage ? (
+        <div className={styles.registerRightPanel}>
+          <form onSubmit={handleSubmit}>
+            <div className={styles["registerRightPanel-mainBody"]}>
+              <h2>Create an account</h2>
+              <div className={styles["registerRightPanel-inputContainer"]}>
+                <InputControl
+                  placeholder="Enter first name"
+                  label="First name"
+                  onChange={(event) =>
+                    setValues({ ...values, fname: event.target.value })
+                  }
+                  value={values.fname}
+                  error={errors?.fname}
+                />
+                <InputControl
+                  label="Last name"
+                  placeholder="Enter last name"
+                  onChange={(event) =>
+                    setValues({ ...values, lname: event.target.value })
+                  }
+                  value={values.lname}
+                  error={errors?.lname}
+                />
+              </div>
               <InputControl
-                placeholder="Enter first name"
-                label="First name"
-                ref={fnameRef}
-                error={errors?.fname}
+                placeholder="Enter mobile number"
+                label="Mobile number"
+                onChange={(event) =>
+                  setValues({ ...values, mobile: event.target.value })
+                }
+                value={values.mobile}
+                error={errors?.mobile}
+                maxLength={10}
               />
               <InputControl
-                label="Last name"
-                placeholder="Enter last name"
-                ref={lnameRef}
-                error={errors?.lname}
+                label="Email"
+                placeholder="Enter email"
+                onChange={(event) =>
+                  setValues({ ...values, email: event.target.value })
+                }
+                value={values.email}
+                error={errors?.email}
               />
-            </div>
-            <InputControl
-              placeholder="Enter mobile number"
-              label="Mobile number"
-              ref={mobileRef}
-              error={errors?.mobile}
-            />
-            <InputControl
-              label="Email"
-              placeholder="Enter email"
-              ref={emailRef}
-              error={errors?.email}
-            />
-            <div className={styles["registerRightPanel-inputContainer"]}>
-              <InputControl
-                password="true"
-                placeholder="Enter password"
-                label="Password"
-                ref={passRef}
-                error={errors?.password}
-              />
+              <div className={styles["registerRightPanel-inputContainer"]}>
+                <InputControl
+                  password="true"
+                  placeholder="Enter password"
+                  label="Password"
+                  onChange={(event) =>
+                    setValues({ ...values, password: event.target.value })
+                  }
+                  value={values.password}
+                  error={errors?.password}
+                />
 
-              <InputControl
-                placeholder={`Confirm Password`}
-                label={`Confirm Password`}
-                ref={confirmpassRef}
-                error={errors?.confirmpass}
-                password="true"
-              />
+                <InputControl
+                  placeholder={`Confirm Password`}
+                  label={`Confirm Password`}
+                  onChange={(event) =>
+                    setValues({ ...values, confirmpass: event.target.value })
+                  }
+                  value={values.confirmpass}
+                  error={errors?.confirmpass}
+                  password="true"
+                />
+              </div>
+              <p>
+                Already have an account.&nbsp;
+                <span
+                  className={styles["registerRightPanel_helper-text"]}
+                  onClick={changeURl}
+                >
+                  Login now
+                </span>
+              </p>
+              <Button type={`submit`}>Register</Button>
             </div>
-            <p>
-              Already have an account.&nbsp;
-              <span
-                className={styles["registerRightPanel_helper-text"]}
-                onClick={changeURl}
-              >
-                Login now
-              </span>
-            </p>
-            <Button type={`submit`}>Create Account</Button>
-          </div>
-        </form>
-      </div>
+            <div id="recaptcha"></div>
+          </form>
+        </div>
+      ) : (
+        <div className={styles.registerRightPanel_otp}>
+          <VerifyOtp
+            values={values.mobile}
+            isVerified={handleOtpVerification}
+          />
+        </div>
+      )}
     </div>
   );
 }
