@@ -9,9 +9,31 @@ export const register = async (mobile) => {
     const reqUrl = `${backendApiUrl}/user/auth/register`;
     const result = await axios.post(reqUrl, axiosConfig);
 
-    return result.data;
+    if (!result.data?.status) {
+      errorToastLogger("", result.data?.message);
+      return false;
+    } else {
+      return result.data;
+    }
   } catch (error) {
-    errorToastLogger(error);
+    errorToastLogger(error,"Failed to register");
     return false;
   }
 };
+
+export const checkRegisterDetails = async (body) => {
+    try {
+      const reqUrl = `${backendApiUrl}/user/auth/check-register-details`;
+      const result = await axios.post(reqUrl, body);
+  
+      if (!result.data?.status) {
+        errorToastLogger("", result.data?.message);
+        return false;
+      } else {
+        return result.data;
+      }
+    } catch (error) {
+      errorToastLogger(error,"Wrong credentials");
+      return false;
+    }
+  };

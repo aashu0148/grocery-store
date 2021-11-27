@@ -3,44 +3,48 @@ import styles from "./Register.module.scss";
 import bgSignin from "assets/images/bgSignin.png";
 import Button from "components/Button/Button";
 import InputControl from "components/InputControl/InputControl";
-import { register } from "api/user/register";
+import { register, checkRegisterDetails } from "api/user/register";
+import { validateEmail, validateMobile } from "utils/util";
+import { sendOtp } from "utils/firebase";
+
 const Register = (props) => {
   const [errMsg, seterrMsg] = useState({});
-  const nameRef = useRef();
-  const lnameRef = useRef();
-  const emailRef = useRef();
-  const numberRef = useRef();
-  const otpRef = useRef();
-console.log(register.result);
+  const [RegisterDetails, setRegisterDetails] = useState({});
+  const [otpObj, setOtpObj] = useState({});
+
+  const [values, setValues] = useState({
+    fname: "",
+    lname: "",
+    email: "",
+    mobile: "",
+    otp: "",
+  });
+ 
+
   const validateForm = () => {
     const dummyMsg = {};
-    if (nameRef.current.value === "") {
+    if (values.fname === "") {
       dummyMsg.name = "Enter name";
     }
-    if (lnameRef.current.value === "") {
+    if (values.lname === "") {
       dummyMsg.lname = "Enter last name";
     }
-    if (emailRef.current.value === "") {
+    if (values.email === "") {
       dummyMsg.email = "Enter Email";
-    } else if (
-      !/^\w+([-]?\w+)*@\w+([-]?\w+)*(\w{2,3})+$/.test(emailRef.current.value)
-    ) {
+    } else if (!validateEmail(values.email)) {
       dummyMsg.email = "Enter Valid Email";
     }
-    if (numberRef.current.value === "") {
+    if (values.mobile === "") {
       dummyMsg.mobile = "Enter mobile number";
-    } else if (
-      numberRef.current.value.length !== 10 &&
-      !/^\d{10}$/.test(numberRef.current.value)
-    ) {
+    } else if (!validateMobile(values.mobile)) {
       dummyMsg.mobile = "Enter valid number";
     }
 
-    if (otpRef.current.value === "") {
-      dummyMsg.otp = "Enter OTP";
-    } else if (otpRef.current.value.length !== 6) {
-      dummyMsg.otp = "Enter valid OTP";
-    }
+    // if (values.otp === "") {
+    //   dummyMsg.otp = "Enter OTP";
+    // } else if (values.otp.length !== 6) {
+    //   dummyMsg.otp = "Enter valid OTP";
+    // }
 
     seterrMsg(dummyMsg);
     if (Object.keys(dummyMsg).length !== 0) {
@@ -49,12 +53,36 @@ console.log(register.result);
       return true;
     }
   };
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
+
+    setRegisterDetails({
+      firstName: values.fname,
+      lastName: values.lname,
+      mobile: values.mobile,
+      isMerchant: false,
+      // password: values.password,
+      email: values.email,
+    });
+
+    checkRegisterDetails(RegisterDetails).then(async (res) => {
+      console.log(res);
+      if (!res) {
+        // setOtpPage(false);
+        return;
+      } else {
+        if (res?.status) {
+          
+          const optResult = await sendOtp(values.mobile);
+          if (!optResult) return;
+          
+          
+          setOtpObj(optResult);
+          // setOtpPage(true);
+        }
+      }
+    });
   };
   return (
     <div className={styles.container}>
@@ -77,13 +105,17 @@ console.log(register.result);
               <InputControl
                 placeholder="Enter Name"
                 label="Name"
-                ref={nameRef}
+                onChange={(event) =>
+                  setValues({ ...values, fname: event.target.value })
+                }
                 error={errMsg?.name}
               />
               <InputControl
                 placeholder="Enter last name"
                 label="Last Name"
-                ref={lnameRef}
+                onChange={(event) =>
+                  setValues({ ...values, lname: event.target.value })
+                }
                 error={errMsg?.lname}
               />
             </div>
@@ -91,21 +123,26 @@ console.log(register.result);
             <InputControl
               placeholder="Enter Email"
               label="Email"
-              ref={emailRef}
               error={errMsg?.email}
+              onChange={(event) =>
+                setValues({ ...values, email: event.target.value })
+              }
             />
             <InputControl
               placeholder="Enter mobile number"
               label="Mobile number"
-              ref={numberRef}
+              onChange={(event) =>
+                setValues({ ...values, mobile: event.target.value })
+              }
               error={errMsg?.mobile}
+              maxLength={10}
             />
-            <InputControl
+            {/* <InputControl
               placeholder="Enter OTP"
               label="OTP"
-              ref={otpRef}
+                onChange={(event) => setValues({...values,otp:event.target.value})}
               error={errMsg?.otp}
-            />
+            /> */}
             <div className={styles.resendOTP}>Resend OTP</div>
             <Button icon type="submit" className={styles.submitButton}>
               Create new account
@@ -123,6 +160,8 @@ console.log(register.result);
           </div>
         </div>
       </div>
+
+      <div id="recaptcha"></div>
     </div>
   );
 };

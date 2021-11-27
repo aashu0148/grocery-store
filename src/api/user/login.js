@@ -20,24 +20,19 @@ export const checkMobile = async (mobile) => {
     return false;
   }
 };
-export const checkRegisterDetails = async (mobile) => {
-  try {
-    const reqUrl = `${backendApiUrl}/user/auth/check-register-details`;
-    const result = await axios.post(reqUrl, axiosConfig);
 
-    return result.data;
-  } catch (error) {
-    errorToastLogger(error);
-    return false;
-  }
-};
 export const login = async (mobile) => {
   try {
     const reqUrl = `${backendApiUrl}/user/auth/login`;
-    const result = await axios.post(reqUrl, axiosConfig);
-    return result.data;
+    const result = await axios.post(reqUrl, mobile);
+    if (!result.data?.status) {
+      errorToastLogger("", result.data?.message);
+      return false;
+    } else {
+      return result.data;
+    }
   } catch (error) {
-    errorToastLogger(error);
+    errorToastLogger(error,"Failed to login");
     return false;
   }
 };

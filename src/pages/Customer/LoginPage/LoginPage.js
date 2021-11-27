@@ -63,6 +63,7 @@ const LoginPage = (props) => {
               label="Mobile number"
               ref={numberRef}
               error={errMsg?.mobile}
+              maxLength={10}
             />
             <InputControl
               placeholder="Enter OTP"
