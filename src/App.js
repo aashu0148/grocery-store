@@ -1,15 +1,35 @@
-import LoginPage from "pages/Customer/LoginPage/LoginPage";
-import Register from "pages/Customer/Register/Register";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
-// import Register from "pages/Merchant/Register/Register";
-// import LoginPage from "pages/Merchant/LoginPage/LoginPage";
+import MerchantRegister from "pages/Merchant/Register/Register";
+import MerchantLoginPage from "pages/Merchant/LoginPage/LoginPage";
+import PageNotFound from "pages/common/PageNotFound/PageNotFound";
+
+import { checkAuth } from "api/user/authenticate";
 
 import "styles/main.scss";
+import LoginPage from "pages/Customer/LoginPage/LoginPage";
+import Register from "pages/Customer/Register/Register";
 
 function App() {
+  const token = localStorage.getItem("token");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isDataloaded, setIsDataLoaded] = useState(token ? false : true);
+
+  const authenticateUser = () => {
+    checkAuth().then((res) => {
+      setIsDataLoaded(true);
+      if (!res) return;
+      setIsAuthenticated(true);
+    });
+  };
+
+  useEffect(() => {
+    if (!isDataloaded) authenticateUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="App">
       <Toaster
@@ -27,6 +47,24 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
         </Routes>
       </Router> 
+      {!isDataloaded ? (
+        <p>Spinner will come here</p>
+      ) : (
+        <Router>
+          {isAuthenticated ? (
+            <Routes>
+              <Route path="/*" element={<PageNotFound />} />
+            </Routes>
+          ) : (
+            <Routes>
+              <Route path="/merchant/register" element={<MerchantRegister />} />
+              <Route path="/merchant/login" element={<MerchantLoginPage />} />
+              <Route path="/*" element={<PageNotFound />} />
+            </Routes>
+          )}
+        </Router>
+      )}
+      <div id="recaptcha" />
     </div>
   );
 }
