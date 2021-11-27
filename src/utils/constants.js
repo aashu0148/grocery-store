@@ -8,6 +8,8 @@ export const emailRegex =
 
 export const mobileRegex = /^[0-9]{10}$/;
 
+export const otpRegex = /^[0-9]{6}$/;
+
 const authenticatingToken = localStorage.getItem("token");
 export const axiosConfig = {
   headers: { Authorization: `${authenticatingToken}` },
