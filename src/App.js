@@ -25,6 +25,7 @@ function App() {
 
   useEffect(() => {
     if (!isDataloaded) authenticateUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
