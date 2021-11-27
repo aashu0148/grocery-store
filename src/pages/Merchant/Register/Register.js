@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 import Button from "components/Button/Button";
 import InputControl from "components/InputControl/InputControl";
+import VerifyOtp from "components/verifyOtp/VerifyOtp";
 
-import { validateEmail, validateMobile, validateOtp } from "utils/util";
-import { sendOtp, verifyOtp } from "utils/firebase";
-import { checkRegisterDetails, registerMerchant } from "api/user/register";
+import { validateEmail, validateMobile, validatePassword } from "utils/util";
+import { checkRegisterDetails, register } from "api/user/register";
 
 import authLeftPanelImage from "assets/images/leftPanelImage.png";
 
@@ -15,8 +15,6 @@ import styles from "./Register.module.scss";
 function Register() {
   const [errors, setErrors] = useState({});
   const [otpPage, setOtpPage] = useState(false);
-  const [registerDetails, setRegisterDetails] = useState({});
-  const [otpObj, setOtpObj] = useState({});
   const [values, setValues] = useState({
     fname: "",
     lname: "",
@@ -24,8 +22,8 @@ function Register() {
     mobile: "",
     password: "",
     confirmpass: "",
-    otp: "",
   });
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
 
   const navigate = useNavigate();
 
@@ -60,14 +58,9 @@ function Register() {
     if (values.password === "") {
       dummyErrors.password = "Enter password";
     } else {
-      if (values.password.length < 6) {
-        dummyErrors.password = "Must be at least 8 characters";
-      }
-      if (values.password.search(/[a-z]/i) < 0) {
-        dummyErrors.password = "Must contain at least one letter";
-      }
-      if (values.password.search(/[0-9]/) < 0) {
-        dummyErrors.password = "Must contain at least one digit";
+      if (!validatePassword(values.password)) {
+        dummyErrors.password =
+          "Enter valid password i.e minimum length 6, must include 1 numeric and 1 alphabet ";
       }
     }
 
@@ -86,52 +79,48 @@ function Register() {
     }
   };
 
-  const handleOtpVerification = async (event) => {
-    event.preventDefault();
-    const dummyErrors = {};
-    if (!validateOtp(values.otp)) {
-      dummyErrors.otp = "Enter valid OTP";
-      setErrors(dummyErrors);
-      return;
-    }
-    if (values.otp)
-      if (!otpObj) return;
-      else {
-        const user = await verifyOtp(otpObj, values.otp);
-        if (user === "") return;
-        registerMerchant(registerDetails).then((res) => {
-          console.log(res);
-        });
-      }
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!validateForm()) return;
 
-    setRegisterDetails({
+    const registerDetails = {
       firstName: values.fname,
       lastName: values.lname,
       mobile: values.mobile,
       isMerchant: true,
       password: values.password,
       email: values.email,
-    });
+    };
 
-    checkRegisterDetails(registerDetails).then(async (res) => {
+    checkRegisterDetails(registerDetails).then((res) => {
       if (!res) {
         setOtpPage(false);
         return;
-      } else {
-        if (res?.status) {
-          const otpResult = await sendOtp(values.mobile);
-          if (!otpResult) return;
-
-          setOtpObj(otpResult);
-          setOtpPage(true);
-        }
+      }
+      if (res?.status) {
+        setOtpPage(true);
       }
     });
+  };
+
+  const handleRegisterMerchant = () => {
+    register({
+      firstName: values.fname,
+      lastName: values.lname,
+      mobile: values.mobile,
+      isMerchant: true,
+      password: values.password,
+      email: values.email,
+    }).then((res) => {
+      console.log(res);
+    });
+  };
+
+  const handleOtpVerification = (isVerified) => {
+    console.log(isVerified);
+    setIsOtpVerified(isVerified);
+    if (isOtpVerified) handleRegisterMerchant();
+    else return;
   };
 
   return (
@@ -142,7 +131,7 @@ function Register() {
         <img
           className={styles.registerLeftPanelImage}
           src={authLeftPanelImage}
-          alt=""
+          alt="Left panel img"
         ></img>
       </div>
       {!otpPage ? (
@@ -227,26 +216,11 @@ function Register() {
           </form>
         </div>
       ) : (
-        <div className={styles["registerRightPanel_otp"]}>
-          <form onSubmit={handleOtpVerification} className={styles.otpForm}>
-            <div className={styles["registerRightPanel-mainBody"]}>
-              <h2>Verify OTP</h2>
-              <InputControl
-                label="OTP"
-                placeholder="Enter OTP"
-                maxLength={6}
-                onChange={(event) =>
-                  setValues({ ...values, otp: event.target.value })
-                }
-                value={values.otp}
-                error={errors?.otp}
-              />
-              <p>
-                <span onClick={handleSubmit}>Resend OTP</span>
-              </p>
-              <Button type={`submit`}>Verify OTP</Button>
-            </div>
-          </form>
+        <div className={styles.registerRightPanel_otp}>
+          <VerifyOtp
+            values={values.mobile}
+            isVerified={handleOtpVerification}
+          />
         </div>
       )}
     </div>

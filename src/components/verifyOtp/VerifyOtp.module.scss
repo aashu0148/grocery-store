@@ -1,0 +1,18 @@
+@import "styles/variables";
+
+.otpForm {
+  width: 100%;
+}
+.mainBody {
+  border: 1px solid $bg-light-gray;
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  padding: 35px 45px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+.resendOtp {
+  cursor: pointer;
+}

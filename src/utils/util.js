@@ -27,3 +27,16 @@ export const validateOtp = (otp) => {
   if (otpRegex.test(otp)) return true;
   else return false;
 };
+
+export const validatePassword = (password) => {
+  if (!password) return false;
+  if (password.length < 6) {
+    return false;
+  }
+  if (password.search(/[a-z]/i) < 0) {
+    return false;
+  }
+  if (password.search(/[0-9]/) < 0) {
+    return false;
+  } else return true;
+};

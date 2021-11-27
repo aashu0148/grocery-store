@@ -2,13 +2,15 @@ import React, { useRef, useState } from "react";
 
 import Button from "components/Button/Button";
 import InputControl from "components/InputControl/InputControl";
+import Navbar from "components/Navbar/Navbar";
 
 import { validateEmail } from "utils/util";
-import { loginMerchant } from "api/user/login";
+import { login } from "api/user/login";
 
 import authLeftPanelImage from "assets/images/leftPanelImage.png";
 
 import styles from "./LoginPage.module.scss";
+import toast from "react-hot-toast";
 
 function LoginPage() {
   const emailRef = useRef();
@@ -44,53 +46,55 @@ function LoginPage() {
     if (!validateForm()) return;
 
     const loginDetails = {
-      mobile: "",
       isMerchant: true,
       password: passRef.current.value,
       email: emailRef.current.value,
     };
-    loginMerchant(loginDetails).then(async (res) => {
+    login(loginDetails).then(async (res) => {
       if (!res) return;
-      console.log("logged in");
+      toast.success("Logged in successfully");
     });
   };
 
   return (
-    <div className={styles.login}>
-      <div className={styles.loginLeft}>
-        <h1>Buy Best!</h1>
-        <span>100+ products available at best price</span>
-        <img
-          className={styles.loginLeftImage}
-          src={authLeftPanelImage}
-          alt=""
-        ></img>
+    <>
+      <Navbar />
+      <div className={styles.login}>
+        <div className={styles.loginLeft}>
+          <h1>Buy Best!</h1>
+          <span>100+ products available at best price</span>
+          <img
+            className={styles.loginLeftImage}
+            src={authLeftPanelImage}
+            alt="Left panel img"
+          ></img>
+        </div>
+        <div className={styles.loginRightPanel}>
+          <form className={styles.loginForm} onSubmit={handleFormSubmit}>
+            <div className={styles["loginRightPanel-mainBody"]}>
+              <h2>Login</h2>
+              <InputControl
+                label="Email"
+                placeholder="Enter Email"
+                ref={emailRef}
+                error={errors?.email}
+              />
+              <InputControl
+                label="Password"
+                placeholder="Enter password"
+                ref={passRef}
+                error={errors?.password}
+                password="true"
+              />
+              <span className={styles["loginRightPanel_helper-text"]}>
+                Forgot password?
+              </span>
+              <Button type={`submit`}>Login</Button>
+            </div>
+          </form>
+        </div>
       </div>
-      <div className={styles.loginRightPanel}>
-        <form className={styles.loginForm} onSubmit={handleFormSubmit}>
-          <div className={styles["loginRightPanel-mainBody"]}>
-            <h2>Login</h2>
-            <InputControl
-              label="Email"
-              placeholder="Enter Email"
-              ref={emailRef}
-              error={errors?.email}
-            />
-            <InputControl
-              label="Password"
-              placeholder="Enter password"
-              ref={passRef}
-              error={errors?.password}
-              password="true"
-            />
-            <span className={styles["loginRightPanel_helper-text"]}>
-              Forgot password?
-            </span>
-            <Button type={`submit`}>Login</Button>
-          </div>
-        </form>
-      </div>
-    </div>
+    </>
   );
 }
 

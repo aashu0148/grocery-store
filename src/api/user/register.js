@@ -21,7 +21,7 @@ export const checkRegisterDetails = async (body) => {
   }
 };
 
-export const registerMerchant = async (body) => {
+export const register = async (body) => {
   try {
     const reqUrl = `${backendApiUrl}/user/auth/register`;
     const result = await axios.post(reqUrl, body);

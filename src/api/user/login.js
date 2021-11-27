@@ -21,7 +21,7 @@ export const checkMobile = async (mobile) => {
   }
 };
 
-export const loginMerchant = async (body) => {
+export const login = async (body) => {
   try {
     const reqUrl = `${backendApiUrl}/user/auth/login`;
     const result = await axios.post(reqUrl, body);
