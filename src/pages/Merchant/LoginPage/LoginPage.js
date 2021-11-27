@@ -40,7 +40,6 @@ function LoginPage() {
   };
 
   const handleFormSubmit = (event) => {
-    console.log("inside login handler");
     event.preventDefault();
     if (!validateForm()) return;
 
