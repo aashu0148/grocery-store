@@ -6,13 +6,10 @@
   display: flex;
 
   .heading {
-    font-size: 20px;
-    display: flex;
     justify-content: space-between;
     align-items: center;
     font-weight: 700;
-    letter-spacing: 1.5px;
-    user-select: none;
+    letter-spacing: 0.41px;
   }
   .left {
     flex: 1;
@@ -21,11 +18,10 @@
     justify-content: center;
     align-items: center;
     .heading {
-      font-size: 50px;
+      display: flex;
+      flex-direction: column;
       font-weight: 800;
-      background: $text-secondary;
-      color: $bg-white-1;
-      padding: 0.81rem 0.85rem;
+      color: $text-secondary;
     }
     .imageContainer {
       position: absolute;
@@ -65,23 +61,8 @@
         gap: 20px;
         width: 100%;
         align-items: flex-start;
-        .resendOTP {
-          font-size: 1rem;
-          font-weight: 700;
-          color: $bg-tertiary;
-          cursor: pointer;
-          user-select: none;
-
-          &:hover {
-            color: $bg-dark;
-          }
-        }
       }
       .submitButton {
-        width: 100%;
-        padding: 8px 20px 8px 16px;
-        text-transform: uppercase;
-        letter-spacing: 0.11rem;
         user-select: none;
       }
     }
@@ -96,5 +77,12 @@
         cursor: pointer;  
       }
     }
+  }
+  .registerRightPanel_otp {
+    width: 50%;
+    padding: 3rem 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
