@@ -1,19 +1,16 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import styles from "./LoginPage.module.scss";
 import bgSignin from "assets/images/bgSignin.png";
 import Button from "components/Button/Button";
 import InputControl from "components/InputControl/InputControl";
-// import { login } from "api/user/login";
 import { useNavigate } from "react-router-dom";
 import VerifyOtp from "components/verifyOtp/VerifyOtp";
-
+import { checkMobile, login } from "api/user/login";
+import { validateMobile } from "utils/util";
 const LoginPage = (props) => {
   const [errMsg, seterrMsg] = useState({});
-  const [values, setvalues] = useState({
-    mobile: "",
-  });
-  const numberRef = useRef();
-  const otpRef = useRef();
+  const [mobile, setMobile] = useState("");
+
   const [otpPage, setOtpPage] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
 
@@ -24,21 +21,11 @@ const LoginPage = (props) => {
   const validateForm = () => {
     const dummyMsg = {};
 
-    if (numberRef.current.value === "") {
+    if (mobile === "") {
       dummyMsg.mobile = "Enter mobile number";
-    } else if (
-      numberRef.current.value.length !== 10 &&
-      !/^\d{10}$/.test(numberRef.current.value)
-    ) {
+    } else if (!validateMobile(mobile)) {
       dummyMsg.mobile = "Enter valid number";
     }
-
-    if (otpRef.current.value === "") {
-      dummyMsg.otp = "Enter OTP";
-    } else if (otpRef.current.value.length !== 6) {
-      dummyMsg.otp = "Enter valid OTP";
-    }
-
     seterrMsg(dummyMsg);
     if (Object.keys(dummyMsg).length !== 0) {
       return false;
@@ -46,13 +33,10 @@ const LoginPage = (props) => {
       return true;
     }
   };
-  const handleRegisterCustomer = () => {
-    register({
-      firstName: values.fname,
-      lastName: values.lname,
-      mobile: values.mobile,
+  const handleloginCustomer = () => {
+    login({
+      mobile: mobile,
       isMerchant: false,
-      email: values.email,
     }).then((res) => {
       console.log(res);
     });
@@ -61,7 +45,7 @@ const LoginPage = (props) => {
   const handleOtpVerification = (isVerified) => {
     console.log(isVerified);
     setIsOtpVerified(isVerified);
-    if (isOtpVerified) handleRegisterCustomer();
+    if (isOtpVerified) handleloginCustomer();
     else return;
   };
   const handleSubmit = (event) => {
@@ -70,6 +54,15 @@ const LoginPage = (props) => {
       return;
     }
 
+    checkMobile(mobile).then(async (res) => {
+      console.log(res);
+      if (!res) {
+        setOtpPage(false);
+        return;
+      } else {
+        setOtpPage(true);
+      }
+    });
   };
   return (
     <div className={styles.container}>
@@ -96,7 +89,8 @@ const LoginPage = (props) => {
               <InputControl
                 placeholder="Enter mobile number"
                 label="Mobile number"
-                value={values.mobile}
+                value={mobile}
+                onChange={(event) => setMobile(event.target.value)}
                 error={errMsg?.mobile}
                 maxLength={10}
               />
@@ -116,10 +110,7 @@ const LoginPage = (props) => {
         </div>
       ) : (
         <div className={styles.registerRightPanel_otp}>
-          <VerifyOtp
-            values={values.mobile}
-            isVerified={handleOtpVerification}
-          />
+          <VerifyOtp values={mobile} isVerified={handleOtpVerification} />
         </div>
       )}
     </div>

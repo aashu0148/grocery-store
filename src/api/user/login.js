@@ -21,10 +21,10 @@ export const checkMobile = async (mobile) => {
   }
 };
 
-export const login = async (body) => {
+export const login = async (mobile) => {
   try {
     const reqUrl = `${backendApiUrl}/user/auth/login`;
-    const result = await axios.post(reqUrl, body);
+    const result = await axios.post(reqUrl, mobile);
 
     if (!result.data?.status) {
       errorToastLogger("", result.data?.message);
