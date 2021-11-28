@@ -2,6 +2,8 @@ import toast from "react-hot-toast";
 
 import { mobileRegex, emailRegex, otpRegex } from "./constants";
 
+let debounceTimer;
+
 export const errorToastLogger = (error, message) => {
   if (message) toast.error(message);
   else {
@@ -39,4 +41,10 @@ export const validatePassword = (password) => {
   if (password.search(/[0-9]/) < 0) {
     return false;
   } else return true;
+};
+
+export const debounce = (func, timer = 200) => {
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(func, timer);
 };
