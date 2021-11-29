@@ -55,7 +55,6 @@ const LoginPage = (props) => {
     }
 
     checkMobile(mobile).then(async (res) => {
-      console.log(res);
       if (!res) {
         setOtpPage(false);
         return;

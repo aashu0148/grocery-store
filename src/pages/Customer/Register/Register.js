@@ -78,7 +78,6 @@ const Register = (props) => {
     });
 
     checkRegisterDetails(RegisterDetails).then(async (res) => {
-      console.log(res);
       if (!res) {
         setOtpPage(false);
         return;

@@ -8,6 +8,7 @@ import CustomerLoginPage from "pages/Customer/LoginPage/LoginPage";
 import CustomerRegister from "pages/Customer/Register/Register";
 import PageNotFound from "pages/common/PageNotFound/PageNotFound";
 import { checkAuth } from "api/user/authenticate";
+import MainCarousel from "components/Carousel/MainCarousel/MainCarousel";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -54,6 +55,28 @@ function App() {
           )}
         </Router>
       )}
+      <MainCarousel
+        slides={[
+          {
+            image:
+              "https://www.bigbasket.com/media/uploads/banner_images/HP_EMF_M_Weekdayblore_460_291121.jpeg",
+            title: "Non veg",
+            id: "ewhq423fg2",
+          },
+          {
+            image:
+              "https://www.bigbasket.com/media/uploads/banner_images/hp_b_h_m_AffordableBeauty_460_251121.jpg",
+            title: "beauty",
+            id: "ewhq4efr33fg2",
+          },
+          {
+            image:
+              "https://www.bigbasket.com/media/uploads/banner_images/hp_kgp_m_H_Knowornever_460_251121.jpg",
+            title: "Home",
+            id: "ewhwe4gfefr33fg2",
+          },
+        ]}
+      />
       <div id="recaptcha" />
     </div>
   );
