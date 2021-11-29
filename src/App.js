@@ -25,6 +25,7 @@ function App() {
 
   useEffect(() => {
     if (!isDataloaded) authenticateUser();
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -46,11 +47,11 @@ function App() {
             </Routes>
           ) : (
             <Routes>
+              <Route path="/register" element={<CustomerRegister />} />
+              <Route path="/login" element={<CustomerLoginPage />} />
               <Route path="/merchant/register" element={<MerchantRegister />} />
               <Route path="/merchant/login" element={<MerchantLoginPage />} />
               <Route path="/*" element={<PageNotFound />} />
-              <Route path="/register" element={<CustomerRegister />} />
-              <Route path="/login" element={<CustomerLoginPage />} />
             </Routes>
           )}
         </Router>

@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { axiosConfig } from "utils/constants";
 import { errorToastLogger } from "utils/util";
 
@@ -21,10 +22,10 @@ export const checkMobile = async (mobile) => {
   }
 };
 
-export const login = async (mobile) => {
+export const login = async (body) => {
   try {
     const reqUrl = `${backendApiUrl}/user/auth/login`;
-    const result = await axios.post(reqUrl, mobile);
+    const result = await axios.post(reqUrl, body);
 
     if (!result.data?.status) {
       errorToastLogger("", result.data?.message);

@@ -1,14 +1,21 @@
 import React, { useState } from "react";
-import styles from "./Register.module.scss";
-import bgSignin from "assets/images/bgSignin.png";
+
 import Button from "components/Button/Button";
 import InputControl from "components/InputControl/InputControl";
+import VerifyOtp from "components/verifyOtp/VerifyOtp";
+
 import { register, checkRegisterDetails } from "api/user/register";
 import { validateEmail, validateMobile } from "utils/util";
-import VerifyOtp from "components/verifyOtp/VerifyOtp";
+
+import styles from "./Register.module.scss";
+
+import bgSignin from "assets/images/bgSignin.png";
+
 import { useNavigate } from "react-router-dom";
+
+
 const Register = (props) => {
-  const [errMsg, seterrMsg] = useState({});
+  const [errMsg, setErrMsg] = useState({});
   const [RegisterDetails, setRegisterDetails] = useState({});
   const [otpPage, setOtpPage] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
@@ -40,7 +47,7 @@ const Register = (props) => {
     } else if (!validateMobile(values.mobile)) {
       dummyMsg.mobile = "Enter valid number";
     }
-    seterrMsg(dummyMsg);
+    setErrMsg(dummyMsg);
     if (Object.keys(dummyMsg).length !== 0) {
       return false;
     } else {
@@ -60,7 +67,6 @@ const Register = (props) => {
   };
 
   const handleOtpVerification = (isVerified) => {
-    console.log(isVerified);
     setIsOtpVerified(isVerified);
     if (isOtpVerified) handleRegisterCustomer();
     else return;
