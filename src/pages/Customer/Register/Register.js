@@ -13,10 +13,8 @@ import bgSignin from "assets/images/bgSignin.png";
 
 import { useNavigate } from "react-router-dom";
 
-
 const Register = (props) => {
   const [errMsg, setErrMsg] = useState({});
-  const [RegisterDetails, setRegisterDetails] = useState({});
   const [otpPage, setOtpPage] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const navigate = useNavigate();
@@ -75,14 +73,13 @@ const Register = (props) => {
     event.preventDefault();
     if (!validateForm()) return;
 
-    setRegisterDetails({
+    const RegisterDetails = {
       firstName: values.fname,
       lastName: values.lname,
       mobile: values.mobile,
       isMerchant: false,
       email: values.email,
-    });
-
+    };
     checkRegisterDetails(RegisterDetails).then(async (res) => {
       if (!res) {
         setOtpPage(false);
