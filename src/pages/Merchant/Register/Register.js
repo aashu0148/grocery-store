@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import Button from "components/Button/Button";
 import InputControl from "components/InputControl/InputControl";
@@ -25,10 +27,20 @@ function Register() {
   });
   const [isOtpVerified, setIsOtpVerified] = useState(false);
 
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const changeURl = () => {
     navigate("/merchant/login");
+  };
+
+  const handleMerchantAuth = (merchantObj) => {
+    dispatch({
+      type: "IS_MERCHANT_LOGGEDIN",
+      merchantAuth: true,
+      currMerchant: merchantObj,
+    });
   };
 
   const validateForm = () => {
@@ -114,7 +126,12 @@ function Register() {
     }).then((res) => {
       if (!res) return;
       else {
-        console.log(res);
+        if (res?.status) {
+          console.log(res);
+          toast.success("Registered & Logged in successfully");
+          localStorage.setItem("token", JSON.stringify(res.data.authToken));
+          handleMerchantAuth(res.data);
+        }
       }
     });
   };
