@@ -1,4 +1,7 @@
 import React, { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
 import Button from "components/Button/Button";
 import InputControl from "components/InputControl/InputControl";
@@ -10,12 +13,16 @@ import { login } from "api/user/login";
 import authLeftPanelImage from "assets/images/leftPanelImage.png";
 
 import styles from "./LoginPage.module.scss";
-import toast from "react-hot-toast";
 
 function LoginPage() {
   const emailRef = useRef();
   const passRef = useRef();
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+
+  // const isMrchantLoggedIn = useSelector((state) => state.merchantAuth);
+  // const merchant = useSelector((state) => state.currMerchant);
+  const dispatch = useDispatch();
 
   const validateForm = () => {
     const dummyErrors = {};
@@ -41,6 +48,18 @@ function LoginPage() {
     }
   };
 
+  const handleNavigate = () => {
+    navigate("/merchant/register");
+  };
+
+  const handleMerchantAuth = (merchantObj) => {
+    dispatch({
+      type: "IS_MERCHANT_LOGGEDIN",
+      merchantAuth: true,
+      currMerchant: merchantObj,
+    });
+  };
+
   const handleFormSubmit = (event) => {
     event.preventDefault();
     if (!validateForm()) return;
@@ -52,7 +71,14 @@ function LoginPage() {
     };
     login(loginDetails).then(async (res) => {
       if (!res) return;
-      toast.success("Logged in successfully");
+      else {
+        if (res?.status) {
+          console.log(res);
+          toast.success("Logged in successfully");
+          localStorage.setItem("token", JSON.stringify(res.data.authToken));
+          handleMerchantAuth(res.data);
+        }
+      }
     });
   };
 
@@ -86,9 +112,20 @@ function LoginPage() {
                 error={errors?.password}
                 password="true"
               />
-              <span className={styles["loginRightPanel_helper-text"]}>
-                Forgot password?
-              </span>
+              <p>
+                <span className={styles["loginRightPanel_helper-text"]}>
+                  Forgot password?
+                </span>
+              </p>
+              <p>
+                Not registered.
+                <span
+                  onClick={handleNavigate}
+                  className={styles["loginRightPanel_helper-text"]}
+                >
+                  &nbsp;Register now
+                </span>
+              </p>
               <Button type={`submit`}>Login</Button>
             </div>
           </form>

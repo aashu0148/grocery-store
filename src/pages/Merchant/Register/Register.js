@@ -112,7 +112,10 @@ function Register() {
       password: values.password,
       email: values.email,
     }).then((res) => {
-      console.log(res);
+      if (!res) return;
+      else {
+        console.log(res);
+      }
     });
   };
 
