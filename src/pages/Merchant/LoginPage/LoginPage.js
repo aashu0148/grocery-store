@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 
@@ -20,8 +20,9 @@ function LoginPage() {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  // const isMrchantLoggedIn = useSelector((state) => state.merchantAuth);
-  // const merchant = useSelector((state) => state.currMerchant);
+  const auth = useSelector((state) => state.auth);
+  console.log(auth);
+
   const dispatch = useDispatch();
 
   const validateForm = () => {
@@ -56,7 +57,8 @@ function LoginPage() {
     dispatch({
       type: "IS_MERCHANT_LOGGEDIN",
       merchantAuth: true,
-      currMerchant: merchantObj,
+      merchantName: merchantObj.name,
+      merchantMobile: merchantObj.mobile,
     });
   };
 
@@ -84,7 +86,7 @@ function LoginPage() {
 
   return (
     <>
-      <Navbar />
+      <Navbar auth={auth} />
       <div className={styles.login}>
         <div className={styles.loginLeft}>
           <h1>Buy Best!</h1>

@@ -1,7 +1,7 @@
 const initialState = {
+  auth: false,
   name: "",
-  merchantAuth: false,
-  currMerchant: {},
+  mobile: "",
 };
 
 const merchantReducer = (state = initialState, action) => {
@@ -9,8 +9,9 @@ const merchantReducer = (state = initialState, action) => {
     case "IS_MERCHANT_LOGGED": {
       return {
         ...state,
-        merchantAuth: action.merchantAuth,
-        currMerchant: action.currMerchant,
+        auth: action.merchantAuth,
+        name: action.merchantName,
+        mobile: action.merchantMobile,
       };
     }
     default:

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
+import Navbar from "components/Navbar/Navbar";
 import Button from "components/Button/Button";
 import InputControl from "components/InputControl/InputControl";
 import VerifyOtp from "components/verifyOtp/VerifyOtp";
@@ -39,7 +40,8 @@ function Register() {
     dispatch({
       type: "IS_MERCHANT_LOGGEDIN",
       merchantAuth: true,
-      currMerchant: merchantObj,
+      merchantName: merchantObj.name,
+      merchantMobile: merchantObj.mobile,
     });
   };
 
@@ -144,106 +146,110 @@ function Register() {
   };
 
   return (
-    <div className={styles.register}>
-      <div className={styles.registerLeftPanel}>
-        <h1>Buy Best!</h1>
-        <span>100+ products available at best price</span>
-        <img
-          className={styles.registerLeftPanelImage}
-          src={authLeftPanelImage}
-          alt="Left panel img"
-        ></img>
-      </div>
-      {!otpPage ? (
-        <div className={styles.registerRightPanel}>
-          <form onSubmit={handleSubmit}>
-            <div className={styles["registerRightPanel-mainBody"]}>
-              <h2>Create an account</h2>
-              <div className={styles["registerRightPanel-inputContainer"]}>
-                <InputControl
-                  placeholder="Enter first name"
-                  label="First name"
-                  onChange={(event) =>
-                    setValues({ ...values, fname: event.target.value })
-                  }
-                  value={values.fname}
-                  error={errors?.fname}
-                />
-                <InputControl
-                  label="Last name"
-                  placeholder="Enter last name"
-                  onChange={(event) =>
-                    setValues({ ...values, lname: event.target.value })
-                  }
-                  value={values.lname}
-                  error={errors?.lname}
-                />
-              </div>
-              <InputControl
-                placeholder="Enter mobile number"
-                label="Mobile number"
-                onChange={(event) =>
-                  setValues({ ...values, mobile: event.target.value })
-                }
-                value={values.mobile}
-                error={errors?.mobile}
-                maxLength={10}
-              />
-              <InputControl
-                label="Email"
-                placeholder="Enter email"
-                onChange={(event) =>
-                  setValues({ ...values, email: event.target.value })
-                }
-                value={values.email}
-                error={errors?.email}
-              />
-              <div className={styles["registerRightPanel-inputContainer"]}>
-                <InputControl
-                  password="true"
-                  placeholder="Enter password"
-                  label="Password"
-                  onChange={(event) =>
-                    setValues({ ...values, password: event.target.value })
-                  }
-                  value={values.password}
-                  error={errors?.password}
-                />
+    <>
+      <Navbar />
 
+      <div className={styles.register}>
+        <div className={styles.registerLeftPanel}>
+          <h1>Buy Best!</h1>
+          <span>100+ products available at best price</span>
+          <img
+            className={styles.registerLeftPanelImage}
+            src={authLeftPanelImage}
+            alt="Left panel img"
+          ></img>
+        </div>
+        {!otpPage ? (
+          <div className={styles.registerRightPanel}>
+            <form onSubmit={handleSubmit}>
+              <div className={styles["registerRightPanel-mainBody"]}>
+                <h2>Create an account</h2>
+                <div className={styles["registerRightPanel-inputContainer"]}>
+                  <InputControl
+                    placeholder="Enter first name"
+                    label="First name"
+                    onChange={(event) =>
+                      setValues({ ...values, fname: event.target.value })
+                    }
+                    value={values.fname}
+                    error={errors?.fname}
+                  />
+                  <InputControl
+                    label="Last name"
+                    placeholder="Enter last name"
+                    onChange={(event) =>
+                      setValues({ ...values, lname: event.target.value })
+                    }
+                    value={values.lname}
+                    error={errors?.lname}
+                  />
+                </div>
                 <InputControl
-                  placeholder={`Confirm Password`}
-                  label={`Confirm Password`}
+                  placeholder="Enter mobile number"
+                  label="Mobile number"
                   onChange={(event) =>
-                    setValues({ ...values, confirmpass: event.target.value })
+                    setValues({ ...values, mobile: event.target.value })
                   }
-                  value={values.confirmpass}
-                  error={errors?.confirmpass}
-                  password="true"
+                  value={values.mobile}
+                  error={errors?.mobile}
+                  maxLength={10}
                 />
+                <InputControl
+                  label="Email"
+                  placeholder="Enter email"
+                  onChange={(event) =>
+                    setValues({ ...values, email: event.target.value })
+                  }
+                  value={values.email}
+                  error={errors?.email}
+                />
+                <div className={styles["registerRightPanel-inputContainer"]}>
+                  <InputControl
+                    password="true"
+                    placeholder="Enter password"
+                    label="Password"
+                    onChange={(event) =>
+                      setValues({ ...values, password: event.target.value })
+                    }
+                    value={values.password}
+                    error={errors?.password}
+                  />
+
+                  <InputControl
+                    placeholder={`Confirm Password`}
+                    label={`Confirm Password`}
+                    onChange={(event) =>
+                      setValues({ ...values, confirmpass: event.target.value })
+                    }
+                    value={values.confirmpass}
+                    error={errors?.confirmpass}
+                    password="true"
+                  />
+                </div>
+                <p>
+                  Already have an account.&nbsp;
+                  <span
+                    className={styles["registerRightPanel_helper-text"]}
+                    onClick={changeURl}
+                  >
+                    Login now
+                  </span>
+                </p>
+                <Button type={`submit`}>Register</Button>
               </div>
-              <p>
-                Already have an account.&nbsp;
-                <span
-                  className={styles["registerRightPanel_helper-text"]}
-                  onClick={changeURl}
-                >
-                  Login now
-                </span>
-              </p>
-              <Button type={`submit`}>Register</Button>
-            </div>
-            <div id="recaptcha"></div>
-          </form>
-        </div>
-      ) : (
-        <div className={styles.registerRightPanel_otp}>
-          <VerifyOtp
-            values={values.mobile}
-            isVerified={handleOtpVerification}
-          />
-        </div>
-      )}
-    </div>
+              <div id="recaptcha"></div>
+            </form>
+          </div>
+        ) : (
+          <div className={styles.registerRightPanel_otp}>
+            <VerifyOtp
+              values={values.mobile}
+              isVerified={handleOtpVerification}
+            />
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
