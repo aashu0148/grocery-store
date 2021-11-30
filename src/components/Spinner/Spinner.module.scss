@@ -1,0 +1,83 @@
+@import "styles/_variables";
+
+.loader {
+    width: 34px;
+    position: relative;
+    height: 34px;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: rotate1 .9s linear 0s infinite;
+    margin: auto;
+
+    .container {
+        position: relative;
+        width: 80%;
+        height: 80%;
+
+    }
+
+    .line {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        height: 50%;
+        width: 50%;
+        border-radius: 100% 0 0 0;
+        border-top: 3px solid $bg-primary;
+        border-left: 3px solid $bg-primary;
+
+    }
+
+    .line2 {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        height: 50%;
+        width: 50%;
+        border-radius: 0 100% 0 0;
+        border-top: 3px solid $bg-primary;
+    }
+
+    @keyframes rotate1 {
+        0% {
+            transform: rotate(0deg);
+            filter: hue-rotate(0deg);
+        }
+
+        50% {
+            filter: hue-rotate(30deg);
+        }
+
+        100% {
+            filter: hue-rotate(0deg);
+            transform: rotate(-360deg);
+        }
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(-360deg);
+        }
+    }
+}
+
+.small {
+    height: 17px;
+    width: 17px;
+
+    .line {
+        border-top: 2px solid $bg-primary;
+        border-left: 2px solid $bg-primary;
+
+    }
+
+    .line2 {
+        border-top: 2px solid $bg-primary;
+    }
+}
