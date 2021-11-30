@@ -1,13 +1,14 @@
-import "styles/main.scss";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+
 import MerchantRegister from "pages/Merchant/Register/Register";
 import MerchantLoginPage from "pages/Merchant/LoginPage/LoginPage";
-import CustomerLoginPage from "pages/Customer/LoginPage/LoginPage";
-import CustomerRegister from "pages/Customer/Register/Register";
 import PageNotFound from "pages/common/PageNotFound/PageNotFound";
+
 import { checkAuth } from "api/user/authenticate";
+
+import "styles/main.scss";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -24,7 +25,7 @@ function App() {
 
   useEffect(() => {
     if (!isDataloaded) authenticateUser();
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -46,8 +47,6 @@ function App() {
             </Routes>
           ) : (
             <Routes>
-              <Route path="/register" element={<CustomerRegister />} />
-              <Route path="/login" element={<CustomerLoginPage />} />
               <Route path="/merchant/register" element={<MerchantRegister />} />
               <Route path="/merchant/login" element={<MerchantLoginPage />} />
               <Route path="/*" element={<PageNotFound />} />

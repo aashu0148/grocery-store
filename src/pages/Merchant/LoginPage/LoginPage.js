@@ -7,6 +7,8 @@ import Navbar from "components/Navbar/Navbar";
 import { validateEmail } from "utils/util";
 import { login } from "api/user/login";
 
+import authLeftPanelImage from "assets/images/leftPanelImage.png";
+
 import styles from "./LoginPage.module.scss";
 import toast from "react-hot-toast";
 
@@ -63,8 +65,7 @@ function LoginPage() {
           <span>100+ products available at best price</span>
           <img
             className={styles.loginLeftImage}
-            // src={authLeftPanelImage}
-            src="https://images.unsplash.com/photo-1550989460-0adf9ea622e2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8Z3JvY2VyeSUyMHN0b3JlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=400&q=60"
+            src={authLeftPanelImage}
             alt="Left panel img"
           ></img>
         </div>
