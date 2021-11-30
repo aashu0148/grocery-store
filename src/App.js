@@ -54,6 +54,7 @@ function App() {
           )}
         </Router>
       )}
+      
       <div id="recaptcha" />
     </div>
   );
