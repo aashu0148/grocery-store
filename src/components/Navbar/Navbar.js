@@ -11,7 +11,6 @@ import logo from "assets/images/logo.png";
 import styles from "./Navbar.module.scss";
 
 function Navbar(props) {
-  console.log(props)
   return (
     <div className={styles.navbar}>
       <div className={styles.logo}>

@@ -10,8 +10,6 @@ import Navbar from "components/Navbar/Navbar";
 import { validateEmail } from "utils/util";
 import { login } from "api/user/login";
 
-import authLeftPanelImage from "assets/images/leftPanelImage.png";
-
 import styles from "./LoginPage.module.scss";
 
 function LoginPage() {
@@ -91,11 +89,6 @@ function LoginPage() {
         <div className={styles.loginLeft}>
           <h1>Buy Best!</h1>
           <span>100+ products available at best price</span>
-          <img
-            className={styles.loginLeftImage}
-            src={authLeftPanelImage}
-            alt="Left panel img"
-          ></img>
         </div>
         <div className={styles.loginRightPanel}>
           <form className={styles.loginForm} onSubmit={handleFormSubmit}>

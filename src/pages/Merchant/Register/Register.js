@@ -11,8 +11,6 @@ import VerifyOtp from "components/verifyOtp/VerifyOtp";
 import { validateEmail, validateMobile, validatePassword } from "utils/util";
 import { checkRegisterDetails, register } from "api/user/register";
 
-import authLeftPanelImage from "assets/images/leftPanelImage.png";
-
 import styles from "./Register.module.scss";
 
 function Register() {
@@ -153,11 +151,6 @@ function Register() {
         <div className={styles.registerLeftPanel}>
           <h1>Buy Best!</h1>
           <span>100+ products available at best price</span>
-          <img
-            className={styles.registerLeftPanelImage}
-            src={authLeftPanelImage}
-            alt="Left panel img"
-          ></img>
         </div>
         {!otpPage ? (
           <div className={styles.registerRightPanel}>
