@@ -1,10 +1,21 @@
 const initialState = {
+  auth: false,
   name: "",
+  mobile: "",
 };
 
 const merchantReducer = (state = initialState, action) => {
   switch (action.type) {
-    default : return state
+    case "IS_MERCHANT_LOGGED": {
+      return {
+        ...state,
+        auth: action.merchantAuth,
+        name: action.merchantName,
+        mobile: action.merchantMobile,
+      };
+    }
+    default:
+      return state;
   }
 };
 

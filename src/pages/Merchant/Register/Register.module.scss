@@ -8,6 +8,10 @@
 }
 .registerLeftPanel {
   display: flex;
+  background-image: url(../../../assets/images/leftPanelImage.png);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   background-color: $bg-greenish-white-2;
   flex-direction: column;
   padding: 60px;
@@ -21,13 +25,6 @@
   padding: 4rem 1.5rem 0rem 1.5rem;
   display: flex;
   align-items: center;
-}
-
-.registerLeftPanelImage {
-  margin-top: 40px;
-  margin-bottom: 40px;
-  height: 50%;
-  width: 100%;
 }
 
 .registerRightPanel-mainBody {

@@ -1,0 +1,40 @@
+@import "styles/variables.scss";
+
+.navbar {
+  padding: 0rem 1rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0 10px $bg-light-gray;
+  justify-content: space-between;
+}
+.content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.logo {
+  img {
+    object-fit: contain;
+    height: 80px;
+    width: 130px;
+  }
+}
+.categories {
+  span {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+}
+.user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: $bg-greenish-white-2;
+  border-radius: 5px;
+  padding: 0.4rem;
+  img {
+    height: 30px;
+    width: 30px;
+  }
+}
