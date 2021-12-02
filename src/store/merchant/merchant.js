@@ -1,6 +1,7 @@
 const initialState = {
   auth: false,
-  name: "",
+  firstName: "",
+  lastName: "",
   mobile: "",
 };
 
@@ -10,7 +11,8 @@ const merchantReducer = (state = initialState, action) => {
       return {
         ...state,
         auth: action.merchantAuth,
-        name: action.merchantName,
+        firstName: action.merchantFirstName,
+        lastName: action.merchantLastName,
         mobile: action.merchantMobile,
       };
     }

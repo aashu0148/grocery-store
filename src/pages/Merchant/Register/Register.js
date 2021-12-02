@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -16,6 +16,7 @@ import styles from "./Register.module.scss";
 function Register() {
   const [errors, setErrors] = useState({});
   const [otpPage, setOtpPage] = useState(false);
+  const [fnameHelper, setFnameHelper] = useState("");
   const [values, setValues] = useState({
     fname: "",
     lname: "",
@@ -25,6 +26,8 @@ function Register() {
     confirmpass: "",
   });
   const [isOtpVerified, setIsOtpVerified] = useState(false);
+
+  const auth = useSelector((state) => state.merchantReducer.auth);
 
   const dispatch = useDispatch();
 
@@ -36,11 +39,13 @@ function Register() {
 
   const handleMerchantAuth = (merchantObj) => {
     dispatch({
-      type: "IS_MERCHANT_LOGGEDIN",
+      type: "IS_MERCHANT_LOGGED",
       merchantAuth: true,
-      merchantName: merchantObj.name,
+      merchantFirstName: merchantObj.firstName,
+      merchantLastName: merchantObj.lastName,
       merchantMobile: merchantObj.mobile,
     });
+    setFnameHelper(merchantObj.firstName);
   };
 
   const validateForm = () => {
@@ -127,7 +132,6 @@ function Register() {
       if (!res) return;
       else {
         if (res?.status) {
-          console.log(res);
           toast.success("Registered & Logged in successfully");
           localStorage.setItem("token", JSON.stringify(res.data.authToken));
           handleMerchantAuth(res.data);
@@ -145,7 +149,7 @@ function Register() {
 
   return (
     <>
-      <Navbar />
+      <Navbar auth={auth} fname={fnameHelper} />
 
       <div className={styles.register}>
         <div className={styles.registerLeftPanel}>

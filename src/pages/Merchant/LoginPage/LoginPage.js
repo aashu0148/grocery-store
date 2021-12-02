@@ -17,9 +17,9 @@ function LoginPage() {
   const passRef = useRef();
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const [fnameHelper, setFnameHelper] = useState("");
 
-  const auth = useSelector((state) => state.auth);
-  console.log(auth);
+  const auth = useSelector((state) => state.merchantReducer.auth);
 
   const dispatch = useDispatch();
 
@@ -53,11 +53,13 @@ function LoginPage() {
 
   const handleMerchantAuth = (merchantObj) => {
     dispatch({
-      type: "IS_MERCHANT_LOGGEDIN",
+      type: "IS_MERCHANT_LOGGED",
       merchantAuth: true,
-      merchantName: merchantObj.name,
+      merchantFirstName: merchantObj.firstName,
+      merchantLastName: merchantObj.lastName,
       merchantMobile: merchantObj.mobile,
     });
+    setFnameHelper(merchantObj.firstName);
   };
 
   const handleFormSubmit = (event) => {
@@ -73,7 +75,6 @@ function LoginPage() {
       if (!res) return;
       else {
         if (res?.status) {
-          console.log(res);
           toast.success("Logged in successfully");
           localStorage.setItem("token", JSON.stringify(res.data.authToken));
           handleMerchantAuth(res.data);
@@ -84,7 +85,7 @@ function LoginPage() {
 
   return (
     <>
-      <Navbar auth={auth} />
+      <Navbar auth={auth} fname={fnameHelper} />
       <div className={styles.login}>
         <div className={styles.loginLeft}>
           <h1>Buy Best!</h1>
