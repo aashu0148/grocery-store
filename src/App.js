@@ -9,6 +9,7 @@ import PageNotFound from "pages/common/PageNotFound/PageNotFound";
 import { checkAuth } from "api/user/authenticate";
 
 import "styles/main.scss";
+import UserProductCard from "components/UserProductCard/UserProductCard";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -37,8 +38,9 @@ function App() {
           style: { marginBottom: "30px", marginLeft: "30px" },
         }}
       />
-      {!isDataloaded ? (
-        <p>Spinner will come here</p>
+      {isDataloaded ? (
+        // <p>Spinner will come here</p>
+        <UserProductCard />
       ) : (
         <Router>
           {isAuthenticated ? (

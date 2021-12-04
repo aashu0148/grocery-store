@@ -25,7 +25,7 @@ function Navbar(props) {
           </span>
         </div>
         <Searchbar />
-        <ShoppingCart />
+        <ShoppingCart className={styles.shoppingCart} />
         <div className={styles.authSection}>
           {!props.auth ? (
             <>

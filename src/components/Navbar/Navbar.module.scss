@@ -6,7 +6,7 @@
   height: 70px;
   background-color: #fff;
   align-items: center;
-  box-shadow: 0 0 10px $bg-light-gray;
+  box-shadow: 0 0 10px 0 $bg-greenish-white;
   justify-content: space-between;
 }
 .content {
@@ -35,8 +35,12 @@
   background: $bg-greenish-white-2;
   border-radius: 5px;
   padding: 0.4rem;
+  cursor: pointer;
   img {
     height: 30px;
     width: 30px;
   }
+}
+.shoppingCart {
+  cursor: pointer;
 }
