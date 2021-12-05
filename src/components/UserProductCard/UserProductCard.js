@@ -1,9 +1,22 @@
-import React from "react";
-import { ShoppingCart } from "react-feather";
+import React,{useState} from "react";
+import { ShoppingCart,MinusCircle,PlusCircle } from "react-feather";
 
 import styles from "./UserProductCard.module.scss";
 
 function UserProductCard() {
+
+    const [quantity,setQuatity] = useState(0);
+
+    const increaseQuantity = () => {
+        setQuatity(quantity + 1);
+
+    }
+    const decreaseQuantity = () => {
+        if(quantity === 0) return;
+        setQuatity(quantity - 1);
+    }
+
+
   return <div className={styles.card}>
       <div className={styles.image}>
           <div className={styles.discount}>
@@ -21,8 +34,20 @@ function UserProductCard() {
       <p className={styles.price}>
       &#x20b9;950
       </p>
-          <ShoppingCart />
+      {
+          quantity === 0 ? 
+           <ShoppingCart className={styles.shoppingCart} onClick={increaseQuantity} /> :
+           (<div className={styles.qunatityControl}>
+            <MinusCircle className={styles.qunatityControlButton} onClick={decreaseQuantity} />
+            <span >{quantity}</span>
+            <PlusCircle className={styles.qunatityControlButton} onClick={increaseQuantity} />
+        </div>)
+      }
+          
       </div>
+      <del className={styles.mrp}>
+      &#x20b9;950
+      </del>
   </div>;
 }
 

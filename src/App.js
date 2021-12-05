@@ -39,8 +39,7 @@ function App() {
         }}
       />
       {isDataloaded ? (
-        // <p>Spinner will come here</p>
-        <UserProductCard />
+        <p>Spinner will come here</p>
       ) : (
         <Router>
           {isAuthenticated ? (
