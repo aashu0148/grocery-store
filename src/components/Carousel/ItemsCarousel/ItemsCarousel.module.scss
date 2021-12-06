@@ -1,0 +1,117 @@
+@import "styles/_variables";
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .head {
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .left {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            p {
+                line-height: 21px;
+            }
+
+            .title {
+                font-weight: bold;
+                font-size: 1.125rem;
+                color: $text-dark
+            }
+
+            .desc {
+                font-size: 1rem;
+                color: $text-light-gray;
+            }
+        }
+
+        .right {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+
+            .link {
+                font-weight: bold;
+                font-size: 1rem;
+                color: $text-primary;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+
+                svg {
+                    height: 14px;
+                }
+            }
+
+            .buttons {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+
+                button {
+                    padding: 5px;
+                    background-color: transparent;
+                    outline: none;
+                    border: 1px solid $bg-primary;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: 100ms;
+
+                    svg {
+                        height: 20px;
+                        stroke: $bg-primary;
+                        display: flex;
+                        align-items: center;
+                    }
+
+                    &:active {
+                        transform: translateY(1px);
+                    }
+
+
+                    &:disabled {
+                        border: 1px solid $bg-medium-gray;
+
+                        svg {
+                            stroke: $bg-medium-gray;
+                        }
+                    }
+
+                    &:disabled:active {
+                        transform: translateY(0);
+                    }
+                }
+            }
+        }
+    }
+
+    .body {
+        width: 100%;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .items {
+            display: flex;
+            width: fit-content;
+            gap: 10px;
+
+            p {
+                height: 200px;
+                width: 150px;
+                border: 2px solid chocolate;
+            }
+        }
+
+    }
+}
