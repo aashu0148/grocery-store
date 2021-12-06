@@ -60,7 +60,7 @@ function ItemsCarousel() {
           <p className={styles.desc}>butter, cheese, milk, curd and more</p>
         </div>
         <div className={styles.right}>
-          <a className={styles.link}>see more {">"}</a>
+          <p className={styles.link}>see more {">"}</p>
 
           <div className={styles.buttons}>
             <button
