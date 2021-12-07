@@ -12,6 +12,7 @@ import { validateEmail, validateMobile, validatePassword } from "utils/util";
 import { checkRegisterDetails, register } from "api/user/register";
 
 import styles from "./Register.module.scss";
+import { IS_MERCHANT_LOGGED } from "store/ActionTypes";
 
 function Register() {
   const [errors, setErrors] = useState({});
@@ -39,7 +40,7 @@ function Register() {
 
   const handleMerchantAuth = (merchantObj) => {
     dispatch({
-      type: "IS_MERCHANT_LOGGED",
+      type: IS_MERCHANT_LOGGED,
       merchantAuth: true,
       merchantFirstName: merchantObj.firstName,
       merchantLastName: merchantObj.lastName,

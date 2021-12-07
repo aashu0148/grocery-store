@@ -1,0 +1,1 @@
+export const IS_MERCHANT_LOGGED = "IS_MERCHANT_LOGGED";

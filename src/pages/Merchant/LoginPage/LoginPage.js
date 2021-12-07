@@ -11,6 +11,7 @@ import { validateEmail } from "utils/util";
 import { login } from "api/user/login";
 
 import styles from "./LoginPage.module.scss";
+import { IS_MERCHANT_LOGGED } from "store/ActionTypes";
 
 function LoginPage() {
   const emailRef = useRef();
@@ -53,7 +54,7 @@ function LoginPage() {
 
   const handleMerchantAuth = (merchantObj) => {
     dispatch({
-      type: "IS_MERCHANT_LOGGED",
+      type: IS_MERCHANT_LOGGED,
       merchantAuth: true,
       merchantFirstName: merchantObj.firstName,
       merchantLastName: merchantObj.lastName,
