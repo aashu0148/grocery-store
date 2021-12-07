@@ -36,7 +36,7 @@ function Navbar(props) {
           ) : (
             <>
               <div className={styles.user}>
-                <img src={avatar} alt="" />
+                <img src={avatar} alt="avatar" />
                 <span>{props.fname}</span>
                 <ChevronDown />
               </div>

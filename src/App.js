@@ -37,7 +37,7 @@ function App() {
           style: { marginBottom: "30px", marginLeft: "30px" },
         }}
       />
-      {isDataloaded ? (
+      {!isDataloaded ? (
         <p>Spinner will come here</p>
       ) : (
         <Router>
