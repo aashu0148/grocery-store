@@ -10,9 +10,9 @@ import VerifyOtp from "components/verifyOtp/VerifyOtp";
 
 import { validateEmail, validateMobile, validatePassword } from "utils/util";
 import { checkRegisterDetails, register } from "api/user/register";
+import { IS_MERCHANT_LOGGED } from "store/actionTypes";
 
 import styles from "./Register.module.scss";
-import { IS_MERCHANT_LOGGED } from "store/ActionTypes";
 
 function Register() {
   const [errors, setErrors] = useState({});

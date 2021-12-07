@@ -1,4 +1,4 @@
-import { IS_MERCHANT_LOGGED } from "store/ActionTypes";
+import { IS_MERCHANT_LOGGED } from "store/actionTypes";
 
 const initialState = {
   auth: false,

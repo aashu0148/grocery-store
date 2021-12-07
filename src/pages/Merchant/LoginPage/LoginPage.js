@@ -9,9 +9,9 @@ import Navbar from "components/Navbar/Navbar";
 
 import { validateEmail } from "utils/util";
 import { login } from "api/user/login";
+import { IS_MERCHANT_LOGGED } from "store/actionTypes";
 
 import styles from "./LoginPage.module.scss";
-import { IS_MERCHANT_LOGGED } from "store/ActionTypes";
 
 function LoginPage() {
   const emailRef = useRef();
