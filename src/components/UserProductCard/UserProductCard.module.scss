@@ -1,0 +1,55 @@
+@import "styles/_variables.scss";
+
+.card {
+  width: fit-content;
+  padding: 1rem;
+  border: 1px solid $bg-greenish-white;
+  border-radius: 15px;
+  cursor: pointer;
+}
+.discount {
+  background-color: $bg-red;
+  width: fit-content;
+  padding: 0rem 0.5rem;
+  border-radius: 3px;
+  margin-bottom: 1rem;
+}
+.image img {
+  height: 150px;
+  width: 200px;
+  object-fit: contain;
+  transition: all 0.7s;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+.productName {
+  font-size: 20px;
+  font-weight: 600;
+  color: $text-dark-gray;
+}
+.netWeight {
+  color: $text-light-gray;
+}
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mrp {
+  color: $text-light-gray;
+}
+.shoppingCart {
+  color: $bg-red;
+}
+.qunatityControl {
+  display: flex;
+  align-items: center;
+  span {
+    width: 2rem;
+    text-align: center;
+  }
+}
+.qunatityControlButton {
+  color: $bg-red;
+}

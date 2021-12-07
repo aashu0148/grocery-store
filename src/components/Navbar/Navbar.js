@@ -7,6 +7,7 @@ import { ShoppingCart, ChevronDown } from "react-feather";
 import Searchbar from "components/SearchBar/Searchbar";
 
 import logo from "assets/images/logo.png";
+import avatar from "assets/images/man.png";
 
 import styles from "./Navbar.module.scss";
 
@@ -24,7 +25,7 @@ function Navbar(props) {
           </span>
         </div>
         <Searchbar />
-        <ShoppingCart />
+        <ShoppingCart className={styles.shoppingCart} />
         <div className={styles.authSection}>
           {!props.auth ? (
             <>
@@ -35,8 +36,8 @@ function Navbar(props) {
           ) : (
             <>
               <div className={styles.user}>
-                <img src="https://cdn-icons-png.flaticon.com/128/145/145843.png" alt="" />
-                <span>Nitish</span>
+                <img src={avatar} alt="avatar" />
+                <span>{props.fname}</span>
                 <ChevronDown />
               </div>
             </>
