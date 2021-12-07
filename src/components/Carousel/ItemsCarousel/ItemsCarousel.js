@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { ChevronLeft, ChevronRight } from "react-feather";
+import { debounce } from "utils/util";
 
 import styles from "./ItemsCarousel.module.scss";
 
@@ -21,22 +22,24 @@ function ItemsCarousel() {
   };
 
   const handleScroll = () => {
-    const carousel = carouselRef?.current;
-    if (!carousel) return;
+    debounce(() => {
+      const carousel = carouselRef?.current;
+      if (!carousel) return;
 
-    if (carousel.clientWidth > itemsRef?.current?.clientWidth) {
-      setLeftButtonDisabled(true);
-      setRightButtonDisabled(true);
-    } else {
-      if (carousel.scrollLeft === 0) setLeftButtonDisabled(true);
-      else setLeftButtonDisabled(false);
-      if (
-        carousel.scrollLeft + carousel.clientWidth ===
-        itemsRef?.current?.clientWidth
-      )
+      if (carousel.clientWidth > itemsRef?.current?.clientWidth) {
+        setLeftButtonDisabled(true);
         setRightButtonDisabled(true);
-      else setRightButtonDisabled(false);
-    }
+      } else {
+        if (carousel.scrollLeft === 0) setLeftButtonDisabled(true);
+        else setLeftButtonDisabled(false);
+        if (
+          carousel.scrollLeft + carousel.clientWidth >=
+          itemsRef?.current?.clientWidth - 5
+        )
+          setRightButtonDisabled(true);
+        else setRightButtonDisabled(false);
+      }
+    });
   };
 
   useEffect(() => {
