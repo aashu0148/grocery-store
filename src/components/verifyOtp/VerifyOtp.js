@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
 import InputControl from "components/InputControl/InputControl";
 import Button from "components/Button/Button";
@@ -8,26 +9,25 @@ import { sendOtp, verifyOtp } from "utils/firebase";
 
 import styles from "./VerifyOtp.module.scss";
 
+let timerInterval;
 function VerifyOtp(props) {
-  let timer;
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [otpObj, setOtpObj] = useState({});
-  const [otpTimer, setOtpTimer] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
-  props.isVerified(isVerified);
+  const [otpTimer, setOtpTimer] = useState(20);
+  const [showTimer, setShowTimer] = useState(false);
 
-  const handleSendOtp = async (mobile) => {
-    clearTimeout(timer);
-    const otpResult = await sendOtp(mobile);
-    timer = setTimeout(() => {
-      setOtpTimer(true);
-    }, 6000);
+  const handleSendOtp = async () => {
+    setShowTimer(false);
+    const mobileNumber = props.mobile;
+    const otpResult = await sendOtp(mobileNumber);
+    setShowTimer(true);
+
     if (!otpResult) return;
 
+    runOtpTimer();
     setOtpObj(otpResult);
   };
-  handleSendOtp();
 
   const handleOtpVerification = async (event) => {
     event.preventDefault();
@@ -43,11 +43,32 @@ function VerifyOtp(props) {
         const user = await verifyOtp(otpObj, otp);
         if (user === "") return false;
         else {
-          setIsVerified(true);
+          props.isVerified(true);
           return true;
         }
       }
   };
+
+  const runOtpTimer = () => {
+    clearInterval(timerInterval);
+    setOtpTimer(20);
+    timerInterval = setInterval(
+      () =>
+        setOtpTimer((prev) => {
+          if (prev === 1) {
+            clearInterval(timerInterval);
+          }
+
+          return prev - 1;
+        }),
+      1000
+    );
+  };
+
+  useEffect(() => {
+    handleSendOtp();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <form onSubmit={handleOtpVerification} className={styles.otpForm}>
@@ -61,9 +82,14 @@ function VerifyOtp(props) {
           value={otp}
           error={error}
         />
-        {otpTimer ? (
-          <p onClick={handleSendOtp}>
-            <span className={styles.resendOtp}>Resend OTP</span>
+        {showTimer ? (
+          <p
+            onClick={() => (otpTimer === 0 ? handleSendOtp() : "")}
+            className={`${styles.resend} ${
+              otpTimer === 0 ? styles.activeResend : ""
+            }`}
+          >
+            Resend OTP <span> {otpTimer ? otpTimer : ""} </span>
           </p>
         ) : (
           ""
@@ -74,5 +100,10 @@ function VerifyOtp(props) {
     </form>
   );
 }
+
+verifyOtp.propTypes = {
+  isVerified: PropTypes.func,
+  mobile: PropTypes.string,
+};
 
 export default VerifyOtp;
