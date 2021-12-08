@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
+import Navbar from "components/Navbar/Navbar";
 import MerchantRegister from "pages/Merchant/Register/Register";
 import MerchantLoginPage from "pages/Merchant/LoginPage/LoginPage";
 import PageNotFound from "pages/common/PageNotFound/PageNotFound";
@@ -42,17 +43,23 @@ function App() {
         <p>Spinner will come here</p>
       ) : (
         <Router>
-          {isAuthenticated ? (
-            <Routes>
-              <Route path="/*" element={<PageNotFound />} />
-            </Routes>
-          ) : (
-            <Routes>
-              <Route path="/merchant/register" element={<MerchantRegister />} />
-              <Route path="/merchant/login" element={<MerchantLoginPage />} />
-              <Route path="/*" element={<CategorySection />} />
-            </Routes>
-          )}
+          <React.Fragment>
+            <Navbar />
+            {isAuthenticated ? (
+              <Routes>
+                <Route path="/*" element={<PageNotFound />} />
+              </Routes>
+            ) : (
+              <Routes>
+                <Route
+                  path="/merchant/register"
+                  element={<MerchantRegister />}
+                />
+                <Route path="/merchant/login" element={<MerchantLoginPage />} />
+                <Route path="/*" element={<PageNotFound />} />
+              </Routes>
+            )}
+          </React.Fragment>
         </Router>
       )}
 

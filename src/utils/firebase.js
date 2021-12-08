@@ -74,6 +74,7 @@ export const imageUpload = (
 };
 
 async function fireBaseCaptchVerification() {
+  window.recaptchaVerifier = "";
   try {
     window.recaptchaVerifier = await new RecaptchaVerifier(
       "recaptcha",
@@ -81,6 +82,7 @@ async function fireBaseCaptchVerification() {
       auth
     );
   } catch (error) {
+    window.recaptchaVerifier = undefined;
     errorToastLogger(
       error,
       "Re-captcha verification failed. Refresh the page and try again"
@@ -99,6 +101,7 @@ async function signInWithPhone(mobile) {
     toast.success("Otp sent successfully");
     return confirmationResult;
   } catch (error) {
+    console.log(error);
     errorToastLogger(error, error.message);
     return;
   }
@@ -107,7 +110,6 @@ async function signInWithPhone(mobile) {
 export const sendOtp = async (mobile) => {
   if (!mobile) return false;
   if (!validateMobile(mobile)) return false;
-  console.log(mobile);
 
   await fireBaseCaptchVerification();
 

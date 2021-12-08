@@ -12,7 +12,9 @@ const InputControl = forwardRef((props, ref) => {
       {props.label && <label className={styles.label}>{props.label}</label>}
       <div className={styles.inputContainer}>
         <input
-          className="basic-input"
+          className={`basic-input ${
+            props.password ? styles.passwordInput : ""
+          }`}
           type={visible ? "text" : "password"}
           {...props}
           ref={ref}

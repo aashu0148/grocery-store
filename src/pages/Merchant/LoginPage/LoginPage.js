@@ -1,11 +1,12 @@
 import React, { useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 
 import Button from "components/Button/Button";
+import Spinner from "components/Spinner/Spinner";
+import LoginInfo from "components/LoginInfo/LoginInfo";
 import InputControl from "components/InputControl/InputControl";
-import Navbar from "components/Navbar/Navbar";
 
 import { validateEmail } from "utils/util";
 import { login } from "api/user/login";
@@ -17,10 +18,8 @@ function LoginPage() {
   const emailRef = useRef();
   const passRef = useRef();
   const [errors, setErrors] = useState({});
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   const navigate = useNavigate();
-  const [fnameHelper, setFnameHelper] = useState("");
-
-  const auth = useSelector((state) => state.merchantReducer.auth);
 
   const dispatch = useDispatch();
 
@@ -60,7 +59,6 @@ function LoginPage() {
       merchantLastName: merchantObj.lastName,
       merchantMobile: merchantObj.mobile,
     });
-    setFnameHelper(merchantObj.firstName);
   };
 
   const handleFormSubmit = (event) => {
@@ -72,7 +70,10 @@ function LoginPage() {
       password: passRef.current.value,
       email: emailRef.current.value,
     };
+
+    setSubmitButtonDisabled(true);
     login(loginDetails).then(async (res) => {
+      setSubmitButtonDisabled(false);
       if (!res) return;
       else {
         if (res?.status) {
@@ -85,50 +86,48 @@ function LoginPage() {
   };
 
   return (
-    <>
-      <Navbar auth={auth} fname={fnameHelper} />
-      <div className={styles.login}>
-        <div className={styles.loginLeft}>
-          <h1>Buy Best!</h1>
-          <span>100+ products available at best price</span>
-        </div>
-        <div className={styles.loginRightPanel}>
-          <form className={styles.loginForm} onSubmit={handleFormSubmit}>
-            <div className={styles["loginRightPanel-mainBody"]}>
-              <h2>Login</h2>
-              <InputControl
-                label="Email"
-                placeholder="Enter Email"
-                ref={emailRef}
-                error={errors?.email}
-              />
-              <InputControl
-                label="Password"
-                placeholder="Enter password"
-                ref={passRef}
-                error={errors?.password}
-                password="true"
-              />
-              <p>
-                <span className={styles["loginRightPanel_helper-text"]}>
-                  Forgot password?
-                </span>
-              </p>
-              <p>
-                Not registered.
-                <span
-                  onClick={handleNavigate}
-                  className={styles["loginRightPanel_helper-text"]}
-                >
-                  &nbsp;Register now
-                </span>
-              </p>
-              <Button type={`submit`}>Login</Button>
-            </div>
-          </form>
-        </div>
+    <div className={styles.login}>
+      <div className={styles.loginLeft}>
+        <LoginInfo />
       </div>
-    </>
+      <div className={styles.loginRightPanel}>
+        <form className={styles.loginForm} onSubmit={handleFormSubmit}>
+          <div className={styles["loginRightPanel-mainBody"]}>
+            <h2>Login</h2>
+            <InputControl
+              label="Email"
+              placeholder="Enter Email"
+              ref={emailRef}
+              error={errors?.email}
+            />
+            <InputControl
+              label="Password"
+              placeholder="Enter password"
+              ref={passRef}
+              error={errors?.password}
+              password="true"
+            />
+            <p>
+              <span className={styles["loginRightPanel_helper-text"]}>
+                Forgot password?
+              </span>
+            </p>
+            <p>
+              Not registered ?
+              <span
+                onClick={handleNavigate}
+                className={styles["loginRightPanel_helper-text"]}
+              >
+                &nbsp;Register now
+              </span>
+            </p>
+            <Button type={`submit`} disabled={submitButtonDisabled}>
+              Login {submitButtonDisabled && <Spinner small />}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
 
