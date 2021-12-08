@@ -142,7 +142,6 @@ function Register() {
   };
 
   const handleOtpVerification = (isVerified) => {
-    console.log(isVerified);
     setIsOtpVerified(isVerified);
     if (isOtpVerified) handleRegisterMerchant();
     else return;

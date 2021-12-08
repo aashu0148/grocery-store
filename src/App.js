@@ -9,6 +9,7 @@ import PageNotFound from "pages/common/PageNotFound/PageNotFound";
 import { checkAuth } from "api/user/authenticate";
 
 import "styles/main.scss";
+import CategorySection from "components/CategorySection/CategorySection";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -49,12 +50,12 @@ function App() {
             <Routes>
               <Route path="/merchant/register" element={<MerchantRegister />} />
               <Route path="/merchant/login" element={<MerchantLoginPage />} />
-              <Route path="/*" element={<PageNotFound />} />
+              <Route path="/*" element={<CategorySection />} />
             </Routes>
           )}
         </Router>
       )}
-      
+
       <div id="recaptcha" />
     </div>
   );
