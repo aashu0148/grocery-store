@@ -1,6 +1,8 @@
 @import "styles/_variables";
 
 .container {
+  width: 100%;
+
   .label {
     font-size: 1rem;
     font-weight: 700;
@@ -15,11 +17,14 @@
 
     input {
       margin: 0;
-      padding-right: 31px;
 
       &::placeholder {
         color: $bg-medium-gray;
       }
+    }
+
+    .passwordInput {
+      padding-right: 31px;
     }
 
     .eye {

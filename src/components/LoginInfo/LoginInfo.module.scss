@@ -1,0 +1,36 @@
+@import "styles/_variables";
+
+.container {
+    position: relative;
+
+    .mainImage {
+        object-fit: cover;
+        max-height: 89vh;
+        width: 100%;
+    }
+
+    .innerContainer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        padding: 30px;
+        font-weight: bold;
+
+        h1 {
+            font-size: 3rem;
+            color: $text-primary;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: $text-dark;
+        }
+
+        p {
+            font-size: 1rem;
+            color: $text-dark-gray;
+        }
+    }
+}
