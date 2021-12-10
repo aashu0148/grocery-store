@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { ChevronLeft, ChevronRight } from "react-feather";
 import { debounce } from "utils/util";
 
+import ItemCard from "./ItemCard/ItemCard";
+
 import styles from "./ItemsCarousel.module.scss";
 
 function ItemsCarousel() {
@@ -83,7 +85,14 @@ function ItemsCarousel() {
       </div>
 
       <div className={styles.body} ref={carouselRef}>
-        <div className={styles.items} ref={itemsRef}></div>
+        <div className={styles.items} ref={itemsRef}>
+          <ItemCard />
+          <ItemCard /> 
+          <ItemCard />
+           <ItemCard />
+       <ItemCard /> 
+       <ItemCard />
+        </div>
       </div>
     </div>
   );

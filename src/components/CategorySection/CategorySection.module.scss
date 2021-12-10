@@ -1,0 +1,13 @@
+.categorySection {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  gap: 10px;
+  max-width: 100%;
+}
+.categories {
+  display: flex;
+  min-width: 100%;
+  flex-wrap: wrap;
+  gap: 50px;
+}

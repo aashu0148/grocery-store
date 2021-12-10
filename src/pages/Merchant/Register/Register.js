@@ -112,6 +112,7 @@ function Register() {
     checkRegisterDetails(registerDetails).then((res) => {
       setSubmitButtonDisabled(false);
       if (!res) {
+        toast.error("Number already exists");
         setOtpPage(false);
         return;
       }

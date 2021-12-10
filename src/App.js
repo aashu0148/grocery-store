@@ -6,11 +6,11 @@ import Navbar from "components/Navbar/Navbar";
 import MerchantRegister from "pages/Merchant/Register/Register";
 import MerchantLoginPage from "pages/Merchant/LoginPage/LoginPage";
 import PageNotFound from "pages/common/PageNotFound/PageNotFound";
+import HomePage from "pages/HomePage/HomePage";
 
 import { checkAuth } from "api/user/authenticate";
 
 import "styles/main.scss";
-import CategorySection from "components/CategorySection/CategorySection";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -47,6 +47,7 @@ function App() {
             <Navbar />
             {isAuthenticated ? (
               <Routes>
+                <Route path="/" element={<HomePage />} />
                 <Route path="/*" element={<PageNotFound />} />
               </Routes>
             ) : (
@@ -56,6 +57,7 @@ function App() {
                   element={<MerchantRegister />}
                 />
                 <Route path="/merchant/login" element={<MerchantLoginPage />} />
+                <Route path="/" element={<HomePage />} />
                 <Route path="/*" element={<PageNotFound />} />
               </Routes>
             )}
