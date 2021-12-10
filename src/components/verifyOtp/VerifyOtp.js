@@ -72,7 +72,7 @@ function VerifyOtp(props) {
 
   return (
     <form onSubmit={handleOtpVerification} className={styles.otpForm}>
-      <div className={styles["mainBody"]}>
+      <div className={styles.mainBody}>
         <h2>Verify OTP</h2>
         <InputControl
           label="OTP"

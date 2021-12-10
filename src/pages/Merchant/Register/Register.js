@@ -27,7 +27,6 @@ function Register() {
     confirmpass: "",
   });
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
-  const [isOtpVerified, setIsOtpVerified] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -123,6 +122,7 @@ function Register() {
   };
 
   const handleRegisterMerchant = () => {
+    console.log("inside register line: 126");
     register({
       firstName: values.fname,
       lastName: values.lname,
@@ -143,8 +143,7 @@ function Register() {
   };
 
   const handleOtpVerification = (isVerified) => {
-    setIsOtpVerified(isVerified);
-    if (isOtpVerified) handleRegisterMerchant();
+    if (isVerified) handleRegisterMerchant();
     else return;
   };
 

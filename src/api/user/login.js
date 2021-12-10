@@ -25,7 +25,6 @@ export const login = async (body) => {
   try {
     const reqUrl = `${backendApiUrl}/user/auth/login`;
     const result = await axios.post(reqUrl, body);
-
     if (!result.data?.status) {
       errorToastLogger("", result.data?.message);
       return false;
