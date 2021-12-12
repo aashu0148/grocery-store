@@ -5,11 +5,16 @@ import { mobileRegex, emailRegex, otpRegex } from "./constants";
 let debounceTimer;
 
 export const errorToastLogger = (error, message) => {
-  if (message) toast.error(message);
-  else {
-    const errorMessage = error?.message ? error.message : error + "";
-    toast.error(errorMessage);
+  if (error?.response?.data?.message) {
+    toast.error(error?.response?.data?.message);
+  } else {
+    if (message) toast.error(message);
+    else {
+      const errorMessage = error?.message ? error.message : error + "";
+      toast.error(errorMessage);
+    }
   }
+  console.error(error);
 };
 
 export const validateEmail = (email) => {

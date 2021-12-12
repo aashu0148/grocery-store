@@ -74,7 +74,6 @@ export const imageUpload = (
 };
 
 async function fireBaseCaptchVerification() {
-  window.recaptchaVerifier = "";
   try {
     window.recaptchaVerifier = await new RecaptchaVerifier(
       "recaptcha",
@@ -99,9 +98,14 @@ async function signInWithPhone(mobile) {
       window.recaptchaVerifier
     );
     toast.success("Otp sent successfully");
+    window.recaptchaVerifier.clear();
+    document.getElementById("recaptcha-container").innerHTML =
+      "<div id='recaptcha' ></div>";
     return confirmationResult;
   } catch (error) {
-    console.log(error);
+    window.recaptchaVerifier.clear();
+    document.getElementById("recaptcha-container").innerHTML =
+      "<div id='recaptcha' ></div>";
     errorToastLogger(error, error.message);
     return;
   }
@@ -121,10 +125,15 @@ export const sendOtp = async (mobile) => {
 export const verifyOtp = async (confirmationResult, otp) => {
   try {
     if (!confirmationResult || !otp) return false;
-    const user = confirmationResult.confirm(otp);
+    const user = await confirmationResult.confirm(otp);
 
-    toast.success("OTP verified successfully");
-    return user;
+    if (user) {
+      toast.success("OTP verified successfully");
+      return user;
+    } else {
+      toast.error("Invalid OTP");
+      return "";
+    }
   } catch (error) {
     errorToastLogger(error, "Otp verification failed.");
     return "";
