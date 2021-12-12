@@ -52,11 +52,7 @@ function App() {
         <Router>
           <React.Fragment>
             <Navbar />
-            {isAuthenticated && (
-              <Routes>
-                <Route path="/*" element={<PageNotFound />} />
-              </Routes>
-            )}
+
             <Routes>
               {/* --> Customer Routes */}
               <Route
@@ -72,7 +68,6 @@ function App() {
                 }
               />
               <Route path="/" element={<HomePage />} />
-              <Route path="/*" element={<PageNotFound />} />
 
               {/* --> Merchant Routes  */}
               <Route
@@ -87,7 +82,15 @@ function App() {
                   isAuthenticated ? <Navigate to="/" /> : <MerchantLoginPage />
                 }
               />
+
+              <Route path="/*" element={<PageNotFound />} />
             </Routes>
+
+            {isAuthenticated && (
+              <Routes>
+                {/* Only those routes which are restricted for un-authorized person to visit will come here */}
+              </Routes>
+            )}
           </React.Fragment>
         </Router>
       )}
