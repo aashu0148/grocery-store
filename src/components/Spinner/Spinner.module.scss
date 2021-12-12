@@ -81,3 +81,13 @@
         border-top: 2px solid $bg-primary;
     }
 }
+
+.white {
+    .line {
+        border-color: $white;
+    }
+
+    .line2 {
+        border-color: $white;
+    }
+}
