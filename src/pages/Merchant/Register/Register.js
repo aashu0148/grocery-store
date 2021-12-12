@@ -32,8 +32,9 @@ function Register() {
 
   const navigate = useNavigate();
 
-  const changeURl = () => {
-    navigate("/merchant/login");
+  const changeURl = (homepage) => {
+    if (homepage) navigate("/");
+    else navigate("/merchant/login");
   };
 
   const handleMerchantAuth = (merchantObj) => {
@@ -111,6 +112,7 @@ function Register() {
     checkRegisterDetails(registerDetails).then((res) => {
       setSubmitButtonDisabled(false);
       if (!res) {
+        toast.error("Number already exists");
         setOtpPage(false);
         return;
       }
@@ -121,6 +123,7 @@ function Register() {
   };
 
   const handleRegisterMerchant = () => {
+    console.log("inside register line: 126");
     register({
       firstName: values.fname,
       lastName: values.lname,
@@ -132,9 +135,10 @@ function Register() {
       if (!res) return;
       else {
         if (res?.status) {
-          toast.success("Registered & Logged in successfully");
           localStorage.setItem("token", JSON.stringify(res.data.authToken));
           handleMerchantAuth(res.data);
+          toast.success("Registered & Logged in successfully");
+          changeURl(true);
         }
       }
     });

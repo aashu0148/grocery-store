@@ -13,6 +13,7 @@ import MerchantLoginPage from "pages/Merchant/LoginPage/LoginPage";
 import CustomerRegister from "pages/Customer/Register/Register";
 import CustomerLogin from "pages/Customer/LoginPage/LoginPage";
 import PageNotFound from "pages/common/PageNotFound/PageNotFound";
+import HomePage from "pages/HomePage/HomePage";
 
 import { checkAuth } from "api/user/authenticate";
 
@@ -51,12 +52,23 @@ function App() {
         <Router>
           <React.Fragment>
             <Navbar />
-            {isAuthenticated && (
-              <Routes>
-                <Route path="/*" element={<PageNotFound />} />
-              </Routes>
-            )}
+
             <Routes>
+              {/* --> Customer Routes */}
+              <Route
+                path="/register"
+                element={
+                  isAuthenticated ? <Navigate to="/" /> : <CustomerRegister />
+                }
+              />
+              <Route
+                path="/login"
+                element={
+                  isAuthenticated ? <Navigate to="/" /> : <CustomerLogin />
+                }
+              />
+              <Route path="/" element={<HomePage />} />
+
               {/* --> Merchant Routes  */}
               <Route
                 path="/merchant/register"
@@ -71,21 +83,14 @@ function App() {
                 }
               />
 
-              {/* --> Customer Routes */}
-              <Route
-                path="/register"
-                element={
-                  isAuthenticated ? <Navigate to="/" /> : <CustomerRegister />
-                }
-              />
-              <Route
-                path="/login"
-                element={
-                  isAuthenticated ? <Navigate to="/" /> : <CustomerLogin />
-                }
-              />
               <Route path="/*" element={<PageNotFound />} />
             </Routes>
+
+            {isAuthenticated && (
+              <Routes>
+                {/* Only those routes which are restricted for un-authorized person to visit will come here */}
+              </Routes>
+            )}
           </React.Fragment>
         </Router>
       )}
