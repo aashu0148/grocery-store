@@ -9,14 +9,14 @@ import ItemsCarousel from "components/Carousel/ItemsCarousel/ItemsCarousel";
 function HomePage() {
   const slides = [
     {
-      id: Math.floor(Math.random()),
+      id: Math.floor(Math.random() * 458),
       image:
         "https://www.bigbasket.com/media/uploads/banner_images/hp_kgp_m_H_Knowornever_460_251121.jpg",
       icon: "https://img.icons8.com/color/2x/kitchen.png",
       title: "Home & kitchen",
     },
     {
-      id: Math.floor(Math.random()),
+      id: Math.floor(Math.random() * 458),
       image:
         "https://www.bigbasket.com/media/uploads/banner_images/hp_FreshoDays_460_071221.jpg",
       icon: "https://img.icons8.com/color/2x/group-of-fruits.png",
