@@ -1,10 +1,7 @@
-import { IS_MERCHANT_LOGGED } from "store/actionTypes";
+import { IS_MERCHANT_LOGGED, MERCHANT_LOGOUT } from "store/actionTypes";
 
 const initialState = {
   auth: false,
-  firstName: "",
-  lastName: "",
-  mobile: "",
 };
 
 const merchantReducer = (state = initialState, action) => {
@@ -16,6 +13,12 @@ const merchantReducer = (state = initialState, action) => {
         firstName: action.merchantFirstName,
         lastName: action.merchantLastName,
         mobile: action.merchantMobile,
+        email: action.merchantEmail,
+      };
+    }
+    case MERCHANT_LOGOUT: {
+      return {
+        auth: false,
       };
     }
     default:
