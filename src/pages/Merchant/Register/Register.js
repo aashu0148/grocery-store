@@ -33,7 +33,7 @@ function Register() {
   const navigate = useNavigate();
 
   const changeURl = (homepage) => {
-    if (homepage) navigate("/");
+    if (homepage) document.location.href = "/";
     else navigate("/merchant/login");
   };
 

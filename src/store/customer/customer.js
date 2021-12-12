@@ -1,10 +1,7 @@
-import { IS_CUSTOMER_LOGGED } from "store/actionTypes";
+import { CUSTOMER_LOGOUT, IS_CUSTOMER_LOGGED } from "store/actionTypes";
 
 const initialState = {
   auth: false,
-  firstName: "",
-  lastName: "",
-  mobile: "",
 };
 const customerReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -15,6 +12,11 @@ const customerReducer = (state = initialState, action) => {
         firstName: action.customerFirstName,
         lastName: action.customerLastName,
         mobile: action.customerMobile,
+      };
+    }
+    case CUSTOMER_LOGOUT: {
+      return {
+        auth: false,
       };
     }
     default:

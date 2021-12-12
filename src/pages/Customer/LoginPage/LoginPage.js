@@ -43,7 +43,7 @@ function LoginPage() {
   };
 
   const handleNavigate = (homepage) => {
-    if (homepage) navigate("/");
+    if (homepage) document.location.href = "/";
     else navigate("/register");
   };
 

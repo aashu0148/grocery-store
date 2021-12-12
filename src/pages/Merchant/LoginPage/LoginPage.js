@@ -47,8 +47,9 @@ function LoginPage() {
     }
   };
 
-  const handleNavigate = () => {
-    navigate("/merchant/register");
+  const handleNavigate = (homepage) => {
+    if (homepage) document.location.href = "/";
+    else navigate("/merchant/register");
   };
 
   const handleMerchantAuth = (merchantObj) => {
@@ -80,6 +81,7 @@ function LoginPage() {
           localStorage.setItem("token", JSON.stringify(res.data.authToken));
           handleMerchantAuth(res.data);
           toast.success("Logged in successfully");
+          handleNavigate(true);
         }
       }
     });

@@ -5,6 +5,7 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { Toaster } from "react-hot-toast";
 
 import Navbar from "components/Navbar/Navbar";
@@ -16,19 +17,61 @@ import PageNotFound from "pages/common/PageNotFound/PageNotFound";
 import HomePage from "pages/HomePage/HomePage";
 
 import { checkAuth } from "api/user/authenticate";
+import { userTypes } from "utils/constants";
+import * as actionTypes from "store/actionTypes";
 
 import "styles/main.scss";
 
 function App() {
+  const dispatch = useDispatch();
+
   const token = localStorage.getItem("token");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isMerchant, setIsMerchant] = useState(false);
   const [isDataloaded, setIsDataLoaded] = useState(token ? false : true);
+
+  const handleLogout = () => {
+    if (isMerchant) {
+      setIsMerchant(true);
+      dispatch({
+        type: actionTypes.MERCHANT_LOGOUT,
+      });
+    } else {
+      dispatch({
+        type: actionTypes.CUSTOMER_LOGOUT,
+      });
+    }
+    setIsMerchant(false);
+    setIsAuthenticated(false);
+    localStorage.clear();
+  };
 
   const authenticateUser = () => {
     checkAuth().then((res) => {
       setIsDataLoaded(true);
       if (!res) return;
       setIsAuthenticated(true);
+      const userType = res?.data?.userType;
+      if (userType === userTypes.merchant) {
+        setIsMerchant(true);
+        dispatch({
+          type: actionTypes.IS_MERCHANT_LOGGED,
+          merchantAuth: true,
+          merchantFirstName: res?.data?.firstName,
+          merchantLastName: res?.data?.lastName,
+          merchantMobile: res?.data?.mobile,
+          merchantEmail: res?.data?.email,
+        });
+      } else {
+        setIsMerchant(false);
+        dispatch({
+          type: actionTypes.IS_CUSTOMER_LOGGED,
+          customerAuth: true,
+          customerFirstName: res?.data?.firstName,
+          customerLastName: res?.data?.lastName,
+          customerMobile: res?.data?.mobile,
+        });
+      }
     });
   };
 
@@ -51,7 +94,11 @@ function App() {
       ) : (
         <Router>
           <React.Fragment>
-            <Navbar />
+            <Navbar
+              auth={isAuthenticated}
+              isMerchant={isMerchant}
+              handleLogout={handleLogout}
+            />
 
             <Routes>
               {/* --> Customer Routes */}
