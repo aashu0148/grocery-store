@@ -6,7 +6,9 @@ import Navbar from "components/Navbar/Navbar";
 import MerchantRegister from "pages/Merchant/Register/Register";
 import MerchantLoginPage from "pages/Merchant/LoginPage/LoginPage";
 import PageNotFound from "pages/common/PageNotFound/PageNotFound";
-import HomePage from "pages/HomePage/HomePage";
+import HomePage from "pages/Customer/HomePage/HomePage";
+import AdminPage from "pages/Merchant/AdminPage/AdminPage";
+import Spinner from "components/Spinner/Spinner";
 
 import { checkAuth } from "api/user/authenticate";
 
@@ -40,7 +42,7 @@ function App() {
         }}
       />
       {!isDataloaded ? (
-        <p>Spinner will come here</p>
+        <Spinner />
       ) : (
         <Router>
           <React.Fragment>
@@ -48,10 +50,13 @@ function App() {
             {isAuthenticated ? (
               <Routes>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/admin" element={<AdminPage />} />
                 <Route path="/*" element={<PageNotFound />} />
               </Routes>
             ) : (
               <Routes>
+                <Route path="/admin" element={<AdminPage />} />
+
                 <Route
                   path="/merchant/register"
                   element={<MerchantRegister />}
