@@ -23,7 +23,9 @@ function Navbar(props) {
 
   return (
     <div className={styles.navbar}>
-      <div className={styles.logo}>grocery</div>
+      <Link to="/">
+        <div className={styles.logo}>grocery</div>
+      </Link>
       <div className={styles.content}>
         <div className={styles.searchBox}>
           <input

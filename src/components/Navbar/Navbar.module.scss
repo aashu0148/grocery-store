@@ -9,10 +9,16 @@
   box-shadow: 0 0 10px 0 $bg-greenish-white;
   justify-content: space-between;
 
+  a {
+    text-decoration: none;
+  }
+
   .logo {
     font-family: cursive;
     font-style: italic;
     font-size: 1.875rem;
+    color: $text-dark;
+    text-decoration: none;
   }
 
   .content {
