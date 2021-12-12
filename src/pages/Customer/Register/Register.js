@@ -9,9 +9,9 @@ import Spinner from "components/Spinner/Spinner";
 import InputControl from "components/InputControl/InputControl";
 import VerifyOtp from "components/verifyOtp/VerifyOtp";
 
-import { validateEmail, validateMobile, validatePassword } from "utils/util";
+import { validateEmail, validateMobile } from "utils/util";
 import { checkRegisterDetails, register } from "api/user/register";
-import { IS_MERCHANT_LOGGED } from "store/actionTypes";
+import { IS_CUSTOMER_LOGGED } from "store/actionTypes";
 
 import styles from "./Register.module.scss";
 
@@ -32,18 +32,18 @@ function Register() {
 
   const navigate = useNavigate();
 
-  const changeURl = (homepage) => {
+  const changeURL = (homepage) => {
     if (homepage) document.location.href = "/";
-    else navigate("/merchant/login");
+    else navigate("/login");
   };
 
-  const handleMerchantAuth = (merchantObj) => {
+  const handleCustomerAuth = (obj) => {
     dispatch({
-      type: IS_MERCHANT_LOGGED,
-      merchantAuth: true,
-      merchantFirstName: merchantObj.firstName,
-      merchantLastName: merchantObj.lastName,
-      merchantMobile: merchantObj.mobile,
+      type: IS_CUSTOMER_LOGGED,
+      customerAuth: true,
+      customerFirstName: obj.firstName,
+      customerLastName: obj.lastName,
+      customerMobile: obj.mobile,
     });
   };
 
@@ -71,22 +71,6 @@ function Register() {
       }
     }
 
-    if (values.password === "") {
-      dummyErrors.password = "Enter password";
-    } else {
-      if (!validatePassword(values.password)) {
-        dummyErrors.password =
-          "Enter valid password i.e minimum length 6, must include 1 numeric and 1 alphabet ";
-      }
-    }
-
-    if (values.confirmpass === "") {
-      dummyErrors.confirmpass = "Confirm password";
-    } else {
-      if (values.confirmpass !== values.password) {
-        dummyErrors.confirmpass = "passwords must be same";
-      }
-    }
     setErrors(dummyErrors);
     if (Object.keys(dummyErrors).length !== 0) {
       return false;
@@ -100,11 +84,10 @@ function Register() {
     if (!validateForm()) return;
 
     const registerDetails = {
+      isMerchant: false,
       firstName: values.fname,
       lastName: values.lname,
       mobile: values.mobile,
-      isMerchant: true,
-      password: values.password,
       email: values.email,
     };
 
@@ -112,40 +95,33 @@ function Register() {
     checkRegisterDetails(registerDetails).then((res) => {
       setSubmitButtonDisabled(false);
       if (!res) {
-        toast.error("Number already exists");
         setOtpPage(false);
         return;
       }
-      if (res?.status) {
-        setOtpPage(true);
-      }
+      setOtpPage(true);
     });
   };
 
-  const handleRegisterMerchant = () => {
-    console.log("inside register line: 126");
+  const handleRegisterCustomer = () => {
     register({
+      isMerchant: false,
       firstName: values.fname,
       lastName: values.lname,
       mobile: values.mobile,
-      isMerchant: true,
-      password: values.password,
       email: values.email,
     }).then((res) => {
       if (!res) return;
       else {
-        if (res?.status) {
-          localStorage.setItem("token", JSON.stringify(res.data.authToken));
-          handleMerchantAuth(res.data);
-          toast.success("Registered & Logged in successfully");
-          changeURl(true);
-        }
+        localStorage.setItem("token", JSON.stringify(res.data.authToken));
+        handleCustomerAuth(res.data);
+        changeURL(true);
+        toast.success("Registered & Logged in successfully");
       }
     });
   };
 
   const handleOtpVerification = () => {
-    handleRegisterMerchant();
+    handleRegisterCustomer();
   };
 
   return (
@@ -199,34 +175,12 @@ function Register() {
                 value={values.email}
                 error={errors?.email}
               />
-              <div className={styles["registerRightPanel-inputContainer"]}>
-                <InputControl
-                  password="true"
-                  placeholder="Enter password"
-                  label="Password"
-                  onChange={(event) =>
-                    setValues({ ...values, password: event.target.value })
-                  }
-                  value={values.password}
-                  error={errors?.password}
-                />
 
-                <InputControl
-                  placeholder={`Confirm Password`}
-                  label={`Confirm Password`}
-                  onChange={(event) =>
-                    setValues({ ...values, confirmpass: event.target.value })
-                  }
-                  value={values.confirmpass}
-                  error={errors?.confirmpass}
-                  password="true"
-                />
-              </div>
               <p>
                 Already have an account ?&nbsp;
                 <span
                   className={styles["registerRightPanel_helper-text"]}
-                  onClick={() => changeURl()}
+                  onClick={() => changeURL()}
                 >
                   Login now
                 </span>
@@ -240,10 +194,7 @@ function Register() {
         </div>
       ) : (
         <div className={styles.registerRightPanel_otp}>
-          <VerifyOtp
-            mobile={values.mobile}
-            isVerified={handleOtpVerification}
-          />
+          <VerifyOtp mobile={values.mobile} onSuccess={handleOtpVerification} />
         </div>
       )}
     </div>

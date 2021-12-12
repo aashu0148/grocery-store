@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 
-import { debounce } from "utils/util";
-
 import styles from "./MainCarousel.module.scss";
 
 let autoInterval;
@@ -40,17 +38,16 @@ function MainCarousel(props) {
   };
 
   const handleResize = () => {
-    debounce(() => {
-      const carousel = carouselRef?.current;
-      if (!carousel) return;
-      const width = carousel?.clientWidth;
-      const itemsCount = carouselOptions?.length;
-      const tempCheckpoints = [];
-      for (let i = 0; i < itemsCount; ++i) {
-        tempCheckpoints.push(i * width);
-      }
-      setCheckpoints(tempCheckpoints);
-    }, 400);
+    const carousel = carouselRef?.current;
+    if (!carousel) return;
+    const width = carousel?.clientWidth;
+    const itemsCount = carouselOptions?.length;
+    const tempCheckpoints = [];
+    for (let i = 0; i < itemsCount; ++i) {
+      tempCheckpoints.push(i * width);
+    }
+    
+    setCheckpoints(tempCheckpoints);
   };
 
   useEffect(() => {
@@ -72,7 +69,7 @@ function MainCarousel(props) {
     <div className={styles.container}>
       <div ref={carouselRef} className={styles.innerContainer}>
         {carouselOptions.map((item, index) => (
-          <div className={styles.imageContainer} key={item.image + index}>
+          <div className={styles.imageContainer} key={item.id + index}>
             {item.link ? (
               <a target="_blank" rel="noreferrer" href={item.link}>
                 <img src={item.image} alt={item.title} />

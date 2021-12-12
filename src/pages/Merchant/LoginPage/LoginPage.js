@@ -47,8 +47,9 @@ function LoginPage() {
     }
   };
 
-  const handleNavigate = () => {
-    navigate("/merchant/register");
+  const handleNavigate = (homepage) => {
+    if (homepage) document.location.href = "/";
+    else navigate("/merchant/register");
   };
 
   const handleMerchantAuth = (merchantObj) => {
@@ -77,9 +78,10 @@ function LoginPage() {
       if (!res) return;
       else {
         if (res?.status) {
-          toast.success("Logged in successfully");
           localStorage.setItem("token", JSON.stringify(res.data.authToken));
           handleMerchantAuth(res.data);
+          toast.success("Logged in successfully");
+          handleNavigate(true);
         }
       }
     });
@@ -115,14 +117,14 @@ function LoginPage() {
             <p>
               Not registered ?
               <span
-                onClick={handleNavigate}
+                onClick={() => handleNavigate()}
                 className={styles["loginRightPanel_helper-text"]}
               >
                 &nbsp;Register now
               </span>
             </p>
             <Button type={`submit`} disabled={submitButtonDisabled}>
-              Login {submitButtonDisabled && <Spinner small />}
+              Login {submitButtonDisabled && <Spinner small white />}
             </Button>
           </div>
         </form>
