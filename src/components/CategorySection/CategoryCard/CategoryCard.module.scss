@@ -1,15 +1,25 @@
+@import "styles/variables";
+
 .card {
-  width: 100px;
+  width: 120px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
+  cursor: pointer;
+
+  .cardImage {
+    background-color: $bg-greenish-white-2;
+    border-radius: 10px;
+  }
+
   img {
     width: 100%;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 20px;
+    height: 130px;
+    object-fit: contain;
   }
+
   p {
     text-align: center;
+    color: $text-dark;
   }
 }
