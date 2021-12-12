@@ -82,15 +82,18 @@ function App() {
                   isAuthenticated ? <Navigate to="/" /> : <MerchantLoginPage />
                 }
               />
+              {/* private route example ->
+              <Route
+                path="/merchant"
+                element={
+                  <PrivateRoute auth={isAuthenticated}>
+                    <h1>Hello</h1>
+                  </PrivateRoute>
+                }
+              /> */}
 
               <Route path="/*" element={<PageNotFound />} />
             </Routes>
-
-            {isAuthenticated && (
-              <Routes>
-                {/* Only those routes which are restricted for un-authorized person to visit will come here */}
-              </Routes>
-            )}
           </React.Fragment>
         </Router>
       )}
