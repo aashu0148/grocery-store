@@ -17,6 +17,7 @@ import PageNotFound from "pages/common/PageNotFound/PageNotFound";
 import HomePage from "pages/Customer/HomePage/HomePage";
 import AdminPage from "pages/Merchant/AdminPage/AdminPage";
 import Spinner from "components/Spinner/Spinner";
+import PrivateRoute from "components/PrivateRoute/PrivateRoute";
 
 import { checkAuth } from "api/user/authenticate";
 import { userTypes } from "utils/constants";
@@ -104,6 +105,7 @@ function App() {
 
             <Routes>
               {/* --> Customer Routes */}
+              <Route path="/admin" element={<AdminPage />} />
               <Route
                 path="/register"
                 element={
@@ -129,6 +131,14 @@ function App() {
                 path="/merchant/login"
                 element={
                   isAuthenticated ? <Navigate to="/" /> : <MerchantLoginPage />
+                }
+              />
+              <Route
+                path="/merchant"
+                element={
+                  <PrivateRoute auth={isAuthenticated}>
+                    <AdminPage />
+                  </PrivateRoute>
                 }
               />
               {/* private route example ->

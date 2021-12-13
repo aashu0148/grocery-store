@@ -123,7 +123,6 @@ function Register() {
   };
 
   const handleRegisterMerchant = () => {
-    console.log("inside register line: 126");
     register({
       firstName: values.fname,
       lastName: values.lname,
