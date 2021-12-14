@@ -2,89 +2,117 @@
 
 .container {
   height: 100vh;
-  width: 80px;
+  width: 66px;
   display: flex;
-}
-.mainPanel {
   position: sticky;
-  height: 100%;
-  display: flex;
-  list-style: none;
-  padding-bottom: 16px;
+  top: 0;
 }
+
+.linksContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.separator {
+  height: 1px;
+  width: 75%;
+  background-color: $bg-light-gray;
+  margin-bottom: 15px;
+}
+
 .fixedChild {
   position: absolute;
+  top: 0;
   display: flex;
-  width: 75px;
-  height: 100%;
-  gap: 30px;
-  padding-top: 16px;
-  padding-left: 18px;
-  border-right: 1px solid $bg-greenish-white;
   flex-direction: column;
+  width: 66px;
+  height: 100%;
+  align-items: center;
+  border-right: 1px solid $bg-greenish-white;
   background-color: $white;
-  transition: all 0.5s;
+  transition: all 0.3s;
+
   li {
     overflow: hidden;
     width: 0;
-    color: $text-medium-gray;
   }
 }
+
 .fixedChildActive {
-  position: absolute;
   display: flex;
-  width: 150px;
-  height: 100%;
-  gap: 30px;
-  padding-top: 16px;
-  padding-left: 18px;
+  width: 170px;
   flex-direction: column;
-  background-color: $white;
-  border-right: 1px solid $bg-greenish-white;
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+
   li {
-    width: 50px;
-    color: $text-medium-gray;
+    width: 100%;
   }
 }
+
 .itemContainer {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  padding: 15px 20px;
+  transition: width 300ms, backgroundColor 300ms;
+  gap: 0px;
+  cursor: pointer;
+
+  li {
+    color: $text-medium-gray;
+  }
+
+  .icon svg {
+    font-weight: 700;
+    width: 22px;
+    cursor: pointer;
+    color: $bg-medium-gray;
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &:hover svg,
+  &:hover li {
+    color: $text-light-gray;
+  }
 }
+
 .iconContainer {
   display: flex;
-  align-items: center;
-  gap: 10px;
   height: fit-content;
-  padding: 0.5rem;
-  padding-right: 0;
   color: $text-dark-gray;
   text-decoration: none;
+  border-right: 2px solid transparent;
+  border-radius: 3px;
 }
-.navlinkActive {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: fit-content;
-  padding: 0.5rem;
-  padding-right: 0;
+
+.navLinkActive {
   text-decoration: none;
+
   li {
-    color: $text-primary;
+    color: $text-primary !important;
   }
-  svg {
-    color: $text-primary;
+
+  .icon svg {
+    color: $text-primary !important;
   }
-  .selectedSymbol {
-    height: 25px;
-    width: 3px;
-    background-color: $bg-primary;
-    border-radius: 2px;
+
+  .itemContainer {
+    border-right: 2px solid $bg-primary;
   }
 }
-.icon {
-  font-weight: 700;
-  height: 20px;
-  color: $bg-medium-gray;
+
+.fixedChildActive .navLinkActive .itemContainer {
+  background-color: $bg-greenish-white-2;
+}
+
+.fixedChildActive .itemContainer {
+  gap: 15px;
 }

@@ -112,7 +112,6 @@ function Register() {
     checkRegisterDetails(registerDetails).then((res) => {
       setSubmitButtonDisabled(false);
       if (!res) {
-        toast.error("Number already exists");
         setOtpPage(false);
         return;
       }
@@ -239,10 +238,7 @@ function Register() {
         </div>
       ) : (
         <div className={styles.registerRightPanel_otp}>
-          <VerifyOtp
-            mobile={values.mobile}
-            isVerified={handleOtpVerification}
-          />
+          <VerifyOtp mobile={values.mobile} onSuccess={handleOtpVerification} />
         </div>
       )}
     </div>

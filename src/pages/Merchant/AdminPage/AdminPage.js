@@ -1,13 +1,13 @@
 import React from "react";
 
-import MerchantSidepanel from "components/MerchantSidepanel/MerchantSidepanel";
+import MerchantSidePanel from "components/MerchantSidePanel/MerchantSidePanel";
 
 // import styles from "./AdminPage.module.scss";
 
 function AdminPage() {
   return (
     <div>
-      <MerchantSidepanel />
+      <MerchantSidePanel />
     </div>
   );
 }
