@@ -16,8 +16,9 @@ import CustomerLogin from "pages/Customer/LoginPage/LoginPage";
 import PageNotFound from "pages/common/PageNotFound/PageNotFound";
 import HomePage from "pages/Customer/HomePage/HomePage";
 import AdminPage from "pages/Merchant/AdminPage/AdminPage";
-import Spinner from "components/Spinner/Spinner";
+import MerchantDashboard from "pages/Merchant/MerchantDashboard/MerchantDashboard";
 import PrivateRoute from "components/PrivateRoute/PrivateRoute";
+import PreLoader from "pages/common/PreLoader/PreLoader";
 
 import { checkAuth } from "api/user/authenticate";
 import { userTypes } from "utils/constants";
@@ -31,7 +32,7 @@ function App() {
   const token = localStorage.getItem("token");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isMerchant, setIsMerchant] = useState(false);
-  const [isDataloaded, setIsDataLoaded] = useState(token ? false : true);
+  const [isDataLoaded, setIsDataLoaded] = useState(token ? false : true);
 
   const handleLogout = () => {
     if (isMerchant) {
@@ -51,8 +52,11 @@ function App() {
 
   const authenticateUser = () => {
     checkAuth().then((res) => {
-      setIsDataLoaded(true);
-      if (!res) return;
+      if (!res) {
+        handleLogout();
+        setIsDataLoaded(true);
+        return;
+      }
       setIsAuthenticated(true);
       const userType = res?.data?.userType;
       if (userType === userTypes.merchant) {
@@ -75,11 +79,12 @@ function App() {
           customerMobile: res?.data?.mobile,
         });
       }
+      setIsDataLoaded(true);
     });
   };
 
   useEffect(() => {
-    if (!isDataloaded) authenticateUser();
+    if (!isDataLoaded) authenticateUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -92,8 +97,8 @@ function App() {
           style: { marginBottom: "30px", marginLeft: "30px" },
         }}
       />
-      {!isDataloaded ? (
-        <Spinner />
+      {!isDataLoaded ? (
+        <PreLoader />
       ) : (
         <Router>
           <React.Fragment>
@@ -134,10 +139,10 @@ function App() {
                 }
               />
               <Route
-                path="/merchant"
+                path="/merchant/*"
                 element={
                   <PrivateRoute auth={isAuthenticated}>
-                    <AdminPage />
+                    <MerchantDashboard isAuthenticated={isAuthenticated} />
                   </PrivateRoute>
                 }
               />

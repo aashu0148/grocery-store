@@ -142,6 +142,19 @@
           padding: 10px;
           border-bottom: 1px solid $bg-light-gray;
           cursor: pointer;
+          color: $text-dark;
+
+          a {
+            color: $text-dark;
+
+            &:hover {
+              color: $text-primary;
+            }
+          }
+
+          &:hover {
+            color: $text-primary;
+          }
         }
 
         li:last-child {
