@@ -93,7 +93,14 @@ function Navbar(props) {
                   onClose={() => setShowUserDropdown(false)}
                 >
                   <div className={styles.userDropdown}>
-                    <li>Profile</li>
+                    {props.isMerchant ? (
+                      <li onClick={() => setShowUserDropdown(false)}>
+                        <Link to={"/merchant/dashboard"}>Dashboard</Link>
+                      </li>
+                    ) : (
+                      ""
+                    )}
+                    <li onClick={() => setShowUserDropdown(false)}>Profile</li>
                     <li onClick={onLogout}>Logout</li>
                   </div>
                 </Dropdown>
