@@ -1,0 +1,21 @@
+@import "styles/variables";
+
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-height: 100vh;
+    height: 100%;
+    width: 100%;
+    padding: 30px;
+    background-color: $bg-black-translucent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+
+    .inner {
+        background-color: $white;
+        border-radius: 10px;
+    }
+}
