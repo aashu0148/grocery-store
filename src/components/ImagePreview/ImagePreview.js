@@ -8,7 +8,15 @@ import galleryIcon from "assets/images/gallery.png";
 
 import styles from "./ImagePreview.module.scss";
 
-function ImagePreview({ isCrop, large, onDelete, cropTitle, file, src }) {
+function ImagePreview({
+  isCrop,
+  large,
+  onDelete,
+  cropTitle,
+  file,
+  src,
+  onCrop,
+}) {
   const [currentFile, setCurrentFile] = useState(file);
   const [showCropModal, setShowCropModal] = useState(false);
 
@@ -21,6 +29,11 @@ function ImagePreview({ isCrop, large, onDelete, cropTitle, file, src }) {
       });
       setCurrentFile(file);
     });
+  };
+
+  const handleOnCrop = (file) => {
+    setCurrentFile(file);
+    if (onCrop) onCrop(file);
   };
 
   useEffect(() => {
@@ -43,7 +56,7 @@ function ImagePreview({ isCrop, large, onDelete, cropTitle, file, src }) {
           outputFileName={currentFile ? currentFile?.name : ""}
           outputFileType={currentFile ? currentFile?.type : ""}
           onClose={() => setShowCropModal(false)}
-          onCrop={(currentFile) => setCurrentFile(currentFile)}
+          onCrop={handleOnCrop}
         />
       )}
       <img
@@ -77,6 +90,7 @@ ImagePreview.propTypes = {
   onDelete: PropTypes.func,
   file: PropTypes.object,
   src: PropTypes.string,
+  onCrop: PropTypes.func,
 };
 
 export default ImagePreview;

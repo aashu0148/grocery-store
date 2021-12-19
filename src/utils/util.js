@@ -50,7 +50,7 @@ export const validateImage = (file, size = 2) => {
   if (!file) return { status: false, message: "File not selected" };
 
   const fileType = file.type.split("/").pop().toLowerCase();
-  const fileSizeInMb = Math.floor(file.size / 1024 / 1024);
+  const fileSizeInMb = file.size / 1024 / 1024;
   if (
     fileType !== "jpeg" &&
     fileType !== "jpg" &&
