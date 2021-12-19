@@ -1,0 +1,58 @@
+@import "styles/variables";
+
+.container {
+    min-width: 750px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    .heading {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .body {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+        .formElem {
+            label {
+                font-size: 1rem;
+                font-weight: 500;
+                color: $text-dark-gray;
+
+                span {
+                    font-size: 0.875rem;
+                }
+            }
+
+            textarea {
+                resize: none;
+            }
+        }
+
+        .row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .equalRow {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+
+            &>* {
+                flex: 1;
+            }
+        }
+    }
+
+    .footer {
+        display: flex;
+        gap: 30px;
+        justify-content: flex-end;
+    }
+}

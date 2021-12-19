@@ -1,0 +1,15 @@
+@import "styles/variables";
+
+.container {
+    height: 4px;
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: $bg-light-gray;
+
+    .progress {
+        height: 100%;
+        width: 0;
+        background-color: $bg-primary;
+    }
+}
