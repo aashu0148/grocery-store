@@ -37,43 +37,50 @@ export const imageUpload = (
   downloadCallback,
   errorCallback
 ) => {
-  if (!file) {
-    if (errorCallback) errorCallback("Image not found");
-    return;
-  }
-  const fileSize = file.size / 1024 / 1024;
-  const fileType = file.type;
-
-  if (!fileType.includes("image")) {
-    if (errorCallback) errorCallback("File must be image only");
-    return;
-  }
-  if (fileSize > 2) {
-    if (errorCallback) errorCallback("Image must be smaller than 2 MB");
-    return;
-  }
-
-  const storageRef = ref(storage, `images/${file.name}`);
-
-  const uploadTask = uploadBytesResumable(storageRef, file);
-  uploadTask.on(
-    "state_changed",
-    (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      if (progressCallback) progressCallback(progress);
-    },
-    (error) => {
-      if (errorCallback) errorCallback(error);
-    },
-    () => {
-      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        if (downloadCallback) downloadCallback(downloadURL);
-      });
+  return new Promise((resolve, reject) => {
+    if (!file) {
+      if (errorCallback) errorCallback("Image not found");
+      reject();
     }
-  );
+    const fileSize = file.size / 1024 / 1024;
+    const fileType = file.type;
+
+    if (!fileType.includes("image")) {
+      if (errorCallback) errorCallback("File must be image only");
+      reject();
+    }
+    if (fileSize > 2) {
+      if (errorCallback) errorCallback("Image must be smaller than 2 MB");
+      reject();
+    }
+
+    const storageRef = ref(storage, `images/${file.name}`);
+
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        if (progressCallback) progressCallback(progress);
+      },
+      (error) => {
+        if (errorCallback) errorCallback(error);
+        reject();
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          resolve(downloadURL);
+          if (downloadCallback) {
+            downloadCallback(downloadURL);
+          }
+        });
+      }
+    );
+  });
 };
 
-async function fireBaseCaptchVerification() {
+async function fireBaseCaptchaVerification() {
   try {
     window.recaptchaVerifier = await new RecaptchaVerifier(
       "recaptcha",
@@ -115,7 +122,7 @@ export const sendOtp = async (mobile) => {
   if (!mobile) return false;
   if (!validateMobile(mobile)) return false;
 
-  await fireBaseCaptchVerification();
+  await fireBaseCaptchaVerification();
 
   if (window.recaptchaVerifier) {
     return await signInWithPhone("+91" + mobile);

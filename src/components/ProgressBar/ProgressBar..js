@@ -12,7 +12,7 @@ function ProgressBar({ progress }) {
 }
 
 ProgressBar.propTypes = {
-  progress: PropTypes.string,
+  progress: PropTypes.number,
 };
 
 export default ProgressBar;
