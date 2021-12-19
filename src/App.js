@@ -15,7 +15,6 @@ import CustomerRegister from "pages/Customer/Register/Register";
 import CustomerLogin from "pages/Customer/LoginPage/LoginPage";
 import PageNotFound from "pages/common/PageNotFound/PageNotFound";
 import HomePage from "pages/Customer/HomePage/HomePage";
-import AdminPage from "pages/Merchant/AdminPage/AdminPage";
 import MerchantDashboard from "pages/Merchant/MerchantDashboard/MerchantDashboard";
 import PrivateRoute from "components/PrivateRoute/PrivateRoute";
 import PreLoader from "pages/common/PreLoader/PreLoader";
@@ -110,7 +109,6 @@ function App() {
 
             <Routes>
               {/* --> Customer Routes */}
-              <Route path="/admin" element={<AdminPage />} />
               <Route
                 path="/register"
                 element={
