@@ -85,6 +85,49 @@ function ProductForm(props) {
     setThumbnail("");
   };
 
+  const handleThumbnailCrop = (file) => {
+    setThumbnail(file);
+  };
+
+  const handleImagesSelect = (event) => {
+    const filesObj = event.target?.files;
+    const files = Object.keys(filesObj).map((item) => filesObj[item]);
+
+    if (!files.length) return;
+    const tempImages = [];
+
+    files?.forEach((item) => {
+      if (tempImages.length === 4) return;
+      const validationResult = validateImage(item);
+      if (!validationResult.status) {
+        setErrors({ ...errors, images: validationResult.message });
+      } else {
+        setErrors({ ...errors, images: "" });
+        tempImages.push(item);
+      }
+    });
+
+    const requiredImage = [
+      ...images,
+      ...tempImages.slice(0, 4 - images.length),
+    ];
+    setImages(requiredImage);
+  };
+
+  const handleImagesRemove = (index) => {
+    setErrors({ ...errors, images: "" });
+    const tempImages = [...images];
+    tempImages.splice(index, 1);
+    setImages(tempImages);
+  };
+
+  const handleImagesCrop = (file, index) => {
+    setErrors({ ...errors, images: "" });
+    const tempImages = [...images];
+    tempImages.splice(index, 1, file);
+    setImages(tempImages);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.heading}>Create New Product</div>
@@ -188,6 +231,7 @@ function ProductForm(props) {
                   file={typeof thumbnail === "object" ? thumbnail : null}
                   isCrop
                   onDelete={handleThumbnailRemove}
+                  onCrop={handleThumbnailCrop}
                 />
               )}
             </div>
@@ -199,15 +243,17 @@ function ProductForm(props) {
             Pick Rest Images <span>(max - size(2 MB) , limit(4))</span>
           </label>
           <div className={styles.equalRow}>
-            <InputControl type="file" multiple />
+            <InputControl type="file" multiple onChange={handleImagesSelect} />
             <div className={styles.row}>
               {images?.map((item, index) => (
                 <ImagePreview
-                  key={index}
+                  key={index + item + ""}
                   src={typeof item === "string" ? item : null}
                   file={typeof item === "object" ? item : null}
                   isCrop
                   cropTitle="Crop Image"
+                  onDelete={() => handleImagesRemove(index)}
+                  onCrop={(file) => handleImagesCrop(file, index)}
                 />
               ))}
             </div>
