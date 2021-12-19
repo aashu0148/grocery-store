@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { ChevronLeft, ChevronRight } from "react-feather";
-import { debounce } from "utils/util";
 
 import ItemCard from "./ItemCard/ItemCard";
 
 import styles from "./ItemsCarousel.module.scss";
 
+let timeout;
 function ItemsCarousel(props) {
   const carouselRef = useRef();
   const itemsRef = useRef();
@@ -24,7 +24,8 @@ function ItemsCarousel(props) {
   };
 
   const handleScroll = () => {
-    debounce(() => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
       const carousel = carouselRef?.current;
       if (!carousel) return;
 
@@ -41,7 +42,7 @@ function ItemsCarousel(props) {
           setRightButtonDisabled(true);
         else setRightButtonDisabled(false);
       }
-    });
+    }, 200);
   };
 
   useEffect(() => {

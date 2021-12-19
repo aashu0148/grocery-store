@@ -5,10 +5,11 @@ import styles from "./Modal.module.scss";
 
 function Modal(props) {
   useEffect(() => {
-    document.body.style.overflowY = "hidden";
+    const isHidden = document.body.style.overflowY === "hidden";
+    if (!isHidden) document.body.style.overflowY = "hidden";
 
     return () => {
-      document.body.style.overflowY = "auto";
+      if (!isHidden) document.body.style.overflowY = "auto";
     };
   }, []);
 

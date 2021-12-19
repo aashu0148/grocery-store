@@ -1,0 +1,27 @@
+.container {
+    max-width: 650px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    .title {
+        font-weight: bold;
+        font-size: 1.125rem;
+    }
+
+    img {
+        max-height: 420px !important;
+        min-height: 250px !important;
+        width: auto !important;
+        height: auto !important;
+        object-fit: contain !important;
+    }
+
+    .footer {
+        width: 100%;
+        display: flex;
+        gap: 20px;
+        justify-content: flex-end;
+    }
+}
