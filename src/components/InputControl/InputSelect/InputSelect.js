@@ -9,6 +9,7 @@ import styles from "../InputControl.module.scss";
 function InputSelect({ label, error, async, asyncCreatable, ...rest }) {
   const colors = {
     primary: "#2ec971",
+    primary2: "#5fdf96",
     red: "#ff5050",
     mediumGray: "#c5c5c5",
     lightGray: "#e2dfd6",
@@ -32,13 +33,18 @@ function InputSelect({ label, error, async, asyncCreatable, ...rest }) {
         borderColor: isFocused || error ? "" : colors.mediumGray,
       },
     }),
-    option: (provided, { isDisabled, isSelected }) => ({
+    option: (provided, { isDisabled, isSelected, isFocused }) => ({
       ...provided,
-      backgroundColor: isSelected ? colors.primary : "#fff",
-      color: isSelected ? "#fff" : colors.textDarkGray,
+      color: isSelected || isFocused ? "#fff" : colors.textDarkGray,
+      backgroundColor: isFocused
+        ? colors.primary2
+        : isSelected
+        ? colors.primary
+        : "#fff",
       cursor: isDisabled ? "not-allowed" : "default",
       "&:hover": {
         backgroundColor: isSelected ? colors.primary : colors.greenishWhite,
+        color: isSelected ? "#fff" : colors.textDarkGray,
       },
     }),
     input: (provided) => ({
@@ -111,7 +117,7 @@ function InputSelect({ label, error, async, asyncCreatable, ...rest }) {
 
 InputSelect.propTypes = {
   label: PropTypes.string,
-  error: PropTypes.bool,
+  error: PropTypes.string,
   async: PropTypes.bool,
   asyncCreatable: PropTypes.bool,
 };
