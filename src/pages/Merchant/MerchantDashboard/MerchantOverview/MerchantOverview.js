@@ -13,25 +13,6 @@ function MerchantOverView() {
       <Button onClick={() => setShowProductModal((prev) => !prev)}>
         Add Product
       </Button>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
     </div>
   );
 }

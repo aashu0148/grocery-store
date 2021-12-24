@@ -10,9 +10,9 @@ import ProgressBar from "components/ProgressBar/ProgressBar.";
 import Spinner from "components/Spinner/Spinner";
 
 import { validateImage } from "utils/util";
-import { getAllCategories } from "api/common";
 import { getAllUnits } from "api/user/unit";
 import { imageUpload } from "utils/firebase";
+import { getAllCategories } from "api/user/category";
 
 import styles from "./ProductForm.module.scss";
 
@@ -42,12 +42,6 @@ function ProductForm(props) {
           label: props.defaults?.refCategory?.name,
         }
       : "",
-    subCategory: props.defaults?.refSubCategory
-      ? {
-          value: props.defaults?.refSubCategory?._id,
-          label: props.defaults?.refSubCategory?.name,
-        }
-      : "",
     unit: props.defaults?.refUnit
       ? {
           value: props.defaults?.refUnit?._id,
@@ -71,6 +65,12 @@ function ProductForm(props) {
     images: props.defaults?.images?.length || [],
     price: props.defaults?.price || 0,
     discount: props.defaults?.discount || "",
+    subCategory: props.defaults?.refSubCategory
+      ? {
+          value: props.defaults?.refSubCategory?._id,
+          label: props.defaults?.refSubCategory?.name,
+        }
+      : "",
   });
   const [errors, setErrors] = useState({});
   const [discountType, setDiscountType] = useState(discountTypes.percentage);
@@ -79,6 +79,7 @@ function ProductForm(props) {
     props.defaults?.images?.length ? [...props.defaults?.images] : []
   );
   const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
   const [units, setUnits] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadProgressText, setUploadProgressText] = useState(0);
@@ -151,6 +152,7 @@ function ProductForm(props) {
       const categories = res.data?.map((item) => ({
         value: item._id,
         label: item.name,
+        subCategory: item.subCategory,
       }));
       setCategories(categories);
     });
@@ -185,7 +187,7 @@ function ProductForm(props) {
       errors.discount = "Discount must be smaller than price";
     if (!values.description) errors.description = "Enter description";
     if (!values.refCategory) errors.category = "Select category";
-    // if (!values.refSubCategory) errors.subCategory = "Select subCategory";
+    if (!values.refSubCategory) errors.subCategory = "Select sub category";
     if (!values.refUnit) errors.unit = "Select unit";
     if (!thumbnail) errors.thumbnail = "Choose thumbnail";
 
@@ -219,7 +221,7 @@ function ProductForm(props) {
 
   const handleSubmission = async () => {
     if (!validateForm()) return;
-    setUploadProgress(0);
+    setUploadProgress(1);
     setSubmitButtonDisabled(true);
     setUploadProgressText("Uploading images...");
     const urls = await handleImageUpload();
@@ -262,6 +264,7 @@ function ProductForm(props) {
           <InputControl
             label="Price*"
             subLabel=" (per unit)"
+            type="tel"
             placeholder="Enter product price"
             defaultValue={defaultValues.price}
             onChange={(event) =>
@@ -365,16 +368,34 @@ function ProductForm(props) {
             placeholder="Select product category"
             options={categories}
             error={errors.category}
-            onChange={(item) =>
-              setValues({ ...values, refCategory: item.value })
-            }
+            defaultValue={defaultValues.category}
+            onChange={(item) => {
+              setSubCategories(
+                item.subCategory.map((item) => ({
+                  label: item.name,
+                  value: item._id,
+                }))
+              );
+              setValues({
+                ...values,
+                refCategory: item.value,
+                refSubCategory: "",
+                subCategory: "",
+              });
+            }}
           />
           <InputSelect
             label="Sub Category*"
             placeholder="Select product sub-category"
             error={errors.subCategory}
+            options={subCategories}
+            value={values.subCategory}
             onChange={(item) =>
-              setValues({ ...values, refSubCategory: item.value })
+              setValues({
+                ...values,
+                refSubCategory: item.value,
+                subCategory: item,
+              })
             }
           />
         </div>

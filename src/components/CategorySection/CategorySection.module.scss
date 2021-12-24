@@ -5,8 +5,10 @@
   gap: 10px;
   max-width: 100%;
 }
+
 .categories {
   display: flex;
+  justify-content: center;
   min-width: 100%;
   flex-wrap: wrap;
   gap: 50px;
