@@ -40,10 +40,13 @@
       .link {
         font-weight: bold;
         font-size: 1rem;
-        color: $text-primary;
         display: flex;
         align-items: center;
         cursor: pointer;
+
+        &::after {
+          height: 2px;
+        }
 
         svg {
           height: 14px;

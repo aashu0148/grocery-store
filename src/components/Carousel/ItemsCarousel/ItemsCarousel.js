@@ -66,7 +66,7 @@ function ItemsCarousel(props) {
           <p className={styles.desc}>butter, cheese, milk, curd and more</p>
         </div>
         <div className={styles.right}>
-          <p className={styles.link}>see more {">"}</p>
+          <p className={`${styles.link} styled-link`}>see more {">"}</p>
 
           <div className={styles.buttons}>
             <button
@@ -89,7 +89,7 @@ function ItemsCarousel(props) {
         <div className={styles.items} ref={itemsRef}>
           {Array.isArray(props.items)
             ? props?.items?.map((item, index) => (
-                <ItemCard key={item?._id + index} />
+                <ItemCard key={item?._id + index} item={item} />
               ))
             : ""}
         </div>
