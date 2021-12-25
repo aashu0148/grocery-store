@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import MainCarousel from "components/Carousel/MainCarousel/MainCarousel";
 import CategorySection from "components/CategorySection/CategorySection";
+import ItemsCarousel from "components/Carousel/ItemsCarousel/ItemsCarousel";
+import Spinner from "components/Spinner/Spinner";
+
+import { getAllProducts } from "api/user/product";
 
 import styles from "./HomePage.module.scss";
-import ItemsCarousel from "components/Carousel/ItemsCarousel/ItemsCarousel";
 
 function HomePage() {
   const slides = [
@@ -37,15 +40,33 @@ function HomePage() {
       title: "Best",
     },
   ];
+  const [products, setProducts] = useState([]);
+  const [productsLoaded, setProductsLoaded] = useState(false);
+
+  const fetchAllProducts = () => {
+    getAllProducts().then((res) => {
+      setProductsLoaded(true);
+      if (!res) return;
+      setProducts(res.data);
+    });
+  };
+
+  useEffect(() => {
+    fetchAllProducts();
+  }, []);
 
   return (
     <div className={styles.homePage}>
       <MainCarousel slides={slides} />
       <CategorySection />
-      <div className={styles.itemSection}>
-        <h3>Top selling items</h3>
-        <ItemsCarousel />
-      </div>
+      {!productsLoaded ? (
+        <Spinner />
+      ) : (
+        <div className={styles.itemSection}>
+          <h3>Top selling items</h3>
+          <ItemsCarousel items={products} />
+        </div>
+      )}
     </div>
   );
 }
