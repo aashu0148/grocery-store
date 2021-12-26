@@ -1,0 +1,29 @@
+.container {
+    min-width: 260px;
+    width: fit-content;
+    height: fit-content;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-top: 30px;
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .heading {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: center;
+
+        }
+    }
+}
