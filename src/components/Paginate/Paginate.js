@@ -32,7 +32,7 @@ function Paginate(props) {
         style={{
           position: "absolute",
           bottom: "0",
-          height: window.innerHeight * 2 + "px",
+          height: window.innerHeight * 1.5 + "px",
         }}
       />
     </div>

@@ -30,7 +30,9 @@ function ProductCard(props) {
       </div>
       <div className={styles.body}>
         <div className={styles.details}>
-          <p className={styles.title}>{product.title}</p>
+          <p className={styles.title} title={product?.title}>
+            {product?.title}
+          </p>
 
           <p className={styles.price}>
             <span>
