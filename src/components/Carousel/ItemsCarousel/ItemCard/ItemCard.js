@@ -1,57 +1,64 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { Plus, Minus } from "react-feather";
+
+import { getDiscountedPrice } from "utils/util";
 
 import styles from "./ItemCard.module.scss";
 
-function ItemCard() {
-  const [quantity, setQuatity] = useState(0);
+function ItemCard(props) {
+  const { item } = props;
+  const [quantity, setQuantity] = useState(0);
 
   const increaseQuantity = () => {
-    setQuatity(quantity + 1);
+    setQuantity(quantity + 1);
   };
   const decreaseQuantity = () => {
     if (quantity === 0) return;
-    setQuatity(quantity - 1);
+    setQuantity(quantity - 1);
   };
 
   return (
     <div className={styles.itemCard}>
       <div className={styles.image}>
-        <img
-          src="https://www.bigbasket.com/media/uploads/p/s/10000159_25-fresho-potato.jpg"
-          alt="item"
-        />
+        <img src={item?.thumbnail} alt={item?.title || "Product"} />
         <div className={styles.addProduct}>
           {quantity ? (
-            <div className={styles.qunatityControl}>
+            <div className={styles.quantityControl}>
               <Minus
-                className={styles.qunatityControlButton}
+                className={styles.quantityControlButton}
                 onClick={decreaseQuantity}
               />
               <span>{quantity}</span>
               <Plus
-                className={styles.qunatityControlButton}
+                className={styles.quantityControlButton}
                 onClick={increaseQuantity}
               />
             </div>
           ) : (
             <Plus
-              className={styles.qunatityControlButton}
+              className={styles.quantityControlButton}
               onClick={increaseQuantity}
             />
           )}
         </div>
       </div>
-      <p className={styles.productName}>Product name </p>
+      <p className={styles.productName}>{item?.title}</p>
       <p>
-        <span>3 kg</span>
+        <span>1 {item?.refUnit?.symbol}</span>
         <br />
-        <span className={styles.discountedPrice}>&#x20B9;100</span>
+        <span className={styles.discountedPrice}>
+          &#x20B9;{getDiscountedPrice(item?.price, item?.discount)}
+        </span>
         &nbsp; &nbsp;
-        <del className={styles.mrp}>&#x20B9;110</del>
+        <del className={styles.mrp}>&#x20B9;{item?.price}</del>
       </p>
     </div>
   );
 }
+
+ItemCard.propTypes = {
+  item: PropTypes.object,
+};
 
 export default ItemCard;

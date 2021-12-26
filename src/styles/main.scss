@@ -59,7 +59,7 @@ li {
   outline: none;
   padding: 10px 8px;
   width: 100%;
-  border: 1px solid $bg-medium-gray;
+  border: 1px solid $bg-light-gray;
   color: $text-dark;
   border-radius: 5px;
   font-size: 1rem;
@@ -67,7 +67,7 @@ li {
   transition: 100ms;
 
   &:hover:enabled {
-    border: 1px solid $bg-light-gray;
+    border: 1px solid $bg-medium-gray;
   }
 
   &:focus:enabled {
@@ -82,6 +82,16 @@ li {
     background-color: $bg-medium-gray;
     color: $text-light-gray;
   }
+}
+
+.basic-input-error {
+  border: 1px solid $bg-red !important;
+}
+
+.error-msg {
+  color: $text-red;
+  font-weight: bold;
+  font-size: 0.875rem;
 }
 
 .styled-link {

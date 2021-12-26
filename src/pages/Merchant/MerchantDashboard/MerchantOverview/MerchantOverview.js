@@ -1,27 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
+
+import Button from "components/Button/Button";
+import AddProductModal from "../MerchantProduct/AddProductModal/AddProductModal";
 
 function MerchantOverView() {
+  const [showProductModal, setShowProductModal] = useState(false);
   return (
     <div>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
-      <h1>Overview</h1>
+      {showProductModal && (
+        <AddProductModal onClose={() => setShowProductModal(false)} />
+      )}
+      <Button onClick={() => setShowProductModal((prev) => !prev)}>
+        Add Product
+      </Button>
     </div>
   );
 }

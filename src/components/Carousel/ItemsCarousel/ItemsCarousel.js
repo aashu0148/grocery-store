@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { ChevronLeft, ChevronRight } from "react-feather";
-import { debounce } from "utils/util";
 
 import ItemCard from "./ItemCard/ItemCard";
 
 import styles from "./ItemsCarousel.module.scss";
 
+let timeout;
 function ItemsCarousel(props) {
   const carouselRef = useRef();
   const itemsRef = useRef();
@@ -24,7 +24,8 @@ function ItemsCarousel(props) {
   };
 
   const handleScroll = () => {
-    debounce(() => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
       const carousel = carouselRef?.current;
       if (!carousel) return;
 
@@ -41,7 +42,7 @@ function ItemsCarousel(props) {
           setRightButtonDisabled(true);
         else setRightButtonDisabled(false);
       }
-    });
+    }, 200);
   };
 
   useEffect(() => {
@@ -65,7 +66,7 @@ function ItemsCarousel(props) {
           <p className={styles.desc}>butter, cheese, milk, curd and more</p>
         </div>
         <div className={styles.right}>
-          <p className={styles.link}>see more {">"}</p>
+          <p className={`${styles.link} styled-link`}>see more {">"}</p>
 
           <div className={styles.buttons}>
             <button
@@ -88,7 +89,7 @@ function ItemsCarousel(props) {
         <div className={styles.items} ref={itemsRef}>
           {Array.isArray(props.items)
             ? props?.items?.map((item, index) => (
-                <ItemCard key={item?._id + index} />
+                <ItemCard key={item?._id + index} item={item} />
               ))
             : ""}
         </div>

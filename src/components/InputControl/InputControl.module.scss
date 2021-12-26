@@ -5,8 +5,12 @@
 
   .label {
     font-size: 1rem;
-    font-weight: 700;
-    color: $bg-tertiary;
+    font-weight: 500;
+    color: $text-dark-gray;
+
+    span {
+      font-size: 0.875rem;
+    }
   }
 
   .inputContainer {
@@ -19,7 +23,7 @@
       margin: 0;
 
       &::placeholder {
-        color: $bg-medium-gray;
+        color: $text-light-gray;
       }
       &:disabled {
         background-color: $bg-greenish-white;
@@ -52,4 +56,8 @@
     font-size: 0.875rem;
     padding-left: 3px;
   }
+}
+
+.selectContainer {
+  margin: 3px 0;
 }

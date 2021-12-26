@@ -5,16 +5,21 @@ import { Eye, EyeOff } from "react-feather";
 
 import styles from "./InputControl.module.scss";
 
-const InputControl = forwardRef((props, ref) => {
+const InputControl = forwardRef(({ subLabel, label, error, ...props }, ref) => {
   const [visible, setVisible] = useState(props.password ? false : true);
   return (
     <div className={styles.container}>
-      {props.label && <label className={styles.label}>{props.label}</label>}
+      {label && (
+        <label className={styles.label}>
+          {label}
+          <span>{subLabel}</span>
+        </label>
+      )}
       <div className={styles.inputContainer}>
         <input
           className={`basic-input ${
             props.password ? styles.passwordInput : ""
-          }`}
+          } ${error ? "basic-input-error" : ""}`}
           type={visible ? "text" : "password"}
           {...props}
           ref={ref}
@@ -25,7 +30,7 @@ const InputControl = forwardRef((props, ref) => {
           </div>
         )}
       </div>
-      {props.error ? <p className={styles.errorMsg}>{props.error}</p> : ""}
+      {error ? <p className={styles.errorMsg}>{error}</p> : ""}
     </div>
   );
 });
@@ -34,6 +39,7 @@ InputControl.propsTypes = {
   password: PropTypes.bool,
   error: PropTypes.string,
   label: PropTypes.string,
+  subLabel: PropTypes.string,
 };
 
 export default InputControl;

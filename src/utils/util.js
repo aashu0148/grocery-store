@@ -2,8 +2,6 @@ import toast from "react-hot-toast";
 
 import { mobileRegex, emailRegex, otpRegex } from "./constants";
 
-let debounceTimer;
-
 export const errorToastLogger = (error, message) => {
   if (error?.response?.data?.message) {
     toast.error(error?.response?.data?.message);
@@ -48,8 +46,26 @@ export const validatePassword = (password) => {
   } else return true;
 };
 
-export const debounce = (func, timer = 200) => {
-  clearTimeout(debounceTimer);
+export const validateImage = (file, size = 2) => {
+  if (!file) return { status: false, message: "File not selected" };
 
-  debounceTimer = setTimeout(func, timer);
+  const fileType = file.type.split("/").pop().toLowerCase();
+  const fileSizeInMb = file.size / 1024 / 1024;
+  if (
+    fileType !== "jpeg" &&
+    fileType !== "jpg" &&
+    fileType !== "png" &&
+    fileType !== "gif"
+  )
+    return { status: false, message: "Select a valid image." };
+
+  if (fileSizeInMb > size)
+    return { status: false, message: `Image must me smaller than ${size} MB` };
+
+  return { status: true, message: `Image is valid` };
+};
+
+export const getDiscountedPrice = (price, discount = 0) => {
+  if (!price) return 0;
+  return Math.round(price - (discount / 100) * price);
 };
