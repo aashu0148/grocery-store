@@ -305,6 +305,7 @@ function ProductForm(props) {
           />
           <InputControl
             label="Quantity*"
+            subLabel="(In Stock)"
             type="number"
             min={1}
             max={10000}
