@@ -1,0 +1,21 @@
+@import "styles/variables";
+
+.container {
+    display: flex;
+    gap: 30px;
+    padding: 30px;
+
+    .left .leftInner {
+        position: sticky;
+        top: 0;
+        border-right: 1px solid $bg-light-gray;
+        padding-right: 30px;
+    }
+
+    .right {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+}

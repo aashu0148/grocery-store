@@ -29,23 +29,23 @@ li {
 
 // custom -scrollbar
 @media (min-width: 768px) {
-  .custom-scroll {
+  * {
     &::-webkit-scrollbar-track {
       box-shadow: none !important;
       background-color: transparent;
-      cursor: default !important;
+      cursor: default;
     }
 
     &::-webkit-scrollbar {
       background-color: transparent;
-      cursor: default !important;
-      width: 10px;
+      cursor: default;
+      width: 12px;
     }
 
     &::-webkit-scrollbar-thumb {
       background-color: $bg-light-gray;
-      border-radius: 10px;
-      cursor: default !important;
+      border-radius: 12px;
+      cursor: pointer;
     }
 
     &::-webkit-scrollbar-thumb:hover {
@@ -98,6 +98,7 @@ li {
   color: $text-primary;
   font-size: 1rem;
   line-height: 1.25rem;
+  cursor: pointer;
   position: relative;
 
   &::after {
