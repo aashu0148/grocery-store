@@ -1,0 +1,162 @@
+@import "styles/variables";
+
+.container {
+  max-height: 100vh;
+  height: 90%;
+  width: 100%;
+}
+.titleSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  h2 {
+    color: $text-dark;
+    padding-left: 8px;
+  }
+}
+
+.profile {
+  background-color: $bg-white-2;
+  padding: 16px;
+  max-height: 75vh;
+  height: 100%;
+  overflow-y: hidden;
+  display: flex;
+  border-radius: 15px;
+  .leftMainContainer {
+    flex: 1;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .left {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+    width: 100%;
+    border-right: 1px solid $bg-greenish-white;
+    gap: 10px;
+
+    .profile_image {
+      position: relative;
+      img {
+        height: 150px;
+        width: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        background-color: $bg-greenish-white;
+        box-shadow: 0 0 10px 0 $bg-greenish-white-2;
+      }
+      .editProfileIcon {
+        cursor: pointer;
+        position: absolute;
+        bottom: 18px;
+        right: 0;
+        background-color: $bg-white-1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        padding: 8px;
+        border-radius: 50%;
+        box-shadow: 0 0 20px 0 $bg-greenish-white;
+      }
+    }
+    .avatarsContainer {
+      display: flex;
+      gap: 20px;
+      width: 350px;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 16px;
+      border-radius: 10px;
+      background-color: $bg-greenish-white-2;
+      .avatar {
+        height: 50px;
+        background-color: $bg-greenish-white;
+        border-radius: 50%;
+        cursor: pointer;
+        img {
+          height: 100%;
+          width: 100%;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+  .rightMainContainer {
+    flex: 1;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .right {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 24px;
+    padding-top: 0;
+    gap: 20px;
+  }
+  .inputControlContainer {
+    position: relative;
+    display: flex;
+    padding-left: 40px;
+    width: 100%;
+    gap: 20px;
+    p {
+      color: $bg-tertiary;
+    }
+    span {
+      position: absolute;
+      right: 0;
+      color: $text-secondary;
+      cursor: pointer;
+      height: fit-content;
+    }
+  }
+}
+.sections {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  .headingSection {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: $bg-tertiary;
+    z-index: 10;
+    font-size: 20px;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    top: 22px;
+    left: 11px;
+    height: 100%;
+    width: 2px;
+    border-radius: 5px;
+    background-color: $bg-greenish-white;
+  }
+}
+.lastSection {
+  height: 0;
+}
+
+.buttonContainer {
+  display: flex;
+}
+#imageInput {
+  display: none;
+}
+.changeDetailModal {
+  width: 100%;
+  padding: 24px;
+}

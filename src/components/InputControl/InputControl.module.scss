@@ -21,6 +21,9 @@
       &::placeholder {
         color: $bg-medium-gray;
       }
+      &:disabled {
+        background-color: $bg-greenish-white;
+      }
     }
 
     .passwordInput {
