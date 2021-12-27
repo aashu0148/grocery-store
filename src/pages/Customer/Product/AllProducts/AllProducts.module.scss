@@ -52,11 +52,12 @@
                     padding: 10px;
                     padding-top: 0;
                     white-space: nowrap;
+                    font-weight: 500;
+                    color: $text-dark;
                 }
 
                 .active {
                     color: $text-primary;
-                    font-weight: 500;
                     border-bottom: 2px solid $bg-primary;
                 }
             }
@@ -64,9 +65,21 @@
 
         .productsContainer {
             display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            padding-left: 3px;
+            flex-direction: column;
+            gap: 10px;
+
+            .title {
+                font-weight: bold;
+                color: $text-dark;
+                font-size: 1.2rem;
+            }
+
+            .products {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 30px;
+                padding-left: 3px;
+            }
         }
     }
 }

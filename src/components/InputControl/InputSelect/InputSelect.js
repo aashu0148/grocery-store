@@ -22,7 +22,7 @@ function InputSelect({ label, error, async, asyncCreatable, ...rest }) {
   const customSelectStyle = {
     control: (provided, { selectProps: { error }, isFocused }) => ({
       ...provided,
-      height: 43,
+      height: 37,
       borderColor: colors.lightGray,
       boxShadow: error
         ? `0 0 0 1px ${colors.red}`

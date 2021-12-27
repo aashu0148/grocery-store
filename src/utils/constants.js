@@ -29,3 +29,18 @@ export const avatarLinks = [
   "https://firebasestorage.googleapis.com/v0/b/grocery0store.appspot.com/o/avatars%2Fwomen5.png?alt=media&token=dfb5fdc2-f468-43e7-a941-699b9c006b31",
   "https://firebasestorage.googleapis.com/v0/b/grocery0store.appspot.com/o/avatars%2Fwomen6.png?alt=media&token=c687fde2-e4e3-4867-a3df-363857c8fee5",
 ];
+
+export const sortingOptions = [
+  {
+    value: "discount",
+    label: "Discount",
+  },
+  {
+    value: "price-a",
+    label: "Price ( low to high )",
+  },
+  {
+    value: "price-d",
+    label: "Price ( high to low )",
+  },
+];
