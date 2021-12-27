@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import ProductCard from "./ProductCard/ProductCard";
+import Paginate from "components/Paginate/Paginate";
 import Filters from "./Filters/Filters";
 import Spinner from "components/Spinner/Spinner";
 
@@ -20,30 +21,38 @@ function AllProducts() {
   const [filters, setFilters] = useState({
     refSubCategory: "",
   });
+  const [fetchingMoreProducts, setFetchingMoreProducts] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const fetchAllProducts = (filters) => {
-    getAllProducts(filters).then((res) => {
+  const fetchAllProducts = (givenFilters = filters, page = 1) => {
+    getAllProducts(givenFilters, page).then((res) => {
       setProductsLoaded(true);
       if (!res) return;
-      setProducts(res.data?.products?.data);
-      setTotalProducts(res.data?.products?.total);
-      setFilteredCategories(
-        res?.data?.categories?.map((item) =>
-          item?.subCategory
-            ? {
-                _id: item?.subCategory?._id,
-                name: item?.subCategory?.name,
-                total: item?.total,
-                isSubcategory: true,
-              }
-            : {
-                _id: item?.category?._id,
-                name: item?.category?.name,
-                total: item?.total,
-                isSubcategory: false,
-              }
-        )
-      );
+      const products = res.data?.products;
+      if (page === 1) {
+        setProducts(products?.data);
+        setFilteredCategories(
+          res?.data?.categories?.map((item) =>
+            item?.subCategory
+              ? {
+                  _id: item?.subCategory?._id,
+                  name: item?.subCategory?.name,
+                  total: item?.total,
+                  isSubcategory: true,
+                }
+              : {
+                  _id: item?.category?._id,
+                  name: item?.category?.name,
+                  total: item?.total,
+                  isSubcategory: false,
+                }
+          )
+        );
+      } else {
+        setProducts((prev) => [...prev, ...products.data]);
+      }
+      setFetchingMoreProducts(false);
+      setTotalProducts(products?.total);
     });
   };
 
@@ -87,6 +96,25 @@ function AllProducts() {
     fetchAllProducts(tempFilters);
   };
 
+  const handleFetchMoreProducts = () => {
+    let totalProducts, currentPage;
+    setTotalProducts((prev) => {
+      totalProducts = prev;
+      return prev;
+    });
+    setCurrentPage((prev) => {
+      currentPage = prev;
+      return prev;
+    });
+    const totalPages = parseInt(totalProducts / 20) + 1;
+
+    if (currentPage < totalPages) {
+      setFetchingMoreProducts(true);
+      fetchAllProducts(filters, currentPage + 1);
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.left}>
@@ -125,15 +153,18 @@ function AllProducts() {
         {productsLoaded ? (
           <div className={styles.productsContainer}>
             <p className={styles.title}>Products ({totalProducts})</p>
-            <div className={styles.products}>
-              {!products.length ? (
-                <p>Oops no Products found with selected filter</p>
-              ) : (
-                products.map((item) => (
-                  <ProductCard key={item?._id} product={item} />
-                ))
-              )}
-            </div>
+            <Paginate onEnd={handleFetchMoreProducts}>
+              <div className={styles.products}>
+                {!products.length ? (
+                  <p>Oops no Products found with selected filter</p>
+                ) : (
+                  products.map((item) => (
+                    <ProductCard key={item?._id} product={item} />
+                  ))
+                )}
+              </div>
+            </Paginate>
+            {fetchingMoreProducts && <Spinner />}
           </div>
         ) : (
           <Spinner />
