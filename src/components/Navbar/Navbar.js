@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router";
@@ -13,6 +13,7 @@ import styles from "./Navbar.module.scss";
 function Navbar(props) {
   const navigate = useNavigate();
   const location = useLocation();
+  const searchInputRef = useRef();
 
   const [showUserDropdown, setShowUserDropdown] = useState(false);
 
@@ -21,22 +22,37 @@ function Navbar(props) {
     navigate("/");
   };
 
+  const handleSearch = () => {
+    const query = searchInputRef?.current?.value;
+
+    if (!query || !query.trim()) return;
+
+    window.location.replace(`/product?search=${query.trim()}`);
+  };
+
   return (
     <div className={styles.navbar}>
       <Link to="/">
         <div className={styles.logo}>grocery</div>
       </Link>
       <div className={styles.content}>
-        <div className={styles.searchBox}>
+        <form
+          className={styles.searchBox}
+          onSubmit={(event) => {
+            event.preventDefault();
+            handleSearch();
+          }}
+        >
           <input
+            ref={searchInputRef}
             type="text"
             className="basic-input"
             placeholder="Search product"
           />
           <div className={styles.searchIcon}>
-            <Search />
+            <Search onClick={handleSearch} />
           </div>
-        </div>
+        </form>
         {!props.auth ? (
           <div className={styles.auth}>
             {location.pathname?.includes("register") ||
