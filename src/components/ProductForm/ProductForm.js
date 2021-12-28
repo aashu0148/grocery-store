@@ -9,7 +9,7 @@ import ImagePreview from "components/ImagePreview/ImagePreview";
 import ProgressBar from "components/ProgressBar/ProgressBar.";
 import Spinner from "components/Spinner/Spinner";
 
-import { validateImage } from "utils/util";
+import { getDiscountedPrice, validateImage } from "utils/util";
 import { getAllUnits } from "api/user/unit";
 import { imageUpload } from "utils/firebase";
 import { getAllCategories } from "api/user/category";
@@ -35,7 +35,8 @@ function ProductForm(props) {
     discountType: discountTypeOptions[0],
     title: props.defaults?.title || "",
     description: props.defaults?.description || "",
-    quantity: props.defaults?.quantity || "",
+    quantityOfProduct: props.defaults?.quantityOfProduct || "",
+    noOfProducts: props.defaults?.noOfProducts || "",
     category: props.defaults?.refCategory
       ? {
           value: props.defaults?.refCategory?._id,
@@ -57,7 +58,8 @@ function ProductForm(props) {
   const [values, setValues] = useState({
     title: props.defaults?.title || "",
     description: props.defaults?.description || "",
-    quantity: props.defaults?.quantity || "",
+    quantityOfProduct: props.defaults?.quantityOfProduct || "",
+    noOfProducts: props.defaults?.noOfProducts || "",
     refCategory: props.defaults?.refCategory?._id || "",
     refSubCategory: props.defaults?.refSubCategory?._id || "",
     refUnit: props.defaults?.refUnit?._id || "",
@@ -81,6 +83,7 @@ function ProductForm(props) {
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [units, setUnits] = useState([]);
+  const [selectedUnit, setSelectedUnit] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadProgressText, setUploadProgressText] = useState(0);
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
@@ -175,9 +178,13 @@ function ProductForm(props) {
     if (!values.title) errors.title = "Enter title";
     if (!values.price) errors.price = "Enter price";
     else if (values.price < 0) errors.price = "Price should be greater than 0";
-    if (!values.quantity) errors.quantity = "Enter quantity";
-    else if (values.quantity < 0)
-      errors.quantity = "Quantity should be greater than 0";
+    if (!values.quantityOfProduct)
+      errors.quantityOfProduct = "Enter quantity of product";
+    else if (values.quantityOfProduct < 0)
+      errors.quantityOfProduct = "Product Quantity should be greater than 0";
+    if (!values.noOfProducts) errors.noOfProducts = "Enter number of products";
+    else if (values.noOfProducts < 0)
+      errors.noOfProducts = "Number of products should be greater than 0";
     if (discountType === discountTypes.percentage && values.discount > 99)
       errors.discount = "Discount must be smaller than 100%";
     else if (
@@ -261,9 +268,42 @@ function ProductForm(props) {
             }
             error={errors.title}
           />
+          <InputSelect
+            label="Unit*"
+            placeholder="Select product unit"
+            options={units}
+            error={errors.unit}
+            onChange={(item) => {
+              setValues({ ...values, refUnit: item.value });
+              setSelectedUnit(item.label?.split("(")[0]);
+            }}
+          />
+        </div>
+        <div className={styles.row}>
+          <InputControl
+            label="Quantity*"
+            subLabel="(w.r.t unit)"
+            type="number"
+            min={1}
+            max={100}
+            step={1}
+            placeholder="Enter quantity of product"
+            defaultValue={defaultValues.quantityOfProduct}
+            onChange={(event) =>
+              setValues({
+                ...values,
+                quantityOfProduct: parseInt(event.target.value),
+              })
+            }
+            error={errors.quantityOfProduct}
+          />
           <InputControl
             label="Price*"
-            subLabel=" (per unit)"
+            subLabel={
+              values.quantityOfProduct && values.refUnit && values.price
+                ? `( ₹ ${values.price} = ${values.quantityOfProduct} ${selectedUnit})`
+                : ""
+            }
             type="tel"
             placeholder="Enter product price"
             defaultValue={defaultValues.price}
@@ -295,32 +335,25 @@ function ProductForm(props) {
             <p className="error-msg">{errors.description}</p>
           )}
         </div>
-        <div className={styles.row}>
-          <InputSelect
-            label="Unit*"
-            placeholder="Select product unit"
-            options={units}
-            error={errors.unit}
-            onChange={(item) => setValues({ ...values, refUnit: item.value })}
-          />
-          <InputControl
-            label="Quantity*"
-            subLabel="(In Stock)"
-            type="number"
-            min={1}
-            max={10000}
-            step={1}
-            placeholder="Enter product quantity"
-            defaultValue={defaultValues.quantity}
-            onChange={(event) =>
-              setValues({
-                ...values,
-                quantity: parseInt(event.target.value),
-              })
-            }
-            error={errors.quantity}
-          />
-        </div>
+
+        <InputControl
+          label="Total Number of Products*"
+          subLabel="( in stock )"
+          type="number"
+          min={1}
+          max={10000}
+          step={10}
+          placeholder="Enter number of products available"
+          defaultValue={defaultValues.noOfProducts}
+          onChange={(event) =>
+            setValues({
+              ...values,
+              noOfProducts: parseInt(event.target.value),
+            })
+          }
+          error={errors.noOfProducts}
+        />
+
         <div className={styles.row}>
           <InputSelect
             label="Discount type"
@@ -348,8 +381,18 @@ function ProductForm(props) {
               setDiscountType(item.value);
             }}
           />
+
           <InputControl
             label="Discount"
+            subLabel={
+              values.price
+                ? `( discounted price : ${
+                    discountType === discountTypes.percentage
+                      ? getDiscountedPrice(values.price, values.discount)
+                      : values.price - values.discount
+                  } )`
+                : ""
+            }
             type="number"
             min={0}
             placeholder="Enter product discount"

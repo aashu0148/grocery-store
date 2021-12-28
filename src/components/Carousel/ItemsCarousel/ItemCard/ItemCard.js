@@ -45,11 +45,16 @@ function ItemCard(props) {
       </div>
       <p className={styles.productName}>{item?.title}</p>
       <p>
-        <span>1 {item?.refUnit?.symbol}</span>
+        <span>
+          {!item?.quantityOfProduct || item?.quantityOfProduct < 2
+            ? "1"
+            : item?.quantityOfProduct}{" "}
+          {item?.refUnit?.symbol?.trim() || item?.refUnit?.name}
+        </span>
         <br />
         <span className={styles.discountedPrice}>
           {"₹"}
-          {getDiscountedPrice(item?.price, item?.discount)}
+          {getDiscountedPrice(item?.price, item?.discount)}{" "}
         </span>
         &nbsp; &nbsp;
         {item?.discount ? (
