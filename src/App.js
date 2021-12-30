@@ -17,6 +17,7 @@ import PageNotFound from "pages/common/PageNotFound/PageNotFound";
 import HomePage from "pages/Customer/HomePage/HomePage";
 import MerchantDashboard from "pages/Merchant/MerchantDashboard/MerchantDashboard";
 import PrivateRoute from "components/PrivateRoute/PrivateRoute";
+import AllProducts from "pages/Customer/Product/AllProducts/AllProducts";
 import PreLoader from "pages/common/PreLoader/PreLoader";
 import Profile from "pages/Merchant/Profile/Profile";
 
@@ -116,6 +117,7 @@ function App() {
                   isAuthenticated ? <Navigate to="/" /> : <CustomerRegister />
                 }
               />
+              <Route path="/product" element={<AllProducts />} />
               <Route
                 path="/login"
                 element={
@@ -137,6 +139,7 @@ function App() {
                   isAuthenticated ? <Navigate to="/" /> : <MerchantLoginPage />
                 }
               />
+
               <Route
                 path="/merchant/*"
                 element={
@@ -145,23 +148,6 @@ function App() {
                   </PrivateRoute>
                 }
               />
-              <Route
-                path="/profile/*"
-                element={
-                  <PrivateRoute auth={isAuthenticated}>
-                    <Profile />
-                  </PrivateRoute>
-                }
-              />
-              {/* private route example ->
-              <Route
-                path="/merchant"
-                element={
-                  <PrivateRoute auth={isAuthenticated}>
-                    <h1>Hello</h1>
-                  </PrivateRoute>
-                }
-              /> */}
 
               <Route path="/*" element={<PageNotFound />} />
             </Routes>

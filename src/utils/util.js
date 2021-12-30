@@ -65,7 +65,7 @@ export const validateImage = (file, size = 2) => {
   return { status: true, message: `Image is valid` };
 };
 
-export const getDiscountedPrice = (price, discount = 0) => {
+export const getDiscountedPrice = (price, discountInPercentage = 0) => {
   if (!price) return 0;
-  return Math.round(price - (discount / 100) * price);
+  return Math.round(price - (discountInPercentage / 100) * price);
 };

@@ -12,7 +12,7 @@ const InputControl = forwardRef(({ subLabel, label, error, ...props }, ref) => {
       {label && (
         <label className={styles.label}>
           {label}
-          <span>{subLabel}</span>
+          <span> {subLabel}</span>
         </label>
       )}
       <div className={styles.inputContainer}>
