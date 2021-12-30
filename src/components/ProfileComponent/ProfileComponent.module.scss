@@ -36,32 +36,29 @@
     height: 100%;
     flex-direction: column;
     width: 100%;
-    border-right: 1px solid $bg-greenish-white;
     gap: 10px;
 
     .profile_image {
       position: relative;
-      img {
-        height: 150px;
-        width: 150px;
-        border-radius: 50%;
-        object-fit: cover;
-        background-color: $bg-greenish-white;
-        box-shadow: 0 0 10px 0 $bg-greenish-white-2;
-      }
+
       .editProfileIcon {
+        height: 28px;
+        width: 28px;
         cursor: pointer;
         position: absolute;
-        bottom: 18px;
-        right: 0;
-        background-color: $bg-white-1;
+        color: $bg-primary;
+        bottom: 30px;
+        right: 0px;
+        background-color: $white;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: fit-content;
-        padding: 8px;
+        padding: 3px;
         border-radius: 50%;
-        box-shadow: 0 0 20px 0 $bg-greenish-white;
+        border: 1px solid transparent;
+        &:hover {
+          border: 1px solid $bg-primary;
+        }
       }
     }
     .avatarsContainer {
@@ -102,6 +99,7 @@
     padding: 24px;
     padding-top: 0;
     gap: 20px;
+    border-left: 1px solid $bg-greenish-white;
   }
   .inputControlContainer {
     position: relative;
@@ -132,7 +130,7 @@
     align-items: center;
     gap: 16px;
     color: $bg-tertiary;
-    z-index: 10;
+    z-index: 1;
     font-size: 20px;
   }
   &::after {
@@ -159,4 +157,7 @@
 .changeDetailModal {
   width: 100%;
   padding: 24px;
+}
+.additionalStyle {
+  box-shadow: 0px 0px 10px solid $bg-greenish-white-2 !important;
 }

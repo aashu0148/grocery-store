@@ -1,53 +1,32 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { StopCircle, Edit } from "react-feather";
 
-import Button from "components/Button/Button";
-
 import { validateMobile } from "utils/util";
+import { getAvatarLink } from "api/user/avatar";
 
-import styles from "./ProfileComponent.module.scss";
+import Button from "components/Button/Button";
+import ImagePreview from "components/ImagePreview/ImagePreview";
 import InputControl from "components/InputControl/InputControl";
 import Modal from "components/Modal/Modal";
 import VerifyOtp from "components/verifyOtp/VerifyOtp";
+
+import styles from "./ProfileComponent.module.scss";
 
 function ProfileComponent() {
   const [profileUrl, setProfileUrl] = useState(
     "https://as2.ftcdn.net/v2/jpg/02/15/84/43/1000_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
   );
-
   const [errorMsg, setErrorMsg] = useState("");
   const [isChangeMobileOtpSent, setIsChangeMobileOtpSent] = useState(false);
   const [newMobile, setNewMobile] = useState("");
   const [changeInfo, setChangeInfo] = useState({ type: "" });
+  const [file, setFile] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState({
+    men: [],
+    women: [],
+  });
   const newMobileRef = useRef();
   const profileInputRef = useRef();
-
-  const avatars = [
-    {
-      url: "https://cdn.iconscout.com/icon/free/png-128/user-1909-879837.png",
-    },
-    {
-      url: "https://cdn-icons-png.flaticon.com/128/265/265674.png",
-    },
-    {
-      url: "https://cdn-icons.flaticon.com/png/512/547/premium/547590.png?token=exp=1639916534~hmac=7bd46cc442e12bf6738084132333a91b",
-    },
-    {
-      url: "https://cdn.iconscout.com/icon/free/png-128/user-1908-879836.png",
-    },
-    {
-      url: "https://cdn.iconscout.com/icon/free/png-128/avatar-1253-879841.png",
-    },
-    {
-      url: "https://cdn-icons.flaticon.com/png/512/122/premium/122491.png?token=exp=1639916493~hmac=ed4e8eda5da132cdc1132a2454e9a69a",
-    },
-    {
-      url: "https://cdn-icons-png.flaticon.com/128/2922/2922561.png",
-    },
-    {
-      url: "https://cdn.iconscout.com/icon/free/png-128/woman-1285-879839.png",
-    },
-  ];
 
   const closeEditingModal = () => {
     setChangeInfo({
@@ -79,16 +58,18 @@ function ProfileComponent() {
   const handleAvatar = (url) => {
     if (!url) return;
     setProfileUrl(url);
+    setFile("");
   };
 
   const removeAvatar = () => {
     setProfileUrl(
       "https://as2.ftcdn.net/v2/jpg/02/15/84/43/1000_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
     );
+    setFile("");
   };
 
   const imageUploadHandler = () => {
-    console.log(profileInputRef.current.files);
+    setFile(profileInputRef.current.files[0]);
   };
 
   // const changePassword = (
@@ -97,7 +78,7 @@ function ProfileComponent() {
   //     <InputControl label={`Confirm password`} />
   //     <div className={styles.buttonContainer}>
   //       <Button>Done</Button>
-  //       <Button delete onClick={closeEditingModal}>
+  //       <Button cancel onClick={closeEditingModal}>
   //         Cancel
   //       </Button>
   //     </div>
@@ -119,7 +100,7 @@ function ProfileComponent() {
           />
           <div className={styles.buttonContainer}>
             <Button onClick={handleChangeMobileNumber}>Change</Button>
-            <Button delete onClick={closeEditingModal}>
+            <Button cancel onClick={closeEditingModal}>
               Cancel
             </Button>
           </div>
@@ -127,6 +108,15 @@ function ProfileComponent() {
       )}
     </div>
   );
+
+  useEffect(() => {
+    getAvatarLink().then((res) =>
+      setAvatarUrl({
+        men: res?.data?.men,
+        women: res?.data?.women,
+      })
+    );
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -139,7 +129,16 @@ function ProfileComponent() {
         <div className={styles.leftMainContainer}>
           <div className={styles.left}>
             <div className={styles.profile_image}>
-              <img src={profileUrl} alt="avatar" />
+              {console.log(file, profileUrl)}
+              <ImagePreview
+                className={styles.additionalStyle}
+                large
+                isDeleteIcon={true}
+                isCrop={true}
+                src={typeof file === "object" ? null : profileUrl}
+                file={typeof file === "object" ? file : null}
+              />
+
               <input
                 id={styles.imageInput}
                 type="file"
@@ -154,13 +153,22 @@ function ProfileComponent() {
               </div>
             </div>
             <div className={styles.avatarsContainer}>
-              {avatars?.map((avatar, index) => (
+              {avatarUrl?.men.map((avatar, index) => (
                 <div
                   className={styles.avatar}
-                  onClick={() => handleAvatar(avatar.url)}
+                  onClick={() => handleAvatar(avatar)}
                   key={index}
                 >
-                  <img src={avatar.url} alt="avatar" />
+                  <img src={avatar} alt="avatar" />
+                </div>
+              ))}
+              {avatarUrl?.women.map((avatar, index) => (
+                <div
+                  className={styles.avatar}
+                  onClick={() => handleAvatar(avatar)}
+                  key={index}
+                >
+                  <img src={avatar} alt="avatar" />
                 </div>
               ))}
             </div>
