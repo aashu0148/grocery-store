@@ -42,17 +42,21 @@ function ProfileComponent() {
   };
 
   const handleChangeMobileNumber = () => {
-    if (!newMobileRef.current.value) {
+    console.log(newMobileRef);
+    if (!newMobileRef?.current.value) {
       setErrorMsg("Enter new number");
       return;
     }
     setErrorMsg("");
-    if (!validateMobile(newMobileRef.current.value)) {
+    if (!validateMobile(newMobileRef?.current?.value)) {
       setErrorMsg("enter valid mobile number");
       return;
     }
     setNewMobile(newMobileRef.current.value);
     setIsChangeMobileOtpSent(true);
+  };
+  const handleChangePassword = () => {
+    //will do it later when api will be ready
   };
 
   const handleEditingModal = (type) => {
@@ -78,18 +82,18 @@ function ProfileComponent() {
     setFile(profileInputRef.current.files[0]);
   };
 
-  // const changePassword = (
-  //   <div className={styles.changeDetailModal}>
-  //     <InputControl label={`New passwerd`} />
-  //     <InputControl label={`Confirm password`} />
-  //     <div className={styles.buttonContainer}>
-  //       <Button>Done</Button>
-  //       <Button cancel onClick={closeEditingModal}>
-  //         Cancel
-  //       </Button>
-  //     </div>
-  //   </div>
-  // );
+  const changePassword = (
+    <div className={styles.changeDetailModal}>
+      <InputControl label={`New passwerd`} />
+      <InputControl label={`Confirm password`} />
+      <div className={styles.buttonContainer}>
+        <Button onClick={handleChangePassword}>Done</Button>
+        <Button cancel onClick={closeEditingModal}>
+          Cancel
+        </Button>
+      </div>
+    </div>
+  );
 
   const changeMobile = (
     <div className={styles.changeDetailModal}>
@@ -233,7 +237,9 @@ function ProfileComponent() {
               </div>
               <div className={styles.inputControlContainer}>
                 <p>Forgot password? </p>
-                <span>Change Password</span>
+                <span onClick={() => handleEditingModal("password")}>
+                  Change Password
+                </span>
               </div>
             </div>
             <div className={styles.sections}>
@@ -264,6 +270,8 @@ function ProfileComponent() {
       </div>
       {changeInfo?.type === "mobile" ? (
         <Modal onClose={closeEditingModal}>{changeMobile}</Modal>
+      ) : changeInfo?.type === "password" ? (
+        <Modal onClose={closeEditingModal}>{changePassword}</Modal>
       ) : (
         ""
       )}
