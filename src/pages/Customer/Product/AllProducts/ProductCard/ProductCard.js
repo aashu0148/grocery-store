@@ -15,6 +15,7 @@ function ProductCard(props) {
   const [quantity, setQuantity] = useState(1);
   const [showProductModal, setShowProductModal] = useState(false);
 
+  const availableIn = product?.availabilities ? product?.availabilities[0] : "";
   return (
     <>
       {showProductModal && (
@@ -24,13 +25,13 @@ function ProductCard(props) {
         />
       )}
       <div className={styles.container}>
-        {product?.discount ? (
+        {availableIn?.discount ? (
           <div
             className={`${styles.discount} ${
-              product?.discount > 15 ? styles.red : ""
+              availableIn?.discount > 15 ? styles.red : ""
             }`}
           >
-            -{product?.discount}%
+            -{availableIn?.discount}%
           </div>
         ) : (
           ""
@@ -49,13 +50,19 @@ function ProductCard(props) {
 
             <p className={styles.price}>
               <span>
-                {`₹ ${getDiscountedPrice(product?.price, product?.discount)}`}
+                {`₹ ${getDiscountedPrice(
+                  availableIn?.price,
+                  availableIn?.discount
+                )}`}
               </span>
               {` / ${
-                !product?.quantityOfProduct || product?.quantityOfProduct < 2
+                !availableIn?.quantity || availableIn?.quantity < 2
                   ? ""
-                  : product?.quantityOfProduct
-              }${product.refUnit?.symbol?.trim() || product.refUnit?.name}`}
+                  : availableIn?.quantity
+              }${
+                availableIn?.refUnit?.symbol?.trim() ||
+                availableIn?.refUnit?.name
+              }`}
             </p>
           </div>
         </div>

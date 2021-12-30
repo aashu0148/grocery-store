@@ -18,6 +18,7 @@ function ItemCard(props) {
     setQuantity(quantity - 1);
   };
 
+  const availableIn = item?.availabilities ? item.availabilities[0] : "";
   return (
     <div className={styles.itemCard}>
       <div className={styles.image}>
@@ -46,21 +47,21 @@ function ItemCard(props) {
       <p className={styles.productName}>{item?.title}</p>
       <p>
         <span>
-          {!item?.quantityOfProduct || item?.quantityOfProduct < 2
+          {!availableIn?.quantity || availableIn?.quantity < 2
             ? "1"
-            : item?.quantityOfProduct}{" "}
-          {item?.refUnit?.symbol?.trim() || item?.refUnit?.name}
+            : availableIn?.quantity}{" "}
+          {availableIn?.refUnit?.symbol?.trim() || availableIn?.refUnit?.name}
         </span>
         <br />
         <span className={styles.discountedPrice}>
           {"₹"}
-          {getDiscountedPrice(item?.price, item?.discount)}{" "}
+          {getDiscountedPrice(availableIn?.price, availableIn?.discount)}{" "}
         </span>
         &nbsp; &nbsp;
-        {item?.discount ? (
+        {availableIn?.discount ? (
           <del className={styles.mrp}>
             {"₹"}
-            {item?.price}
+            {availableIn?.price}
           </del>
         ) : (
           ""

@@ -19,7 +19,9 @@ function Modal(props) {
       onClick={() => (props.onClose ? props.onClose() : "")}
     >
       <div
-        className={styles.inner}
+        className={`${styles.inner} ${
+          props.doNotAnimate ? styles.preventAnimation : ""
+        }`}
         onClick={(event) => event.stopPropagation()}
       >
         {props.children}
@@ -30,6 +32,7 @@ function Modal(props) {
 
 Modal.propTypes = {
   onClose: PropTypes.func,
+  doNotAnimate: PropTypes.bool,
 };
 
 export default Modal;
