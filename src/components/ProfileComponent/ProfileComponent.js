@@ -129,7 +129,6 @@ function ProfileComponent() {
         <div className={styles.leftMainContainer}>
           <div className={styles.left}>
             <div className={styles.profile_image}>
-              {console.log(file, profileUrl)}
               <ImagePreview
                 className={styles.additionalStyle}
                 large
