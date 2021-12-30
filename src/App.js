@@ -148,6 +148,15 @@ function App() {
                   </PrivateRoute>
                 }
               />
+              {/* --> common routes  */}
+              <Route
+                path="/profile"
+                element={
+                  <PrivateRoute auth={isAuthenticated}>
+                    <Profile />
+                  </PrivateRoute>
+                }
+              />
 
               <Route path="/*" element={<PageNotFound />} />
             </Routes>

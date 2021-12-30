@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { StopCircle, Edit } from "react-feather";
 
 import { validateMobile } from "utils/util";
@@ -13,6 +14,11 @@ import VerifyOtp from "components/verifyOtp/VerifyOtp";
 import styles from "./ProfileComponent.module.scss";
 
 function ProfileComponent() {
+  const fnameSelector = useSelector((state) => state.merchantReducer.firstName);
+  const lnameSelector = useSelector((state) => state.merchantReducer.lastName);
+  const mobileSelector = useSelector((state) => state.merchantReducer.mobile);
+  const emailSelector = useSelector((state) => state.merchantReducer.email);
+
   const [profileUrl, setProfileUrl] = useState(
     "https://as2.ftcdn.net/v2/jpg/02/15/84/43/1000_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
   );
@@ -187,12 +193,14 @@ function ProfileComponent() {
               </div>
               <div className={styles.inputControlContainer}>
                 <InputControl
-                  label={`First name`}
+                  label="First name"
                   placeholder="Enter first name"
+                  defaultValue={fnameSelector}
                 />
                 <InputControl
-                  label={`Last name`}
+                  label="Last name"
                   placeholder="Enter last name"
+                  defaultValue={lnameSelector}
                 />
               </div>
             </div>
@@ -203,15 +211,16 @@ function ProfileComponent() {
               </div>
               <div className={styles.inputControlContainer}>
                 <InputControl
-                  label={`Email`}
-                  defaultValue={`0007nitishsharma@gmail.com`}
+                  label="Email"
+                  defaultValue={emailSelector}
                   placeholder="Enter email"
                 />
               </div>
               <div className={styles.inputControlContainer}>
                 <InputControl
-                  label={`Mobile`}
+                  label="Mobile"
                   placeholder="Enter Mobile number"
+                  defaultValue={mobileSelector}
                   disabled
                 />
                 <span onClick={() => handleEditingModal("mobile")}>Change</span>
