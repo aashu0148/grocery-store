@@ -7,11 +7,13 @@ export const getAllProducts = async (filters, page) => {
   try {
     const reqUrl = `${backendApiUrl}/user/product/all?search=${
       filters?.search || ""
-    }&refCategory=${filters?.refCategory || ""}&refSubCategory=${
-      filters?.refSubCategory || ""
-    }&sortBy=${filters?.sortBy || ""}&minimumPrice=${
-      filters?.minimumPrice || ""
-    }&maximumPrice=${filters?.maximumPrice || ""}&pageNumber=${page || ""}`;
+    }&pageNumber=${page || ""}&refCategory=${
+      filters?.refCategory || ""
+    }&refSubCategory=${filters?.refSubCategory || ""}&sortBy=${
+      filters?.sortBy || ""
+    }&minimumPrice=${filters?.minimumPrice || ""}&maximumPrice=${
+      filters?.maximumPrice || ""
+    }`;
     const result = await axios.get(reqUrl);
 
     if (!result.data?.status) {

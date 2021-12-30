@@ -1,7 +1,7 @@
 @import "styles/variables";
 
 .container {
-    min-width: 750px;
+    min-width: 800px;
     padding: 30px;
     display: flex;
     flex-direction: column;
@@ -30,13 +30,14 @@
 
             textarea {
                 resize: none;
+                margin-bottom: 0;
             }
         }
 
         .row {
             display: flex;
             gap: 20px;
-            align-items: center;
+            align-items: flex-start;
         }
 
         .equalRow {
@@ -46,6 +47,36 @@
 
             &>* {
                 flex: 1;
+            }
+        }
+
+        .availability {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            label {
+                font-size: 1rem;
+                font-weight: 500;
+                color: $text-dark-gray;
+
+                span {
+                    font-size: 0.875rem;
+                }
+            }
+
+            .buttonRow {
+                align-items: flex-end;
+
+                button {
+                    margin-bottom: 3px;
+                }
+            }
+
+            .availabilities {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
             }
         }
     }

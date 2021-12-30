@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Minus, Plus, ShoppingCart } from "react-feather";
 
-import { getDiscountedPrice } from "utils/util";
 import Button from "components/Button/Button";
+import ProductFullViewModal from "components/ProductFullViewModal/ProductFullViewModal";
+
+import { getDiscountedPrice } from "utils/util";
 
 import styles from "./ProductCard.module.scss";
 
@@ -11,35 +13,58 @@ function ProductCard(props) {
   const { product } = props;
 
   const [quantity, setQuantity] = useState(1);
+  const [showProductModal, setShowProductModal] = useState(false);
 
+  const availableIn = product?.availabilities ? product?.availabilities[0] : "";
   return (
-    <div className={styles.container}>
-      {product?.discount ? (
-        <div
-          className={`${styles.discount} ${
-            product?.discount > 15 ? styles.red : ""
-          }`}
-        >
-          -{product?.discount}%
-        </div>
-      ) : (
-        ""
+    <>
+      {showProductModal && (
+        <ProductFullViewModal
+          onClose={() => setShowProductModal(false)}
+          product={product}
+        />
       )}
-      <div className={styles.imageContainer}>
-        <img src={product?.thumbnail} alt={product?.title} />
-      </div>
-      <div className={styles.body}>
-        <div className={styles.details}>
-          <p className={styles.title} title={product?.title}>
-            {product?.title}
-          </p>
+      <div className={styles.container}>
+        {availableIn?.discount ? (
+          <div
+            className={`${styles.discount} ${
+              availableIn?.discount > 15 ? styles.red : ""
+            }`}
+          >
+            -{availableIn?.discount}%
+          </div>
+        ) : (
+          ""
+        )}
+        <div
+          className={styles.imageContainer}
+          onClick={() => setShowProductModal(true)}
+        >
+          <img src={product?.thumbnail} alt={product?.title} />
+        </div>
+        <div className={styles.body} onClick={() => setShowProductModal(true)}>
+          <div className={styles.details}>
+            <p className={styles.title} title={product?.title}>
+              {product?.title}
+            </p>
 
-          <p className={styles.price}>
-            <span>
-              {`₹ ${getDiscountedPrice(product?.price, product?.discount)}`}
-            </span>
-            {` / ${product.refUnit?.symbol?.trim() || "piece"}`}
-          </p>
+            <p className={styles.price}>
+              <span>
+                {`₹ ${getDiscountedPrice(
+                  availableIn?.price,
+                  availableIn?.discount
+                )}`}
+              </span>
+              {` / ${
+                !availableIn?.quantity || availableIn?.quantity < 2
+                  ? ""
+                  : availableIn?.quantity
+              }${
+                availableIn?.refUnit?.symbol?.trim() ||
+                availableIn?.refUnit?.name
+              }`}
+            </p>
+          </div>
         </div>
 
         <div className={styles.footer}>
@@ -70,7 +95,7 @@ function ProductCard(props) {
           </Button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

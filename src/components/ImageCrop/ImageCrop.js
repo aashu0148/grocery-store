@@ -84,7 +84,7 @@ export default function ImageCrop(props) {
   }, []);
 
   return (
-    <Modal onClose={props.onClose}>
+    <Modal onClose={props.onClose} doNotAnimate>
       <div className={styles.container}>
         <p className={styles.title}>{props.title || "Crop Picture"}</p>
 

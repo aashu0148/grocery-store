@@ -69,3 +69,23 @@ export const getDiscountedPrice = (price, discountInPercentage = 0) => {
   if (!price) return 0;
   return Math.round(price - (discountInPercentage / 100) * price);
 };
+
+const commonWordsInUnits = {
+  kilogram: "gram",
+  gram: "gram",
+  litres: "litre",
+  millilitres: "litre",
+  unit: "dozen",
+  dozen: "dozen",
+};
+
+export const getSubUnits = (word, units) => {
+  if (!word) return units;
+  const commonWord = commonWordsInUnits[word];
+  if (!commonWord) return units;
+  return units.filter((item) =>
+    commonWord === commonWordsInUnits.unit
+      ? item?.name?.includes("dozen") || item?.name?.includes("unit")
+      : item?.name?.includes(commonWord)
+  );
+};

@@ -8,8 +8,9 @@ import InputSelect from "components/InputControl/InputSelect/InputSelect";
 import ImagePreview from "components/ImagePreview/ImagePreview";
 import ProgressBar from "components/ProgressBar/ProgressBar.";
 import Spinner from "components/Spinner/Spinner";
+import Chip from "components/Chip/Chip";
 
-import { validateImage } from "utils/util";
+import { getDiscountedPrice, getSubUnits, validateImage } from "utils/util";
 import { getAllUnits } from "api/user/unit";
 import { imageUpload } from "utils/firebase";
 import { getAllCategories } from "api/user/category";
@@ -32,10 +33,9 @@ function ProductForm(props) {
     },
   ];
   const defaultValues = {
-    discountType: discountTypeOptions[0],
     title: props.defaults?.title || "",
     description: props.defaults?.description || "",
-    quantity: props.defaults?.quantity || "",
+    noOfProducts: props.defaults?.noOfProducts || "",
     category: props.defaults?.refCategory
       ? {
           value: props.defaults?.refCategory?._id,
@@ -50,34 +50,40 @@ function ProductForm(props) {
       : "",
     thumbnail: props.defaults?.thumbnail || "",
     images: props.defaults?.images || [],
-    price: props.defaults?.price || "",
-    discount: props.defaults?.discount || "",
+    benefits: props.defaults?.benefits || "",
+    storageTips: props.defaults?.storageTips || "",
+    shelfLife: props.default?.shelfLife || "",
+    storageTemperature: props.default?.storageTemperature || "",
   };
 
   const [values, setValues] = useState({
     title: props.defaults?.title || "",
     description: props.defaults?.description || "",
-    quantity: props.defaults?.quantity || "",
+    availabilities: props.defaults?.availabilities || [],
+    noOfProducts: props.defaults?.noOfProducts || "",
     refCategory: props.defaults?.refCategory?._id || "",
     refSubCategory: props.defaults?.refSubCategory?._id || "",
     refUnit: props.defaults?.refUnit?._id || "",
     thumbnail: props.defaults?.thumbnail || "",
     images: props.defaults?.images?.length || [],
-    price: props.defaults?.price || 0,
-    discount: props.defaults?.discount || "",
     subCategory: props.defaults?.refSubCategory
       ? {
           value: props.defaults?.refSubCategory?._id,
           label: props.defaults?.refSubCategory?.name,
         }
       : "",
+    benefits: props.defaults?.benefits || "",
+    storageTips: props.defaults?.storageTips || "",
+    shelfLife: props.default?.shelfLife || "",
+    storageTemperature: props.default?.storageTemperature || "",
+    unit: props.defaults?.refUnit || "",
   });
   const [errors, setErrors] = useState({});
-  const [discountType, setDiscountType] = useState(discountTypes.percentage);
   const [thumbnail, setThumbnail] = useState(props.defaults?.thumbnail || "");
   const [images, setImages] = useState(
     props.defaults?.images?.length ? [...props.defaults?.images] : []
   );
+  const [currentAvailability, setCurrentAvailability] = useState({});
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [units, setUnits] = useState([]);
@@ -150,9 +156,9 @@ function ProductForm(props) {
       if (!res) return;
 
       const categories = res.data?.map((item) => ({
+        ...item,
         value: item._id,
         label: item.name,
-        subCategory: item.subCategory,
       }));
       setCategories(categories);
     });
@@ -163,6 +169,7 @@ function ProductForm(props) {
       if (!res) return;
 
       const units = res.data?.map((item) => ({
+        ...item,
         value: item._id,
         label: `${item.name} ${item.symbol?.trim() ? `(${item.symbol})` : ""}`,
       }));
@@ -173,23 +180,17 @@ function ProductForm(props) {
   const validateForm = () => {
     const errors = {};
     if (!values.title) errors.title = "Enter title";
-    if (!values.price) errors.price = "Enter price";
-    else if (values.price < 0) errors.price = "Price should be greater than 0";
-    if (!values.quantity) errors.quantity = "Enter quantity";
-    else if (values.quantity < 0)
-      errors.quantity = "Quantity should be greater than 0";
-    if (discountType === discountTypes.percentage && values.discount > 99)
-      errors.discount = "Discount must be smaller than 100%";
-    else if (
-      discountType === discountTypes.absolute &&
-      values.discount >= values.price
-    )
-      errors.discount = "Discount must be smaller than price";
+    if (!values.noOfProducts) errors.noOfProducts = "Enter number of products";
+    else if (values.noOfProducts < 0)
+      errors.noOfProducts = "Number of products should be greater than 0";
     if (!values.description) errors.description = "Enter description";
     if (!values.refCategory) errors.category = "Select category";
     if (!values.refSubCategory) errors.subCategory = "Select sub category";
     if (!values.refUnit) errors.unit = "Select unit";
     if (!thumbnail) errors.thumbnail = "Choose thumbnail";
+    if (!values.shelfLife) errors.shelfLife = "Enter shelf life";
+    if (!values.availabilities?.length)
+      errors.availabilities = "Add product availability";
 
     setErrors(errors);
     if (Object.keys(errors).length === 0) return true;
@@ -219,6 +220,75 @@ function ProductForm(props) {
     return requiredUrls;
   };
 
+  const addAvailabilities = () => {
+    if (values.availabilities?.length > 5) return;
+    const availability = { ...currentAvailability };
+    const errors = {};
+    if (!availability?.price) errors.availabilityPrice = "Enter price";
+    else if (parseInt(availability?.price) < 0)
+      errors.availabilityPrice = "Price must be greater than 0";
+    if (!availability?.refUnit) errors.availabilityUnit = "Select unit";
+    if (!availability?.quantity) errors.availabilityQuantity = "Enter quantity";
+    else if (parseInt(availability?.quantity) < 1)
+      errors.availabilityQuantity = "Quantity must be greater than 1";
+
+    if (availability?.discount && availability?.price) {
+      if (availability?.discountType === discountTypes.absolute) {
+        if (availability?.discount >= availability?.price)
+          errors.availabilityDiscount = "Discount must be smaller than price";
+        else {
+          availability.discount =
+            (availability?.discount / availability?.price) * 100;
+        }
+      } else if (
+        availability?.discountType === discountTypes.percentage &&
+        availability?.discount > 99
+      )
+        errors.availabilityDiscount = "Discount should not be greater than 99%";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setErrors((prev) => ({ ...prev, ...errors }));
+      return;
+    }
+    setErrors((prev) => ({
+      ...prev,
+      availabilityDiscount: "",
+      availabilityPrice: "",
+      availabilityQuantity: "",
+      availabilityUnit: "",
+    }));
+
+    const quantity = availability.quantity;
+
+    const index = values.availabilities?.findIndex(
+      (item) => item.quantity === quantity
+    );
+    if (index > -1) return;
+
+    if (availability.discountType === discountTypes.absolute) {
+      availability.discount =
+        (availability.discount / availability.price) * 100;
+    }
+
+    setValues((prev) => ({
+      ...prev,
+      availabilities: [...prev.availabilities, availability],
+    }));
+    setCurrentAvailability({});
+  };
+
+  const removeAvailabilities = (quantity) => {
+    const tempAvailabilities = [
+      ...values.availabilities?.filter((item) => item?.quantity !== quantity),
+    ];
+
+    setValues((prev) => ({
+      ...prev,
+      availabilities: tempAvailabilities,
+    }));
+  };
+
   const handleSubmission = async () => {
     if (!validateForm()) return;
     setUploadProgress(1);
@@ -230,12 +300,7 @@ function ProductForm(props) {
     const tempValues = { ...values };
     tempValues.thumbnail = urls[0];
     tempValues.images = [...urls.slice(1)];
-    if (discountType === discountTypes.absolute) {
-      tempValues.discount = (
-        (tempValues.discount / tempValues.price) *
-        100
-      ).toFixed(1);
-    }
+
     setValues(tempValues);
     if (props.onSubmit) props.onSubmit(tempValues);
     else toast.error("Can't add new product!");
@@ -261,18 +326,178 @@ function ProductForm(props) {
             }
             error={errors.title}
           />
+        </div>
+
+        <div className={styles.row}>
           <InputControl
-            label="Price*"
-            subLabel=" (per unit)"
-            type="tel"
-            placeholder="Enter product price"
-            defaultValue={defaultValues.price}
+            label="Total Number of Products*"
+            subLabel={`( in stock )`}
+            type="number"
+            min={1}
+            max={10000}
+            step={10}
+            placeholder="Enter number of products available"
+            defaultValue={defaultValues.noOfProducts}
             onChange={(event) =>
-              setValues({ ...values, price: parseInt(event.target.value) })
+              setValues({
+                ...values,
+                noOfProducts: parseInt(event.target.value),
+              })
             }
-            error={errors.price}
+            error={errors.noOfProducts}
+          />
+          <InputSelect
+            label="Unit*"
+            placeholder="Select product unit"
+            options={units}
+            error={errors.unit}
+            onChange={(item) => {
+              setValues({ ...values, refUnit: item.value, unit: item });
+              setCurrentAvailability((prev) => ({
+                ...prev,
+                refUnit: "",
+                unit: "",
+              }));
+            }}
           />
         </div>
+
+        <div className={styles.availability}>
+          <label>Available In*</label>
+          <div className={styles.row}>
+            <InputControl
+              label="Quantity*"
+              type="number"
+              min={1}
+              max={100}
+              step={1}
+              placeholder="Enter quantity"
+              value={currentAvailability?.quantity || ""}
+              onChange={(event) =>
+                setCurrentAvailability((prev) => ({
+                  ...prev,
+                  quantity: parseInt(event.target.value),
+                }))
+              }
+              error={errors.availabilityQuantity}
+            />
+            <InputSelect
+              label="Unit*"
+              placeholder="Select unit"
+              options={
+                values?.unit?.name ? getSubUnits(values?.unit?.name, units) : []
+              }
+              value={currentAvailability?.unit || ""}
+              onChange={(item) =>
+                setCurrentAvailability({
+                  ...currentAvailability,
+                  refUnit: item.value,
+                  unit: item,
+                })
+              }
+              error={errors.availabilityUnit}
+            />
+            <InputControl
+              label="Price*"
+              subLabel={
+                currentAvailability.quantity &&
+                currentAvailability.refUnit &&
+                currentAvailability.price
+                  ? `( ${currentAvailability.quantity} ${
+                      currentAvailability?.unit?.symbol || "unit"
+                    } = ₹${currentAvailability.price} )`
+                  : ""
+              }
+              type="tel"
+              placeholder="Enter price"
+              value={currentAvailability?.price || ""}
+              onChange={(event) =>
+                setCurrentAvailability({
+                  ...currentAvailability,
+                  price: parseInt(event.target.value),
+                })
+              }
+              error={errors.availabilityPrice}
+            />
+          </div>
+          <div className={`${styles.row} ${styles.buttonRow}`}>
+            <InputSelect
+              label="Discount type"
+              defaultValue={discountTypeOptions[0]}
+              placeholder="Select discount type"
+              options={discountTypeOptions}
+              onChange={(item) =>
+                item.value === discountTypes.absolute
+                  ? setCurrentAvailability((prev) => ({
+                      ...prev,
+                      discount: prev?.price
+                        ? parseFloat(
+                            (prev.discount / 100) * prev.price
+                          ).toFixed(1)
+                        : "",
+                      discountType: item.value,
+                    }))
+                  : setCurrentAvailability((prev) => ({
+                      ...prev,
+                      discountType: item.value,
+                      discount: prev?.price
+                        ? parseFloat(
+                            (prev.discount / prev.price) * 100
+                          ).toFixed(1)
+                        : 0,
+                    }))
+              }
+            />
+
+            <InputControl
+              label="Discount"
+              subLabel={
+                currentAvailability.price && currentAvailability?.discount
+                  ? `( discounted price : ${
+                      currentAvailability?.discountType ===
+                      discountTypes.absolute
+                        ? currentAvailability.price -
+                          currentAvailability.discount
+                        : getDiscountedPrice(
+                            currentAvailability.price,
+                            currentAvailability.discount
+                          )
+                    } )`
+                  : ""
+              }
+              type="number"
+              min={0}
+              placeholder="Enter discount"
+              value={currentAvailability?.discount || ""}
+              onChange={(event) =>
+                setCurrentAvailability({
+                  ...currentAvailability,
+                  discount: event.target.value,
+                })
+              }
+              error={errors.availabilityDiscount}
+            />
+            <Button onClick={addAvailabilities}>Add</Button>
+          </div>
+          <div className={styles.availabilities}>
+            {values.availabilities?.map((item) => (
+              <Chip
+                key={item?.quantity}
+                red={item?.discount > 15}
+                orange={item?.discount > 3 && item?.discount < 16}
+                label={`₹${item.price} / ${
+                  item.quantity > 1 ? item.quantity : ""
+                }${item?.unit?.symbol} (-${item?.discount}%)`}
+                isClose
+                onClose={() => removeAvailabilities(item?.quantity)}
+              />
+            ))}
+          </div>
+          {errors.availabilities && (
+            <p className="error-msg">{errors.availabilities}</p>
+          )}
+        </div>
+
         <div className={styles.formElem}>
           <label>
             Description* <span>(max length - 150)</span>
@@ -295,74 +520,7 @@ function ProductForm(props) {
             <p className="error-msg">{errors.description}</p>
           )}
         </div>
-        <div className={styles.row}>
-          <InputSelect
-            label="Unit*"
-            placeholder="Select product unit"
-            options={units}
-            error={errors.unit}
-            onChange={(item) => setValues({ ...values, refUnit: item.value })}
-          />
-          <InputControl
-            label="Quantity*"
-            subLabel="(In Stock)"
-            type="number"
-            min={1}
-            max={10000}
-            step={1}
-            placeholder="Enter product quantity"
-            defaultValue={defaultValues.quantity}
-            onChange={(event) =>
-              setValues({
-                ...values,
-                quantity: parseInt(event.target.value),
-              })
-            }
-            error={errors.quantity}
-          />
-        </div>
-        <div className={styles.row}>
-          <InputSelect
-            label="Discount type"
-            defaultValue={defaultValues.discountType}
-            placeholder="Select discount type"
-            options={discountTypeOptions}
-            onChange={(item) => {
-              item.value === discountTypes.percentage
-                ? values.price
-                  ? setValues({
-                      ...values,
-                      discount: parseFloat(
-                        (values.discount / values.price) * 100
-                      ).toFixed(1),
-                    })
-                  : setValues({ ...values, discount: 0 })
-                : values.price
-                ? setValues({
-                    ...values,
-                    discount: parseFloat(
-                      (values.discount / 100) * values.price
-                    ).toFixed(1),
-                  })
-                : setValues({ ...values, discount: 0 });
-              setDiscountType(item.value);
-            }}
-          />
-          <InputControl
-            label="Discount"
-            type="number"
-            min={0}
-            placeholder="Enter product discount"
-            value={values.discount + ""}
-            onChange={(event) =>
-              setValues({
-                ...values,
-                discount: event.target.value,
-              })
-            }
-            error={errors.discount}
-          />
-        </div>
+
         <div className={styles.row}>
           <InputSelect
             label="Category*"
@@ -442,6 +600,77 @@ function ProductForm(props) {
             </div>
           </div>
           {errors.images && <p className="error-msg">{errors.images}</p>}
+        </div>
+
+        <h3>Extra Information</h3>
+        <div className={styles.row}>
+          <InputControl
+            label="Shelf life*"
+            type="number"
+            min={0}
+            subLabel="( in days )"
+            value={values.shelfLife || ""}
+            onChange={(event) =>
+              event.target.value < 0
+                ? ""
+                : setValues((prev) => ({
+                    ...prev,
+                    shelfLife: parseInt(event.target.value),
+                  }))
+            }
+            placeholder="Enter shelf life of product"
+            error={errors.shelfLife}
+          />
+
+          <InputControl
+            label="Storage Temperature"
+            subLabel="( degC )"
+            type="number"
+            min={0}
+            defaultValue={values.storageTemperature}
+            onChange={(event) =>
+              setValues((prev) => ({
+                ...prev,
+                storageTemperature: event.target.value,
+              }))
+            }
+            placeholder="Enter recommended temp. for storage"
+          />
+        </div>
+
+        <div className={styles.formElem}>
+          <label>
+            Nutrition value & Benefits <span>( max length - 100 )</span>
+          </label>
+          <textarea
+            className={`basic-input`}
+            maxLength={100}
+            placeholder="Enter benefits of this product"
+            defaultValue={defaultValues.benefits}
+            onChange={(event) =>
+              setValues({
+                ...values,
+                benefits: event.target.value,
+              })
+            }
+          />
+        </div>
+        <div className={styles.formElem}>
+          <label>
+            Storage Tips <span>( max length - 100 )</span>
+          </label>
+          <textarea
+            className={`basic-input`}
+            maxLength={100}
+            placeholder="Enter storage tips for this product"
+            defaultValue={defaultValues.storageTips}
+            onChange={(event) =>
+              setValues({
+                ...values,
+                storageTips: event.target.value,
+              })
+            }
+          />
         </div>
       </div>
       {uploadProgress > 0 && (
