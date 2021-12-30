@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Menu, X, Package, BarChart2 } from "react-feather";
 
-import styles from "./MerchantSidePanel.module.scss";
+import styles from "./MerchantSidepanel.module.scss";
 
 function MerchantSidePanel() {
   const [isSlide, setIsSlide] = useState(false);
