@@ -29,23 +29,24 @@ li {
 
 // custom -scrollbar
 @media (min-width: 768px) {
-  .custom-scroll {
+  * {
     &::-webkit-scrollbar-track {
       box-shadow: none !important;
       background-color: transparent;
-      cursor: default !important;
+      cursor: default;
     }
 
     &::-webkit-scrollbar {
       background-color: transparent;
-      cursor: default !important;
-      width: 10px;
+      cursor: default;
+      width: 12px;
+      height: 12px;
     }
 
     &::-webkit-scrollbar-thumb {
       background-color: $bg-light-gray;
-      border-radius: 10px;
-      cursor: default !important;
+      border-radius: 12px;
+      cursor: pointer;
     }
 
     &::-webkit-scrollbar-thumb:hover {
@@ -57,7 +58,7 @@ li {
 // input styling
 .basic-input {
   outline: none;
-  padding: 10px 8px;
+  padding: 7px 8px;
   width: 100%;
   border: 1px solid $bg-light-gray;
   color: $text-dark;
@@ -98,6 +99,7 @@ li {
   color: $text-primary;
   font-size: 1rem;
   line-height: 1.25rem;
+  cursor: pointer;
   position: relative;
 
   &::after {

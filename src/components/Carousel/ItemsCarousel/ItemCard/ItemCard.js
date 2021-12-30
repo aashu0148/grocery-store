@@ -48,10 +48,18 @@ function ItemCard(props) {
         <span>1 {item?.refUnit?.symbol}</span>
         <br />
         <span className={styles.discountedPrice}>
-          &#x20B9;{getDiscountedPrice(item?.price, item?.discount)}
+          {"₹"}
+          {getDiscountedPrice(item?.price, item?.discount)}
         </span>
         &nbsp; &nbsp;
-        <del className={styles.mrp}>&#x20B9;{item?.price}</del>
+        {item?.discount ? (
+          <del className={styles.mrp}>
+            {"₹"}
+            {item?.price}
+          </del>
+        ) : (
+          ""
+        )}
       </p>
     </div>
   );

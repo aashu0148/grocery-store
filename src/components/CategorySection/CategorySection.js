@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import CategoryCard from "./CategoryCard/CategoryCard";
 import Spinner from "components/Spinner/Spinner";
@@ -32,11 +33,17 @@ function CategorySection() {
           <p>No categories found</p>
         ) : (
           categories.map((item) => (
-            <CategoryCard
+            <Link
               key={item._id}
-              imageUrl={item.url}
-              category={item.name}
-            />
+              to={`/product?refCategory=${
+                item?._id
+              }&selectedCategory=${JSON.stringify({
+                value: item._id,
+                label: item.name,
+              })}`}
+            >
+              <CategoryCard imageUrl={item.url} category={item.name} />
+            </Link>
           ))
         )}
       </div>

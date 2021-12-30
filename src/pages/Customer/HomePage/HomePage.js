@@ -47,7 +47,7 @@ function HomePage() {
     getAllProducts().then((res) => {
       setProductsLoaded(true);
       if (!res) return;
-      setProducts(res.data);
+      setProducts(res.data?.products?.data);
     });
   };
 
