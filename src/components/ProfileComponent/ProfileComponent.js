@@ -10,6 +10,7 @@ import ImagePreview from "components/ImagePreview/ImagePreview";
 import InputControl from "components/InputControl/InputControl";
 import Modal from "components/Modal/Modal";
 import VerifyOtp from "components/verifyOtp/VerifyOtp";
+import ForgotPass from "components/ForgotPass/ForgotPass";
 
 import styles from "./ProfileComponent.module.scss";
 
@@ -84,8 +85,12 @@ function ProfileComponent() {
 
   const changePassword = (
     <div className={styles.changeDetailModal}>
-      <InputControl label={`New passwerd`} />
-      <InputControl label={`Confirm password`} />
+      <InputControl
+        label="Current password"
+        placeholder="Enter current password"
+      />
+      <InputControl label="New password" placeholder="Enter new password" />
+      <InputControl label="Confirm password" placeholder="confirm password" />
       <div className={styles.buttonContainer}>
         <Button onClick={handleChangePassword}>Done</Button>
         <Button cancel onClick={closeEditingModal}>
@@ -235,8 +240,13 @@ function ProfileComponent() {
                 <StopCircle />
                 <span>Passwords {`&`} security</span>
               </div>
-              <div className={styles.inputControlContainer}>
-                <p>Forgot password? </p>
+              <div
+                className={[
+                  styles.inputControlContainer,
+                  styles.passwordControl,
+                ].join(" ")}
+              >
+                <ForgotPass mobile={mobileSelector} />
                 <span onClick={() => handleEditingModal("password")}>
                   Change Password
                 </span>

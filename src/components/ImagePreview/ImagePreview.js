@@ -102,7 +102,7 @@ ImagePreview.propTypes = {
   file: PropTypes.object,
   src: PropTypes.string,
   onCrop: PropTypes.func,
-  className: PropTypes.object,
+  className: PropTypes.string,
 };
 
 export default ImagePreview;
