@@ -4,12 +4,12 @@ import { ChevronLeft, ChevronRight } from "react-feather";
 
 import ItemCard from "../ItemCard/ItemCard";
 
-import styles from "./ItemsCarousel.module.scss";
+import styles from "./BasicCarousel.module.scss";
 
 let timeout;
-function ItemsCarousel(props) {
-  const carouselRef = useRef();
+function BasicCarousel(props) {
   const itemsRef = useRef();
+  const carouselRef = useRef();
 
   const [leftButtonDisabled, setLeftButtonDisabled] = useState(true);
   const [rightButtonDisabled, setRightButtonDisabled] = useState(true);
@@ -18,7 +18,7 @@ function ItemsCarousel(props) {
     const carousel = carouselRef?.current;
     if (!carousel) return;
 
-    const offset = 0.4 * carousel.clientWidth;
+    const offset = 0.45 * carousel.clientWidth;
     if (back) carousel.scrollBy(offset * -1, 0);
     else carousel.scrollBy(offset, 0);
   };
@@ -60,36 +60,33 @@ function ItemsCarousel(props) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.head}>
-        <div className={styles.left}>
-          <p className={styles.title}>breakfast & dairy</p>
-          <p className={styles.desc}>butter, cheese, milk, curd and more</p>
+      {!leftButtonDisabled && (
+        <div
+          className={`${styles.control} ${styles.leftControl}`}
+          onClick={() => scrollCarousel(true)}
+        >
+          <ChevronLeft />
         </div>
-        <div className={styles.right}>
-          <p className={`${styles.link} styled-link`}>see more {">"}</p>
-
-          <div className={styles.buttons}>
-            <button
-              disabled={leftButtonDisabled}
-              onClick={() => scrollCarousel(true)}
-            >
-              <ChevronLeft />
-            </button>
-            <button
-              disabled={rightButtonDisabled}
-              onClick={() => scrollCarousel()}
-            >
-              <ChevronRight />
-            </button>
-          </div>
+      )}
+      {!rightButtonDisabled && (
+        <div
+          className={`${styles.control} ${styles.rightControl}`}
+          onClick={() => scrollCarousel()}
+        >
+          <ChevronRight />
         </div>
-      </div>
+      )}
 
-      <div className={styles.body} ref={carouselRef}>
+      <div className={styles.containerInner} ref={carouselRef}>
         <div className={styles.items} ref={itemsRef}>
           {Array.isArray(props.items)
             ? props?.items?.map((item, index) => (
-                <ItemCard key={item?._id + index} item={item} />
+                <ItemCard
+                  key={item?._id + index}
+                  item={item}
+                  onClick={props.onItemClick}
+                  hideAddButton
+                />
               ))
             : ""}
         </div>
@@ -98,9 +95,9 @@ function ItemsCarousel(props) {
   );
 }
 
-ItemsCarousel.propTypes = {
+BasicCarousel.propTypes = {
   items: PropTypes.array,
-  link: PropTypes.string,
+  onItemClick: PropTypes.func,
 };
 
-export default ItemsCarousel;
+export default BasicCarousel;

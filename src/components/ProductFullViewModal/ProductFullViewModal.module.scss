@@ -9,6 +9,24 @@
     flex-direction: column;
     gap: 30px;
 
+    .header {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .headerInner {
+            display: flex;
+            justify-content: flex-end;
+
+            svg {
+                color: $text-dark;
+                height: 24px;
+                width: 24px;
+                cursor: pointer;
+            }
+        }
+    }
+
     .main {
         display: flex;
         gap: 30px;
@@ -72,11 +90,31 @@
                     font-size: 1.2rem;
                     font-weight: bold;
                     color: $text-dark;
+                }
 
-                    .quantity {
+                .availableIn {
+                    .title {
                         font-weight: 500;
                         font-size: 1rem;
-                        color: $text-dark-gray;
+                        color: $text-dark;
+                    }
+
+                    .items {
+                        display: flex;
+                        gap: 10px;
+
+                        .item {
+                            padding: 5px;
+                            border-radius: 5px;
+                            border: 1px solid $bg-medium-gray;
+                            font-size: 0.875rem;
+                            cursor: pointer;
+                        }
+
+                        .activeItem {
+                            border-color: $bg-primary;
+                            color: $text-primary;
+                        }
                     }
                 }
 
@@ -98,7 +136,7 @@
                         span {
                             font-size: 1.2rem;
                             font-weight: bold;
-                            color: $text-dark;
+                            color: $text-primary;
                         }
 
                         del {
@@ -119,6 +157,10 @@
                     display: flex;
                     align-items: center;
                     gap: 5px;
+
+                    * {
+                        user-select: none;
+                    }
 
                     svg {
                         height: 16px;
@@ -150,6 +192,35 @@
             .footer {
                 button {
                     user-select: none;
+                }
+            }
+        }
+    }
+
+    .body {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+        .title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: $text-dark;
+        }
+
+        .details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .detail {
+                .heading {
+                    font-weight: 500;
+                    font-size: 1rem;
+                }
+
+                .value {
+                    color: $text-dark-gray;
                 }
             }
         }

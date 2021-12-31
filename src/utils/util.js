@@ -79,12 +79,20 @@ const commonWordsInUnits = {
   dozen: "dozen",
 };
 
-export const getSubUnits = (word, units) => {
+export const getSubUnits = (word, units, availabilities) => {
   if (!word) return units;
-  const commonWord = commonWordsInUnits[word];
+  let commonWord;
+  if (word === "unit") {
+    if (availabilities?.length > 0) {
+      const newWord =
+        availabilities?.unit?.name || availabilities?.refUnit?.name;
+      commonWord = commonWordsInUnits[newWord];
+    } else return units;
+  }
+  if (!commonWord) commonWord = commonWordsInUnits[word];
   if (!commonWord) return units;
   return units.filter((item) =>
-    commonWord === commonWordsInUnits.unit
+    commonWord === commonWordsInUnits.dozen
       ? item?.name?.includes("dozen") || item?.name?.includes("unit")
       : item?.name?.includes(commonWord)
   );

@@ -22,27 +22,35 @@ function ItemCard(props) {
   return (
     <div className={styles.itemCard}>
       <div className={styles.image}>
-        <img src={item?.thumbnail} alt={item?.title || "Product"} />
-        <div className={styles.addProduct}>
-          {quantity ? (
-            <div className={styles.quantityControl}>
-              <Minus
-                className={styles.quantityControlButton}
-                onClick={decreaseQuantity}
-              />
-              <span>{quantity}</span>
+        <img
+          src={item?.thumbnail}
+          alt={item?.title || "Product"}
+          onClick={() => (props.onClick ? props.onClick(item, quantity) : "")}
+        />
+        {props.hideAddButton ? (
+          ""
+        ) : (
+          <div className={styles.addProduct}>
+            {quantity ? (
+              <div className={styles.quantityControl}>
+                <Minus
+                  className={styles.quantityControlButton}
+                  onClick={decreaseQuantity}
+                />
+                <span>{quantity}</span>
+                <Plus
+                  className={styles.quantityControlButton}
+                  onClick={increaseQuantity}
+                />
+              </div>
+            ) : (
               <Plus
                 className={styles.quantityControlButton}
                 onClick={increaseQuantity}
               />
-            </div>
-          ) : (
-            <Plus
-              className={styles.quantityControlButton}
-              onClick={increaseQuantity}
-            />
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
       <p className={styles.productName}>{item?.title}</p>
       <p>
@@ -72,7 +80,9 @@ function ItemCard(props) {
 }
 
 ItemCard.propTypes = {
+  onClick: PropTypes.func,
   item: PropTypes.object,
+  hideAddButton: PropTypes.bool,
 };
 
 export default ItemCard;

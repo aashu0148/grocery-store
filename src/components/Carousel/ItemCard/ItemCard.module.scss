@@ -23,6 +23,7 @@
 }
 
 .image {
+  cursor: pointer;
   border: 1px solid $bg-greenish-white;
   border-radius: 10px;
 
@@ -32,6 +33,14 @@
     object-fit: contain;
     border-radius: 10px;
   }
+}
+
+.productName {
+  color: $text-dark;
+  font-weight: 500;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mrp {
