@@ -12,7 +12,6 @@ function ForgotPass({ mobile }) {
   const [isModal, setIsModal] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
 
-  console.log(mobile);
   const closeModal = () => {
     setIsModal(false);
   };
