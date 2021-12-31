@@ -16,6 +16,8 @@ function ImagePreview({
   file,
   src,
   onCrop,
+  hideDeleteIcon,
+  className,
 }) {
   const [currentFile, setCurrentFile] = useState(file);
   const [showCropModal, setShowCropModal] = useState(false);
@@ -45,10 +47,14 @@ function ImagePreview({
       convertUrlToImage(src);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [src]);
 
   return (
-    <div className={`${styles.container} ${large ? styles.large : ""}`}>
+    <div
+      className={`${className ? className : ""} ${styles.container} ${
+        large ? styles.large : ""
+      }`}
+    >
       {showCropModal && (
         <ImageCrop
           title={cropTitle}
@@ -63,12 +69,17 @@ function ImagePreview({
         src={currentFile ? URL.createObjectURL(currentFile) : galleryIcon}
         alt={"preview"}
       />
-      <div
-        className={styles.delete}
-        onClick={() => (onDelete ? onDelete() : "")}
-      >
-        <X />
-      </div>
+
+      {!hideDeleteIcon ? (
+        <div
+          className={styles.delete}
+          onClick={() => (onDelete ? onDelete() : "")}
+        >
+          <X />
+        </div>
+      ) : (
+        ""
+      )}
       {isCrop && currentFile ? (
         <div
           className={styles.crop}
@@ -91,6 +102,7 @@ ImagePreview.propTypes = {
   file: PropTypes.object,
   src: PropTypes.string,
   onCrop: PropTypes.func,
+  className: PropTypes.string,
 };
 
 export default ImagePreview;

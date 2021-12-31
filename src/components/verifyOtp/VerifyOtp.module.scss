@@ -9,6 +9,12 @@
   justify-content: center;
   background-color: $bg-white-1;
 }
+.transparentBackground {
+  background-color: transparent;
+}
+.mainBodyWithoutBorder {
+  border: none !important;
+}
 
 .mainBody {
   border: 1px solid $bg-light-gray;
