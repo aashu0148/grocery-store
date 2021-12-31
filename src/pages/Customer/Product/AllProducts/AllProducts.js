@@ -94,6 +94,7 @@ function AllProducts() {
     };
     setFilters(tempFilters);
     fetchAllProducts(tempFilters);
+    setCurrentPage(1);
   };
 
   const handleFetchMoreProducts = () => {

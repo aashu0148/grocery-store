@@ -84,6 +84,9 @@ function ProductForm(props) {
     props.defaults?.images?.length ? [...props.defaults?.images] : []
   );
   const [currentAvailability, setCurrentAvailability] = useState({});
+  const [currentDiscountType, setCurrentDiscountType] = useState(
+    discountTypes.percentage
+  );
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [units, setUnits] = useState([]);
@@ -220,6 +223,26 @@ function ProductForm(props) {
     return requiredUrls;
   };
 
+  const handleDiscountTypeChange = (item) => {
+    setCurrentDiscountType(item.value);
+
+    if (item.value === discountTypes.absolute) {
+      setCurrentAvailability((prev) => ({
+        ...prev,
+        discount: prev?.price
+          ? parseFloat(((prev.discount || 0) / 100) * prev.price).toFixed(1)
+          : "",
+      }));
+    } else {
+      setCurrentAvailability((prev) => ({
+        ...prev,
+        discount: prev?.price
+          ? parseFloat(((prev.discount || 0) / prev.price) * 100).toFixed(1)
+          : 0,
+      }));
+    }
+  };
+
   const addAvailabilities = () => {
     if (values.availabilities?.length > 5) return;
     const availability = { ...currentAvailability };
@@ -233,15 +256,13 @@ function ProductForm(props) {
       errors.availabilityQuantity = "Quantity must be greater than 1";
 
     if (availability?.discount && availability?.price) {
-      if (availability?.discountType === discountTypes.absolute) {
-        if (availability?.discount >= availability?.price)
-          errors.availabilityDiscount = "Discount must be smaller than price";
-        else {
-          availability.discount =
-            (availability?.discount / availability?.price) * 100;
-        }
+      if (
+        currentDiscountType === discountTypes.absolute &&
+        availability?.discount >= availability?.price
+      ) {
+        errors.availabilityDiscount = "Discount must be smaller than price";
       } else if (
-        availability?.discountType === discountTypes.percentage &&
+        currentDiscountType === discountTypes.percentage &&
         availability?.discount > 99
       )
         errors.availabilityDiscount = "Discount should not be greater than 99%";
@@ -266,10 +287,11 @@ function ProductForm(props) {
     );
     if (index > -1) return;
 
-    if (availability.discountType === discountTypes.absolute) {
+    if (currentDiscountType === discountTypes.absolute) {
       availability.discount =
         (availability.discount / availability.price) * 100;
     }
+    if (!availability?.discount) availability.discount = 0;
 
     setValues((prev) => ({
       ...prev,
@@ -352,7 +374,12 @@ function ProductForm(props) {
             options={units}
             error={errors.unit}
             onChange={(item) => {
-              setValues({ ...values, refUnit: item.value, unit: item });
+              setValues({
+                ...values,
+                refUnit: item.value,
+                unit: item,
+                availabilities: [],
+              });
               setCurrentAvailability((prev) => ({
                 ...prev,
                 refUnit: "",
@@ -385,7 +412,13 @@ function ProductForm(props) {
               label="Unit*"
               placeholder="Select unit"
               options={
-                values?.unit?.name ? getSubUnits(values?.unit?.name, units) : []
+                values?.unit?.name
+                  ? getSubUnits(
+                      values?.unit?.name,
+                      units,
+                      values?.availabilities
+                    )
+                  : []
               }
               value={currentAvailability?.unit || ""}
               onChange={(item) =>
@@ -426,27 +459,7 @@ function ProductForm(props) {
               defaultValue={discountTypeOptions[0]}
               placeholder="Select discount type"
               options={discountTypeOptions}
-              onChange={(item) =>
-                item.value === discountTypes.absolute
-                  ? setCurrentAvailability((prev) => ({
-                      ...prev,
-                      discount: prev?.price
-                        ? parseFloat(
-                            (prev.discount / 100) * prev.price
-                          ).toFixed(1)
-                        : "",
-                      discountType: item.value,
-                    }))
-                  : setCurrentAvailability((prev) => ({
-                      ...prev,
-                      discountType: item.value,
-                      discount: prev?.price
-                        ? parseFloat(
-                            (prev.discount / prev.price) * 100
-                          ).toFixed(1)
-                        : 0,
-                    }))
-              }
+              onChange={handleDiscountTypeChange}
             />
 
             <InputControl
@@ -454,8 +467,7 @@ function ProductForm(props) {
               subLabel={
                 currentAvailability.price && currentAvailability?.discount
                   ? `( discounted price : ${
-                      currentAvailability?.discountType ===
-                      discountTypes.absolute
+                      currentDiscountType === discountTypes.absolute
                         ? currentAvailability.price -
                           currentAvailability.discount
                         : getDiscountedPrice(
@@ -487,7 +499,9 @@ function ProductForm(props) {
                 orange={item?.discount > 3 && item?.discount < 16}
                 label={`₹${item.price} / ${
                   item.quantity > 1 ? item.quantity : ""
-                }${item?.unit?.symbol} (-${item?.discount}%)`}
+                }${item?.unit?.symbol || item?.refUnit?.symbol || "unit"} (-${
+                  item?.discount
+                }%)`}
                 isClose
                 onClose={() => removeAvailabilities(item?.quantity)}
               />

@@ -27,3 +27,20 @@ export const getAllProducts = async (filters, page) => {
     return false;
   }
 };
+
+export const getProductById = async (id) => {
+  try {
+    const reqUrl = `${backendApiUrl}/user/product/${id}`;
+    const result = await axios.get(reqUrl);
+
+    if (!result.data?.status) {
+      errorToastLogger("", result.data?.message);
+      return false;
+    } else {
+      return result.data;
+    }
+  } catch (error) {
+    errorToastLogger(error, "Failed to get product");
+    return false;
+  }
+};
