@@ -6,9 +6,9 @@ import Modal from "components/Modal/Modal";
 import InputControl from "components/InputControl/InputControl";
 import Button from "components/Button/Button";
 
-import styles from "./ForgotPass.module.scss";
+import styles from "./ForgotPassword.module.scss";
 
-function ForgotPass({ mobile }) {
+function ForgotPassword({ mobile }) {
   const [isModal, setIsModal] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
 
@@ -32,7 +32,11 @@ function ForgotPass({ mobile }) {
       {isModal ? (
         <Modal onClose={closeModal}>
           {!isOtpVerified ? (
-            <VerifyOtp mobile={mobile} onSuccess={handleOtpVerification} />
+            <VerifyOtp
+              isBackgroundTransparent={true}
+              mobile={mobile}
+              onSuccess={handleOtpVerification}
+            />
           ) : (
             <div className={styles.newPassContainer}>
               <InputControl
@@ -43,7 +47,12 @@ function ForgotPass({ mobile }) {
                 label="Confirm password"
                 placeholder="Confirm password"
               />
-              <Button>Save</Button>
+              <div className={styles.buttonContainer}>
+                <Button>Save</Button>
+                <Button cancel onClick={closeModal}>
+                  Cancel
+                </Button>
+              </div>
             </div>
           )}
         </Modal>
@@ -54,8 +63,8 @@ function ForgotPass({ mobile }) {
   );
 }
 
-ForgotPass.propTypes = {
+ForgotPassword.propTypes = {
   mobile: PropTypes.string,
 };
 
-export default ForgotPass;
+export default ForgotPassword;

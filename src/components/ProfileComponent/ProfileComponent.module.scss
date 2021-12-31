@@ -145,9 +145,6 @@
   height: 0;
 }
 
-.buttonContainer {
-  display: flex;
-}
 #imageInput {
   display: none;
 }
@@ -159,6 +156,12 @@
   justify-content: center;
   padding: 30px;
   gap: 20px;
+  .buttonContainer {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    gap: 10px;
+  }
 }
 .passwordControl {
   span {

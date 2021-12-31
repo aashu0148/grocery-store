@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import PrivateRoute from "components/PrivateRoute/PrivateRoute";
 import MerchantOverView from "./MerchantOverview/MerchantOverview";
-import MerchantSidePanel from "components/MerchantSidepanel/MerchantSidepanel";
+import MerchantSidePanel from "components/MerchantSidePanel/MerchantSidePanel";
 import MerchantProduct from "./MerchantProduct/MerchantProduct";
 
 import styles from "./MerchantDashboard.module.scss";

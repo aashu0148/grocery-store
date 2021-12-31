@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import { StopCircle, Edit } from "react-feather";
+import { useSelector } from "react-redux";
 
 import { validateMobile } from "utils/util";
 import { getAvatarLink } from "api/user/avatar";
@@ -10,7 +11,7 @@ import ImagePreview from "components/ImagePreview/ImagePreview";
 import InputControl from "components/InputControl/InputControl";
 import Modal from "components/Modal/Modal";
 import VerifyOtp from "components/verifyOtp/VerifyOtp";
-import ForgotPass from "components/ForgotPass/ForgotPass";
+import ForgotPassword from "components/ForgotPassword/ForgotPassword";
 
 import styles from "./ProfileComponent.module.scss";
 
@@ -53,7 +54,7 @@ function ProfileComponent() {
       setErrorMsg("enter valid mobile number");
       return;
     }
-    setNewMobile(newMobileRef.current.value);
+    setNewMobile(newMobileRef?.current?.value);
     setIsChangeMobileOtpSent(true);
   };
   const handleChangePassword = () => {
@@ -125,13 +126,15 @@ function ProfileComponent() {
   );
 
   useEffect(() => {
-    getAvatarLink().then((res) =>
+    getAvatarLink().then((res) => {
       setAvatarUrl({
         men: res?.data?.men,
         women: res?.data?.women,
-      })
-    );
+      });
+    });
   }, []);
+
+  useEffect(() => {}, [isChangeMobileOtpSent]);
 
   return (
     <div className={styles.container}>
@@ -147,7 +150,7 @@ function ProfileComponent() {
               <ImagePreview
                 className={styles.additionalStyle}
                 large
-                isDeleteIcon={true}
+                hideDeleteIcon={true}
                 isCrop={true}
                 src={typeof file === "object" ? null : profileUrl}
                 file={typeof file === "object" ? file : null}
@@ -246,7 +249,7 @@ function ProfileComponent() {
                   styles.passwordControl,
                 ].join(" ")}
               >
-                <ForgotPass mobile={mobileSelector} />
+                <ForgotPassword mobile={mobileSelector} />
                 <span onClick={() => handleEditingModal("password")}>
                   Change Password
                 </span>
@@ -288,5 +291,12 @@ function ProfileComponent() {
     </div>
   );
 }
+
+ProfileComponent.propTypes = {
+  fname: PropTypes.string,
+  lname: PropTypes.string,
+  mobile: PropTypes.string,
+  email: PropTypes.string,
+};
 
 export default ProfileComponent;

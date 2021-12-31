@@ -78,8 +78,17 @@ function VerifyOtp(props) {
   }, []);
 
   return (
-    <form onSubmit={handleOtpVerification} className={styles.otpForm}>
-      <div className={styles.mainBody}>
+    <form
+      onSubmit={handleOtpVerification}
+      className={`${styles.otpForm} ${
+        props.isBackgroundTransparent ? styles.transparentBackground : ""
+      }`}
+    >
+      <div
+        className={`${styles.mainBody} ${
+          props.isBackgroundTransparent ? styles.mainBodyWithoutBorder : ""
+        }`}
+      >
         <h2>Verify OTP</h2>
         <InputControl
           label="OTP"

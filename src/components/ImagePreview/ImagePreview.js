@@ -16,7 +16,7 @@ function ImagePreview({
   file,
   src,
   onCrop,
-  isDeleteIcon,
+  hideDeleteIcon,
   className,
 }) {
   const [currentFile, setCurrentFile] = useState(file);
@@ -51,7 +51,7 @@ function ImagePreview({
 
   return (
     <div
-      className={`${className} ${styles.container} ${
+      className={`${className ? className : ""} ${styles.container} ${
         large ? styles.large : ""
       }`}
     >
@@ -70,7 +70,7 @@ function ImagePreview({
         alt={"preview"}
       />
 
-      {!isDeleteIcon ? (
+      {!hideDeleteIcon ? (
         <div
           className={styles.delete}
           onClick={() => (onDelete ? onDelete() : "")}
