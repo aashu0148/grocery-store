@@ -19,6 +19,7 @@ import MerchantDashboard from "pages/Merchant/MerchantDashboard/MerchantDashboar
 import PrivateRoute from "components/PrivateRoute/PrivateRoute";
 import AllProducts from "pages/Customer/Product/AllProducts/AllProducts";
 import PreLoader from "pages/common/PreLoader/PreLoader";
+import CartPage from "pages/Customer/Cart/CartPage";
 
 import { checkAuth } from "api/user/authenticate";
 import { userTypes } from "utils/constants";
@@ -124,6 +125,7 @@ function App() {
                 }
               />
               <Route path="/" element={<HomePage />} />
+              <Route path="/cart" element={<CartPage />} />
 
               {/* --> Merchant Routes  */}
               <Route
