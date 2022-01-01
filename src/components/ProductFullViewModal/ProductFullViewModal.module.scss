@@ -1,0 +1,228 @@
+@import "styles/variables";
+
+.container {
+    width: 80vw;
+    min-height: 300px;
+    height: fit-content;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .headerInner {
+            display: flex;
+            justify-content: flex-end;
+
+            svg {
+                color: $text-dark;
+                height: 24px;
+                width: 24px;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .main {
+        display: flex;
+        gap: 30px;
+
+        .left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+
+            .imageContainer {
+                width: 320px;
+                height: 330px;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+            }
+
+            .imageSubContainer {
+                display: flex;
+                gap: 20px;
+
+                .image {
+                    height: 80px;
+                    width: 80px;
+                    box-shadow: 1px 1px 2px 0 $bg-light-gray;
+                    cursor: pointer;
+                    border-radius: 5px;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain;
+                    }
+                }
+
+                .activeImage {
+                    box-shadow: 1px 1px 2px 0 $bg-primary;
+                }
+            }
+        }
+
+        .right {
+            flex: 1.1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 30px;
+
+            .details {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                letter-spacing: 1px;
+
+                .title {
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    color: $text-dark;
+                }
+
+                .availableIn {
+                    .title {
+                        font-weight: 500;
+                        font-size: 1rem;
+                        color: $text-dark;
+                    }
+
+                    .items {
+                        display: flex;
+                        gap: 10px;
+
+                        .item {
+                            padding: 5px;
+                            border-radius: 5px;
+                            border: 1px solid $bg-medium-gray;
+                            font-size: 0.875rem;
+                            cursor: pointer;
+                        }
+
+                        .activeItem {
+                            border-color: $bg-primary;
+                            color: $text-primary;
+                        }
+                    }
+                }
+
+                .discount {
+                    font-weight: 500;
+                    font-size: 1rem;
+
+                    span {
+                        color: $text-dark;
+                        font-size: 1.1rem;
+                    }
+                }
+
+                .price {
+                    font-weight: 500;
+
+                    p {
+
+                        span {
+                            font-size: 1.2rem;
+                            font-weight: bold;
+                            color: $text-primary;
+                        }
+
+                        del {
+                            font-size: 0.875rem;
+                            color: $text-dark-gray;
+
+                        }
+                    }
+
+                    span {
+                        font-size: 0.875rem;
+                        color: $text-dark-gray;
+                    }
+                }
+
+                .quantity {
+                    font-weight: 500;
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+
+                    * {
+                        user-select: none;
+                    }
+
+                    svg {
+                        height: 16px;
+                        width: 16px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        transition: 200ms;
+                        color: $text-dark;
+
+                        &:active {
+                            transform: scale(0.8);
+                        }
+                    }
+
+                    input {
+                        border: none;
+                        outline: none;
+                        max-width: 28px;
+                        width: fit-content;
+                        font-size: 1.1rem;
+                        text-align: center;
+                        color: $text-dark;
+                    }
+                }
+            }
+
+            .footer {
+                button {
+                    user-select: none;
+                }
+            }
+        }
+    }
+
+    .body {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+        .title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: $text-dark;
+        }
+
+        .details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .detail {
+                .heading {
+                    font-weight: 500;
+                    font-size: 1rem;
+                }
+
+                .value {
+                    color: $text-dark-gray;
+                }
+            }
+        }
+    }
+}

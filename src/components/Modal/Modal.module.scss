@@ -20,5 +20,21 @@
         min-width: 250px;
         background-color: $white;
         border-radius: 5px;
+        animation: scaleUp 500ms;
+        transform-origin: center center;
+    }
+
+    @keyframes scaleUp {
+        from {
+            transform: scale(0);
+        }
+
+        to {
+            transform: scale(1);
+        }
+    }
+
+    .preventAnimation {
+        animation: none;
     }
 }

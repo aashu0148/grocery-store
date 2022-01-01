@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import ProductCard from "./ProductCard/ProductCard";
@@ -94,6 +94,7 @@ function AllProducts() {
     };
     setFilters(tempFilters);
     fetchAllProducts(tempFilters);
+    setCurrentPage(1);
   };
 
   const handleFetchMoreProducts = () => {
@@ -114,6 +115,11 @@ function AllProducts() {
       setCurrentPage((prev) => prev + 1);
     }
   };
+
+  useEffect(() => {
+    if (currentPage < 1) setCurrentPage(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={styles.container}>

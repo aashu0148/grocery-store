@@ -19,7 +19,7 @@ import MerchantDashboard from "pages/Merchant/MerchantDashboard/MerchantDashboar
 import PrivateRoute from "components/PrivateRoute/PrivateRoute";
 import AllProducts from "pages/Customer/Product/AllProducts/AllProducts";
 import PreLoader from "pages/common/PreLoader/PreLoader";
-import CartPage from "pages/Customer/Cart/CartPage";
+import Profile from "pages/Customer/Profile/Profile";
 
 import { checkAuth } from "api/user/authenticate";
 import { userTypes } from "utils/constants";
@@ -115,6 +115,14 @@ function App() {
                 path="/register"
                 element={
                   isAuthenticated ? <Navigate to="/" /> : <CustomerRegister />
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <PrivateRoute auth={isAuthenticated}>
+                    <Profile />
+                  </PrivateRoute>
                 }
               />
               <Route path="/product" element={<AllProducts />} />
