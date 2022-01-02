@@ -5,6 +5,8 @@ import VerifyOtp from "components/verifyOtp/VerifyOtp";
 import Modal from "components/Modal/Modal";
 import InputControl from "components/InputControl/InputControl";
 import Button from "components/Button/Button";
+import { validateMobile } from "utils/util";
+import toast from "react-hot-toast";
 
 import styles from "./ForgotPassword.module.scss";
 
@@ -21,6 +23,10 @@ function ForgotPassword({ mobile }) {
   };
 
   const handleForgotPass = () => {
+    if (!validateMobile(mobile)) {
+      toast.error("Enter your mobile or email");
+      return;
+    }
     setIsModal(true);
   };
 

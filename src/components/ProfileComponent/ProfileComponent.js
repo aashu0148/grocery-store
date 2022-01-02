@@ -155,7 +155,6 @@ function ProfileComponent() {
                 src={typeof file === "object" ? null : profileUrl}
                 file={typeof file === "object" ? file : null}
               />
-
               <input
                 id={styles.imageInput}
                 type="file"
