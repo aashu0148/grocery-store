@@ -14,7 +14,6 @@ import { validateMobile } from "utils/util";
 import { checkMobile, login } from "api/user/login";
 
 import styles from "./LoginPage.module.scss";
-import ForgotPassword from "components/ForgotPassword/ForgotPassword";
 
 function LoginPage() {
   const [mobile, setMobile] = useState("");
@@ -100,7 +99,6 @@ function LoginPage() {
                 onChange={(event) => setMobile(event.target.value)}
                 error={errors?.mobile}
               />
-              <ForgotPassword mobile={mobile} />
               <p>
                 Not registered ?
                 <span
