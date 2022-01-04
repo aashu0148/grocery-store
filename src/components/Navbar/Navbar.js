@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router";
+import { useSelector } from "react-redux";
 
 import { Search, ShoppingCart, ChevronDown, ChevronUp } from "react-feather";
 import Dropdown from "components/Dropdown/Dropdown";
@@ -14,6 +15,8 @@ function Navbar(props) {
   const navigate = useNavigate();
   const location = useLocation();
   const searchInputRef = useRef();
+  const name = useSelector((state) => state.firstName);
+  const avatarLink = useSelector((state) => state.avatar);
 
   const [showUserDropdown, setShowUserDropdown] = useState(false);
 
@@ -100,8 +103,19 @@ function Navbar(props) {
               className={styles.user}
               onClick={() => setShowUserDropdown(true)}
             >
-              <img src={avatar} alt="avatar" />
-              <span>{props.fname}</span>
+              <img
+                src={avatarLink || ""}
+                onError={(event) => {
+                  event.target.src = avatar;
+                  event.target.onerror = null;
+                }}
+                alt="avatar"
+              />
+              {name && (
+                <p className={styles.userName}>
+                  Hi <span>{name}</span>{" "}
+                </p>
+              )}
               {showUserDropdown ? <ChevronUp /> : <ChevronDown />}
               {showUserDropdown && (
                 <Dropdown
