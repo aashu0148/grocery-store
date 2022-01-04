@@ -9,7 +9,7 @@ import LoginInfo from "components/LoginInfo/LoginInfo";
 import InputControl from "components/InputControl/InputControl";
 import VerifyOtp from "components/verifyOtp/VerifyOtp";
 
-import { IS_CUSTOMER_LOGGED } from "store/actionTypes";
+import { IS_USER_LOGGED } from "store/actionTypes";
 import { validateMobile } from "utils/util";
 import { checkMobile, login } from "api/user/login";
 
@@ -49,11 +49,12 @@ function LoginPage() {
 
   const handleCustomerAuth = (obj) => {
     dispatch({
-      type: IS_CUSTOMER_LOGGED,
-      customerAuth: true,
-      customerFirstName: obj.firstName,
-      customerLastName: obj.lastName,
-      customerMobile: obj.mobile,
+      type: IS_USER_LOGGED,
+      auth: true,
+      firstName: obj.firstName,
+      lastName: obj.lastName,
+      mobile: obj.mobile,
+      avatar: obj.profileImage,
     });
   };
 

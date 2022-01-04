@@ -134,6 +134,16 @@
         width: 30px;
       }
 
+      .userName {
+        color: $text-dark;
+        margin-left: 5px;
+
+        span {
+          text-transform: capitalize;
+          font-weight: 500;
+        }
+      }
+
       .userDropdown {
         padding: 10px;
         display: flex;

@@ -11,7 +11,7 @@ import VerifyOtp from "components/verifyOtp/VerifyOtp";
 
 import { validateEmail, validateMobile, validatePassword } from "utils/util";
 import { checkRegisterDetails, register } from "api/user/register";
-import { IS_MERCHANT_LOGGED } from "store/actionTypes";
+import { IS_USER_LOGGED } from "store/actionTypes";
 
 import styles from "./Register.module.scss";
 
@@ -39,11 +39,12 @@ function Register() {
 
   const handleMerchantAuth = (merchantObj) => {
     dispatch({
-      type: IS_MERCHANT_LOGGED,
-      merchantAuth: true,
-      merchantFirstName: merchantObj.firstName,
-      merchantLastName: merchantObj.lastName,
-      merchantMobile: merchantObj.mobile,
+      type: IS_USER_LOGGED,
+      auth: true,
+      firstName: merchantObj.firstName,
+      lastName: merchantObj.lastName,
+      mobile: merchantObj.mobile,
+      avatar: merchantObj.profileImage,
     });
   };
 
