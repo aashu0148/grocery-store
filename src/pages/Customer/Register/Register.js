@@ -11,7 +11,7 @@ import VerifyOtp from "components/verifyOtp/VerifyOtp";
 
 import { validateEmail, validateMobile } from "utils/util";
 import { checkRegisterDetails, register } from "api/user/register";
-import { IS_CUSTOMER_LOGGED } from "store/actionTypes";
+import { IS_USER_LOGGED } from "store/actionTypes";
 
 import styles from "./Register.module.scss";
 
@@ -39,11 +39,12 @@ function Register() {
 
   const handleCustomerAuth = (obj) => {
     dispatch({
-      type: IS_CUSTOMER_LOGGED,
-      customerAuth: true,
-      customerFirstName: obj.firstName,
-      customerLastName: obj.lastName,
-      customerMobile: obj.mobile,
+      type: IS_USER_LOGGED,
+      auth: true,
+      firstName: obj.firstName,
+      lastName: obj.lastName,
+      mobile: obj.mobile,
+      avatar: obj.profileImage,
     });
   };
 

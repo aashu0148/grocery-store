@@ -10,7 +10,7 @@ import InputControl from "components/InputControl/InputControl";
 
 import { validateEmail } from "utils/util";
 import { login } from "api/user/login";
-import { IS_MERCHANT_LOGGED } from "store/actionTypes";
+import { IS_USER_LOGGED } from "store/actionTypes";
 
 import styles from "./LoginPage.module.scss";
 
@@ -54,11 +54,13 @@ function LoginPage() {
 
   const handleMerchantAuth = (merchantObj) => {
     dispatch({
-      type: IS_MERCHANT_LOGGED,
-      merchantAuth: true,
-      merchantFirstName: merchantObj.firstName,
-      merchantLastName: merchantObj.lastName,
-      merchantMobile: merchantObj.mobile,
+      type: IS_USER_LOGGED,
+      auth: true,
+      firstName: merchantObj.firstName,
+      lastName: merchantObj.lastName,
+      mobile: merchantObj.mobile,
+      email: merchantObj.email,
+      avatar: merchantObj.profileImage,
     });
   };
 

@@ -37,16 +37,10 @@ function App() {
   const [isDataLoaded, setIsDataLoaded] = useState(token ? false : true);
 
   const handleLogout = () => {
-    if (isMerchant) {
-      setIsMerchant(true);
-      dispatch({
-        type: actionTypes.MERCHANT_LOGOUT,
-      });
-    } else {
-      dispatch({
-        type: actionTypes.CUSTOMER_LOGOUT,
-      });
-    }
+    dispatch({
+      type: actionTypes.USER_LOGOUT,
+    });
+
     setIsMerchant(false);
     setIsAuthenticated(false);
     localStorage.clear();
@@ -63,24 +57,19 @@ function App() {
       const userType = res?.data?.userType;
       if (userType === userTypes.merchant) {
         setIsMerchant(true);
-        dispatch({
-          type: actionTypes.IS_MERCHANT_LOGGED,
-          merchantAuth: true,
-          merchantFirstName: res?.data?.firstName,
-          merchantLastName: res?.data?.lastName,
-          merchantMobile: res?.data?.mobile,
-          merchantEmail: res?.data?.email,
-        });
       } else {
         setIsMerchant(false);
-        dispatch({
-          type: actionTypes.IS_CUSTOMER_LOGGED,
-          customerAuth: true,
-          customerFirstName: res?.data?.firstName,
-          customerLastName: res?.data?.lastName,
-          customerMobile: res?.data?.mobile,
-        });
       }
+
+      dispatch({
+        type: actionTypes.IS_USER_LOGGED,
+        auth: true,
+        firstName: res?.data?.firstName,
+        lastName: res?.data?.lastName,
+        mobile: res?.data?.mobile,
+        email: res?.data?.email,
+        avatar: res?.data?.profileImage,
+      });
       setIsDataLoaded(true);
     });
   };

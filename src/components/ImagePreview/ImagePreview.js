@@ -18,6 +18,7 @@ function ImagePreview({
   onCrop,
   hideDeleteIcon,
   className,
+  ...props
 }) {
   const [currentFile, setCurrentFile] = useState(file);
   const [showCropModal, setShowCropModal] = useState(false);
@@ -29,6 +30,7 @@ function ImagePreview({
       const file = new File([blob], new Date().toISOString() + ".png", {
         contentType,
       });
+      if (props.onFileLoad) props.onFileLoad();
       setCurrentFile(file);
     });
   };
@@ -103,6 +105,7 @@ ImagePreview.propTypes = {
   src: PropTypes.string,
   onCrop: PropTypes.func,
   className: PropTypes.string,
+  onFileLoad: PropTypes.func,
 };
 
 export default ImagePreview;
