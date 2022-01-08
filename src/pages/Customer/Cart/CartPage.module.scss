@@ -4,92 +4,141 @@
   width: 100%;
   display: flex;
   height: 100%;
-  background: $bg-greenish-white-2;
   .leftPortion {
-    flex: 1.8;
-    background: $bg-white-1;
+    flex: 2;
+    .shopTitle {
+      font-size: 2rem;
+      margin-left: 1rem;
+      font-weight: 400;
+      margin-top: 1rem;
+      color: $text-dark-gray;
+      span {
+        font-size: 1.1rem;
+        color: $bg-black-translucent;
+      }
+    }
     .leftInner {
       display: flex;
       flex-direction: column;
+      padding-top: 3%;
       align-items: center;
-      padding: 4%;
-      .labelTop {
-        display: flex;
-        width: 100%;
-        text-transform: uppercase;
-        justify-content: space-around;
-      }
       .productDetailsbox {
-        min-width: 100%;
+        width: 70%;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
-        .aboutProducts {
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
+        .productsList {
           width: 100%;
-          .productInfo {
+          display: flex;
+          align-items: center;
+          .productCard {
             display: flex;
-            flex-direction: column;
+            background: $bg-white-2;
+            border-bottom: 1px solid $bg-light-gray;
+            padding: 0.5rem 0;
+            margin-bottom: 1rem;
+            justify-content: space-between;
             align-items: center;
-            position: relative;
-            .productImgbox {
-              height: 130px;
-              width: 130px;
+            padding: 0.4rem 1rem;
+            flex: 2;
+            color: $text-dark-gray;
+            font-weight: 500;
+            .productInfo {
               display: flex;
-              justify-content: center;
               align-items: center;
-              .productImg {
-                width: 90px;
-                height: 90px;
+              .productImgbox {
+                height: 5rem;
+                width: 5rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .productImg {
+                  width: 100%;
+                  height: 100%;
+                  border-radius: 15%;
+                }
+              }
+              .aboutBox {
+                margin-left: 0.41rem;
+                .productName {
+                  width: 10rem;
+                  font-size: 15px;
+                  overflow-x: hidden;
+                  text-overflow: ellipsis;
+                  height: 2.9rem;
+                }
+                .availableIn {
+                  width: 60%;
+                  display: flex;
+                }
               }
             }
-            .productName {
-              width: 10rem;
-              text-align: center;
-            }
-            .deleteItem {
-              position: absolute;
-              top: 0;
-              right: 0.81rem;
-              cursor: pointer;
+            .qtyCounter {
+              display: flex;
+              font-weight: 500;
+              justify-content: space-around;
+              .qtyValue {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+              .qtyOpt {
+                display: flex;
+                justify-content: space-between;
+                flex-direction: column;
+                height: 3rem;
+                .qtyInc {
+                  cursor: pointer;
+                  height: 1.1rem;
+                  background: $bg-light-gray;
+                  width: 1.1rem;
+                  border-radius: 50%;
+                }
+                .qtyDec {
+                  background: $bg-light-gray;
+                  width: 1.1rem;
+                  height: 1.1rem;
+                  border-radius: 50%;
+                  cursor: pointer;
+                }
+              }
+              width: 3rem;
             }
           }
-          .productPrice {
-            width: 5rem;
-          }
-          .qtyCounter {
-            display: flex;
-            justify-content: space-around;
-            width: 5rem;
+          .totalItem_price {
+            font-weight: 500;
           }
         }
-        .totalItem_price {
-          font-weight: bold;
-          color: $text-secondary;
+        .deleteItem {
+          flex: 0.15;
+
+          cursor: pointer;
         }
       }
     }
   }
 
   .rightPortion {
-    flex: 1;
-    background: $bg-greenish-white-2;
+    flex: 0.71;
+    background: $bg-black-translucent;
     display: flex;
-    height: 70vh;
     justify-content: space-around;
+    flex-direction: column;
+    .orderTitle {
+      font-size: 2rem;
+      margin-left: 1rem;
+      text-align: center;
+      color: $bg-white-translucent;
+      font-weight: 400;
+      margin-top: 1rem;
+    }
     .rightInner {
+      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-around;
-      .horizontalBar {
-        height: 1rem;
-        width: 12rem;
-        border-bottom: 5px solid $text-secondary;
-      }
+
       .totalPrice_box {
         display: flex;
         flex-direction: column;
@@ -98,7 +147,10 @@
         .cartTotal {
           display: flex;
           justify-content: center;
-          width: 80%;
+          text-align: center;
+          font-size: 1.2rem;
+          font-weight: 500;
+          color: $bg-gray;
           .cartTotal_text {
             margin-left: 1rem;
           }
@@ -109,8 +161,29 @@
           }
         }
         .totalPrice_bottomtext {
-          color: $bg-black-translucent;
           font-size: 0.81rem;
+          color: $bg-gray;
+        }
+      }
+      .checkoutBox {
+        width: 100%;
+        height: 6rem;
+        display: flex;
+        .checkoutButton {
+          font-weight: 500;
+          border: none;
+          font-size: 1.2rem;
+          height: 5rem;
+          width: 100%;
+          margin-top: auto;
+          cursor: pointer;
+          transition: ease 0.3s;
+          color: $bg-gray;
+          background: $bg-dark;
+          &:hover {
+            background: $bg-gray;
+            color: $bg-dark;
+          }
         }
       }
     }
