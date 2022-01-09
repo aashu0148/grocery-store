@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import Button from "components/Button/Button";
@@ -20,6 +20,7 @@ function LoginPage() {
   const [errors, setErrors] = useState({});
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   const [showVerifyOtp, setShowVerifyOtp] = useState(false);
+  const isMobileView = useSelector((state) => state.isMobileView);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -81,11 +82,25 @@ function LoginPage() {
   };
 
   return (
-    <div className={styles.login}>
-      <div className={styles.loginLeft}>
-        <LoginInfo />
-      </div>
+    <div
+      className={`${styles.login} ${
+        isMobileView ? styles.mobileContainer : ""
+      }`}
+    >
+      {!isMobileView && (
+        <div className={styles.loginLeft}>
+          <LoginInfo />
+        </div>
+      )}
       <div className={styles.loginRightPanel}>
+        {isMobileView && (
+          <div className={styles.header}>
+            <p className={styles.heading}>Customer</p>
+            <Link to="/merchant/login" className={`styled-link ${styles.link}`}>
+              Not a customer ?
+            </Link>{" "}
+          </div>
+        )}
         {showVerifyOtp ? (
           <VerifyOtp mobile={mobile} onSuccess={handleLogin} />
         ) : (
