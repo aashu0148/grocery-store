@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import Button from "components/Button/Button";
@@ -19,8 +19,9 @@ function LoginPage() {
   const passRef = useRef();
   const [errors, setErrors] = useState({});
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
-  const navigate = useNavigate();
+  const isMobileView = useSelector((state) => state.isMobileView);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const validateForm = () => {
@@ -90,11 +91,26 @@ function LoginPage() {
   };
 
   return (
-    <div className={styles.login}>
-      <div className={styles.loginLeft}>
-        <LoginInfo />
-      </div>
+    <div
+      className={`${styles.login} ${
+        isMobileView ? styles.mobileContainer : ""
+      }`}
+    >
+      {!isMobileView && (
+        <div className={styles.loginLeft}>
+          <LoginInfo />
+        </div>
+      )}
       <div className={styles.loginRightPanel}>
+        {isMobileView && (
+          <div className={styles.header}>
+            <p className={styles.heading}>Merchant</p>
+            <Link to="/login" className={`styled-link ${styles.link}`}>
+              Not a merchant ?
+            </Link>{" "}
+          </div>
+        )}
+
         <form className={styles.loginForm} onSubmit={handleFormSubmit}>
           <div className={styles["loginRightPanel-mainBody"]}>
             <h2>Login</h2>

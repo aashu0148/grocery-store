@@ -34,6 +34,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isMerchant, setIsMerchant] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(token ? false : true);
+  const [isMobileView, setIsMobileView] = useState(window.outerWidth < 769);
 
   const handleLogout = () => {
     dispatch({
@@ -73,13 +74,31 @@ function App() {
     });
   };
 
+  const handleResize = (event) => {
+    const width = event.target.outerWidth;
+    if (width < 769) setIsMobileView(true);
+    else setIsMobileView(false);
+  };
+
   useEffect(() => {
     if (!isDataLoaded) authenticateUser();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    dispatch({ type: actionTypes.CHANGE_MOBILE_VIEW, isMobileView });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobileView]);
+
   return (
-    <div className="App">
+    <div className="app">
       <Toaster
         toastOptions={{
           duration: 4000,

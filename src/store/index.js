@@ -1,7 +1,12 @@
-import { IS_USER_LOGGED, USER_LOGOUT } from "store/actionTypes";
+import {
+  CHANGE_MOBILE_VIEW,
+  IS_USER_LOGGED,
+  USER_LOGOUT,
+} from "store/actionTypes";
 
 const initialState = {
   auth: false,
+  isMobileView: false,
 };
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -19,6 +24,13 @@ const userReducer = (state = initialState, action) => {
     case USER_LOGOUT: {
       return {
         auth: false,
+        isMobileView: state.isMobileView,
+      };
+    }
+    case CHANGE_MOBILE_VIEW: {
+      return {
+        ...state,
+        isMobileView: action.isMobileView,
       };
     }
     default:
