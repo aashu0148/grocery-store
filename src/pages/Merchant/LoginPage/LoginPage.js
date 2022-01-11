@@ -62,6 +62,7 @@ function LoginPage() {
       mobile: merchantObj.mobile,
       email: merchantObj.email,
       avatar: merchantObj.profileImage,
+      isMerchant: true,
     });
   };
 

@@ -90,7 +90,7 @@ function Navbar(props) {
         </>
       )}
       <NavLink
-        to={isAuthenticated ? "/profile" : "/login"}
+        to={isAuthenticated ? "/account" : "/login"}
         className={(navData) =>
           navData.isActive ? `${styles.activeIcon} ${styles.icon}` : styles.icon
         }
