@@ -44,3 +44,40 @@
     color: $bg-secondary;
   }
 }
+
+.mobileContainer {
+  width: 100%;
+
+  .loginRightPanel {
+    padding: 20px;
+    flex-direction: column;
+
+    .header {
+      width: 100%;
+      padding: 0 10px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+
+      .heading {
+        font-weight: bold;
+        color: $text-primary;
+      }
+
+      .link {
+        font-size: 0.875rem;
+        font-weight: normal;
+      }
+    }
+
+    form {
+      width: 100%;
+    }
+
+    .loginRightPanel-mainBody {
+      min-width: 0;
+      width: 100%;
+      padding: 20px;
+    }
+  }
+}

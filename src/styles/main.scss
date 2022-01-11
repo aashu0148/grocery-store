@@ -15,6 +15,18 @@ p {
   font-size: 1rem;
 }
 
+@media (max-width: 768px) {
+  p {
+    line-height: 21px;
+  }
+
+  a,
+  p,
+  li {
+    font-size: 0.875rem;
+  }
+}
+
 a {
   text-decoration: none;
 }
@@ -126,4 +138,10 @@ li {
   width: 100%;
   background-color: $bg-light-gray;
   margin: 10px 0;
+}
+
+@media (max-width: 768px) {
+  .app {
+    padding-bottom: 65px;
+  }
 }

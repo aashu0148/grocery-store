@@ -127,3 +127,10 @@
         color: $white;
     }
 }
+
+@media (max-width:768px) {
+    .button {
+        height: 35px;
+        font-size: 0.875rem;
+    }
+}

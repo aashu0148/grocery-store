@@ -1,8 +1,15 @@
 import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router";
 import { useSelector } from "react-redux";
+import {
+  BiStoreAlt as StoreIcon,
+  BiUser as UserIcon,
+  BiCart as CartIcon,
+  BiHeart as FavoriteIcon,
+  BiSearchAlt as ExploreIcon,
+} from "react-icons/bi";
 
 import { Search, ShoppingCart, ChevronDown, ChevronUp } from "react-feather";
 import Dropdown from "components/Dropdown/Dropdown";
@@ -17,6 +24,8 @@ function Navbar(props) {
   const searchInputRef = useRef();
   const name = useSelector((state) => state.firstName);
   const avatarLink = useSelector((state) => state.avatar);
+  const isMobileView = useSelector((state) => state.isMobileView);
+  const isAuthenticated = props.auth ? true : false;
 
   const [showUserDropdown, setShowUserDropdown] = useState(false);
 
@@ -33,7 +42,64 @@ function Navbar(props) {
     window.location.replace(`/product?search=${query.trim()}`);
   };
 
-  return (
+  return isMobileView ? (
+    <div className={styles.mobileNavbar}>
+      <NavLink
+        to="/"
+        className={(navData) =>
+          navData.isActive ? `${styles.activeIcon} ${styles.icon}` : styles.icon
+        }
+      >
+        <StoreIcon />
+        <p>Home</p>
+      </NavLink>
+      <NavLink
+        to="/search"
+        className={(navData) =>
+          navData.isActive ? `${styles.activeIcon} ${styles.icon}` : styles.icon
+        }
+      >
+        <ExploreIcon />
+        <p>Explore</p>
+      </NavLink>
+
+      {isAuthenticated && (
+        <>
+          <NavLink
+            to="/cart"
+            className={(navData) =>
+              navData.isActive
+                ? `${styles.activeIcon} ${styles.icon}`
+                : styles.icon
+            }
+          >
+            <CartIcon />
+            <p>Cart</p>
+          </NavLink>
+          <NavLink
+            to="/wishlist"
+            className={(navData) =>
+              navData.isActive
+                ? `${styles.activeIcon} ${styles.icon}`
+                : styles.icon
+            }
+          >
+            <FavoriteIcon />
+            <p>Wishlist</p>
+          </NavLink>
+        </>
+      )}
+      <NavLink
+        to={isAuthenticated ? "/profile" : "/login"}
+        className={(navData) =>
+          navData.isActive ? `${styles.activeIcon} ${styles.icon}` : styles.icon
+        }
+      >
+        <UserIcon />
+        <p>Account</p>
+      </NavLink>
+    </div>
+  ) : (
     <div className={styles.navbar}>
       <Link to="/">
         <div className={styles.logo}>grocery</div>
@@ -56,7 +122,7 @@ function Navbar(props) {
             <Search onClick={handleSearch} />
           </div>
         </form>
-        {!props.auth ? (
+        {!isAuthenticated ? (
           <div className={styles.auth}>
             {location.pathname?.includes("register") ||
             location.pathname?.includes("login") ? (
