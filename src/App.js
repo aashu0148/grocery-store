@@ -21,6 +21,7 @@ import AllProducts from "pages/Customer/Product/AllProducts/AllProducts";
 import PreLoader from "pages/Customer/PreLoader/PreLoader";
 import Profile from "pages/Customer/Profile/Profile";
 import AccountMobile from "pages/Customer/AccountMobile/AccountMobile";
+import ExploreMobile from "pages/Customer/ExploreMobile/ExploreMobile";
 
 import { checkAuth } from "api/user/authenticate";
 import { userTypes } from "utils/constants";
@@ -70,6 +71,7 @@ function App() {
         mobile: res?.data?.mobile,
         email: res?.data?.email,
         avatar: res?.data?.profileImage,
+        isMerchant: userType === userTypes.merchant,
       });
       setIsDataLoaded(true);
     });
@@ -132,6 +134,16 @@ function App() {
                   element={
                     <PrivateRoute auth={isAuthenticated}>
                       <AccountMobile />
+                    </PrivateRoute>
+                  }
+                />
+              )}
+              {isMobileView && (
+                <Route
+                  path="/explore"
+                  element={
+                    <PrivateRoute auth={isAuthenticated}>
+                      <ExploreMobile />
                     </PrivateRoute>
                   }
                 />
