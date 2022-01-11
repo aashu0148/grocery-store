@@ -54,7 +54,7 @@ function Navbar(props) {
         <p>Home</p>
       </NavLink>
       <NavLink
-        to="/search"
+        to="/explore"
         className={(navData) =>
           navData.isActive ? `${styles.activeIcon} ${styles.icon}` : styles.icon
         }
