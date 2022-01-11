@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import MainCarousel from "components/Carousel/MainCarousel/MainCarousel";
 import CategorySection from "components/CategorySection/CategorySection";
@@ -8,6 +9,7 @@ import Spinner from "components/Spinner/Spinner";
 import { getAllProducts } from "api/user/product";
 
 import styles from "./HomePage.module.scss";
+import MainCarouselMobile from "components/Carousel/MainCarouselMobile/MainCarouseMobile";
 
 function HomePage() {
   const slides = [
@@ -42,6 +44,7 @@ function HomePage() {
   ];
   const [products, setProducts] = useState([]);
   const [productsLoaded, setProductsLoaded] = useState(false);
+  const isMobileView = useSelector((state) => state.isMobileView);
 
   const fetchAllProducts = () => {
     getAllProducts().then((res) => {
@@ -57,7 +60,11 @@ function HomePage() {
 
   return (
     <div className={styles.homePage}>
-      <MainCarousel slides={slides} />
+      {isMobileView ? (
+        <MainCarouselMobile slides={slides} />
+      ) : (
+        <MainCarousel slides={slides} />
+      )}
       <CategorySection />
       {!productsLoaded ? (
         <Spinner />
