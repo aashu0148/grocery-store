@@ -23,6 +23,7 @@ const CartPage = () => {
                       alt="productName"
                       className={styles.productImg}
                     />
+                    <div className={styles.discountPrice}>-5%</div>
                   </div>
                   <div className={styles.aboutBox}>
                     <div className={styles.productName}>
@@ -45,6 +46,7 @@ const CartPage = () => {
               </div>
               <X className={styles.deleteItem} />
             </div>
+            
             <div className={styles.productsList}>
               <div className={styles.productCard}>
                 <div className={styles.productInfo}>
@@ -54,6 +56,7 @@ const CartPage = () => {
                       alt="productName"
                       className={styles.productImg}
                     />
+                    <div className={styles.discountPrice}>-5%</div>
                   </div>
                   <div className={styles.aboutBox}>
                     <div className={styles.productName}>
@@ -76,6 +79,7 @@ const CartPage = () => {
               </div>
               <X className={styles.deleteItem} />
             </div>
+            
             <div className={styles.productsList}>
               <div className={styles.productCard}>
                 <div className={styles.productInfo}>
@@ -85,6 +89,7 @@ const CartPage = () => {
                       alt="productName"
                       className={styles.productImg}
                     />
+                    <div className={styles.discountPrice}>-5%</div>
                   </div>
                   <div className={styles.aboutBox}>
                     <div className={styles.productName}>
@@ -107,6 +112,7 @@ const CartPage = () => {
               </div>
               <X className={styles.deleteItem} />
             </div>
+            
             <div className={styles.productsList}>
               <div className={styles.productCard}>
                 <div className={styles.productInfo}>
@@ -116,6 +122,7 @@ const CartPage = () => {
                       alt="productName"
                       className={styles.productImg}
                     />
+                    <div className={styles.discountPrice}>-5%</div>
                   </div>
                   <div className={styles.aboutBox}>
                     <div className={styles.productName}>
@@ -138,6 +145,7 @@ const CartPage = () => {
               </div>
               <X className={styles.deleteItem} />
             </div>
+            
             <div className={styles.productsList}>
               <div className={styles.productCard}>
                 <div className={styles.productInfo}>
@@ -147,6 +155,7 @@ const CartPage = () => {
                       alt="productName"
                       className={styles.productImg}
                     />
+                    <div className={styles.discountPrice}>-5%</div>
                   </div>
                   <div className={styles.aboutBox}>
                     <div className={styles.productName}>
@@ -169,6 +178,7 @@ const CartPage = () => {
               </div>
               <X className={styles.deleteItem} />
             </div>
+            
           </div>
         </div>
       </div>
