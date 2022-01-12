@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Minus, Plus, X } from "react-feather";
 
 import InputSelect from "components/InputControl/InputSelect/InputSelect";
@@ -6,6 +6,8 @@ import InputSelect from "components/InputControl/InputSelect/InputSelect";
 import styles from "./CartPage.module.scss";
 
 const CartPage = () => {
+  const [quantity, setQuantity] = useState(1);
+
   return (
     <div className={styles.outer}>
       <div className={styles.leftPortion}>
@@ -32,21 +34,25 @@ const CartPage = () => {
                     <div className={styles.productPrice}>₹ 30.9</div>
                   </div>
                 </div>
-                <div className={styles.availableIn}>
-                  <InputSelect placeholder="package" />
-                </div>
+                {/* <div className={styles.availableIn}>5</div> */}
                 <div className={styles.qtyCounter}>
-                  <div className={styles.qtyValue}>1</div>
-                  <div className={styles.qtyOpt}>
-                    <Plus className={styles.qtyInc} />
-                    <Minus className={styles.qtyDec} />
-                  </div>
+                  <Minus
+                    className={styles.qtyDec}
+                    onClick={() =>
+                      setQuantity((prev) => (prev > 1 ? prev - 1 : prev))
+                    }
+                  />
+                  <div className={styles.qtyValue}>{quantity}</div>
+                  <Plus
+                    className={styles.qtyInc}
+                    onClick={() => setQuantity((prev) => prev + 1)}
+                  />
                 </div>
                 <div className={styles.totalItem_price}>₹ 464.12</div>
               </div>
               <X className={styles.deleteItem} />
             </div>
-            
+
             <div className={styles.productsList}>
               <div className={styles.productCard}>
                 <div className={styles.productInfo}>
@@ -79,7 +85,7 @@ const CartPage = () => {
               </div>
               <X className={styles.deleteItem} />
             </div>
-            
+
             <div className={styles.productsList}>
               <div className={styles.productCard}>
                 <div className={styles.productInfo}>
@@ -112,7 +118,7 @@ const CartPage = () => {
               </div>
               <X className={styles.deleteItem} />
             </div>
-            
+
             <div className={styles.productsList}>
               <div className={styles.productCard}>
                 <div className={styles.productInfo}>
@@ -145,7 +151,7 @@ const CartPage = () => {
               </div>
               <X className={styles.deleteItem} />
             </div>
-            
+
             <div className={styles.productsList}>
               <div className={styles.productCard}>
                 <div className={styles.productInfo}>
@@ -178,7 +184,6 @@ const CartPage = () => {
               </div>
               <X className={styles.deleteItem} />
             </div>
-            
           </div>
         </div>
       </div>
