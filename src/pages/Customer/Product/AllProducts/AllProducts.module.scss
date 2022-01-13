@@ -85,3 +85,108 @@
         }
     }
 }
+
+.mobileContainer {
+    padding: 20px;
+    gap: 20px;
+    width: 100%;
+    min-width: 0;
+    padding-top: 15px;
+
+    * {
+        font-size: 0.875rem;
+    }
+
+    .right {
+        gap: 20px;
+
+        .header {
+            padding-top: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: $white;
+        }
+
+        .headerTop {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+
+            .search {
+                width: 100%;
+                position: relative;
+
+                svg {
+                    position: absolute;
+                    left: 6px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    height: 18px;
+                    width: 18px;
+                    color: $text-light-gray;
+                    transition: 200ms;
+                }
+
+                input {
+                    padding-left: 30px;
+
+                    &:focus-within~svg {
+                        color: $text-primary
+                    }
+                }
+            }
+
+            .filterIcon {
+                position: relative;
+
+                svg {
+                    color: $text-dark;
+                    height: 22px;
+                    width: 22px;
+                }
+
+                .dot {
+                    height: 6px;
+                    width: 6px;
+                    border-radius: 50%;
+                    background-color: $bg-red;
+                    position: absolute;
+                    right: -1px;
+                    top: -1px;
+                }
+            }
+        }
+
+        .productsContainer {
+            .title {
+                font-size: 1.1rem;
+            }
+
+            .products {
+                padding-left: 0;
+                gap: 20px;
+            }
+        }
+
+        .filters {
+            padding: 0;
+            box-shadow: none;
+
+            .filtersInner {
+                padding: 0;
+
+                .bar {
+                    height: 22px;
+                }
+
+                p {
+                    padding: 0px;
+                }
+            }
+        }
+    }
+}
