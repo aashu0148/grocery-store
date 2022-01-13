@@ -33,9 +33,9 @@
       flex-wrap: wrap;
       padding: 8px;
 
-      &::-webkit-scrollbar {
-        display: none;
-      }
+      // &::-webkit-scrollbar {
+      //   display: none;
+      // }
 
       .category_card {
         width: 60px;
@@ -65,54 +65,165 @@
 .secondChild_header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 15px;
   border-bottom: 1px solid $bg-greenish-white;
-  .productsAndOrders {
+  .secondChild_header_left {
     display: flex;
-    gap: 15px;
-  }
-  .searchBox {
-    display: flex;
-    border-radius: 5px;
-    overflow: hidden;
-    border: 1px solid $bg-light-gray;
-
-    &:hover {
-      border: 1px solid $bg-light-gray;
-    }
-
-    &:focus-within {
-      border: 1px solid $bg-primary;
-    }
-
-    &::placeholder {
-      color: $text-light-gray;
-    }
-
-    &:disabled {
-      background-color: $bg-medium-gray;
-      color: $text-light-gray;
-    }
-
-    input {
-      margin: 0;
-      border: none !important;
-    }
-
-    .searchIcon {
-      background: $bg-greenish-white-2;
-      display: flex;
-      align-items: center;
-      padding: 0 10px;
+    gap: 40px;
+    p {
       cursor: pointer;
+      color: $bg-medium-gray;
+    }
+  }
+  .secondChild_header_right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 
-      svg {
-        height: 20px;
-        stroke: $bg-primary;
+    .searchBox {
+      display: flex;
+      border-radius: 5px;
+      overflow: hidden;
+      border: 1px solid $bg-light-gray;
+
+      &:hover {
+        border: 1px solid $bg-light-gray;
       }
 
-      &:active svg {
-        transform: translateY(1px);
+      &:focus-within {
+        border: 1px solid $bg-primary;
+      }
+
+      &::placeholder {
+        color: $text-light-gray;
+      }
+
+      &:disabled {
+        background-color: $bg-medium-gray;
+        color: $text-light-gray;
+      }
+
+      input {
+        margin: 0;
+        border: none !important;
+      }
+
+      .searchIcon {
+        background: $bg-greenish-white-2;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        cursor: pointer;
+
+        svg {
+          height: 20px;
+          stroke: $bg-primary;
+        }
+
+        &:active svg {
+          transform: translateY(1px);
+        }
+      }
+    }
+
+    .sortByBtn {
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      border-radius: 5px;
+      background-color: $bg-greenish-white-2;
+      cursor: pointer;
+    }
+  }
+}
+
+.userProductsAndOrdersSlider {
+  display: flex;
+  .allProductsSection {
+    width: 100%;
+    display: none;
+    padding: 15px 5px;
+    justify-content: space-between;
+
+    ul {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      .productsHeader {
+        width: 118%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 700;
+        & > span {
+          flex: 1;
+        }
+      }
+    }
+  }
+  .productDetails {
+    width: 100%;
+    padding: 8px;
+    padding-left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $bg-greenish-white;
+
+    span {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      flex-wrap: wrap;
+      .perUnit {
+        display: flex;
+        flex-direction: column;
+        font-size: 14px;
+        color: $text-light-gray;
+      }
+    }
+    .icons {
+      display: flex;
+      flex-direction: row;
+      svg {
+        height: 18px;
+      }
+    }
+  }
+  .ordersSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 15px 5px;
+    justify-content: space-between;
+
+    .orderSectionHeader {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      justify-content: space-between;
+      font-weight: 700;
+      & > span {
+        flex: 1;
+      }
+    }
+    .productDetails {
+      padding: 8px;
+
+      .pending {
+        color: $text-orange;
+        font-weight: 700;
+      }
+      .delivered {
+        color: $text-primary;
+        font-weight: 700;
+      }
+      .cancelled {
+        font-weight: 700;
+        color: $text-red;
       }
     }
   }
