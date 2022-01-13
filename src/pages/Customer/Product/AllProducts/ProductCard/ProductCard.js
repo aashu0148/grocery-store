@@ -16,6 +16,8 @@ function ProductCard(props) {
   const [showProductModal, setShowProductModal] = useState(false);
 
   const availableIn = product?.availabilities ? product?.availabilities[0] : "";
+  const isMobileView = props?.mobileView ? true : false;
+
   return (
     <>
       {showProductModal && (
@@ -24,7 +26,11 @@ function ProductCard(props) {
           product={product}
         />
       )}
-      <div className={styles.container}>
+      <div
+        className={`${styles.container} ${
+          isMobileView ? styles.mobileContainer : ""
+        }`}
+      >
         {availableIn?.discount ? (
           <div
             className={`${styles.discount} ${
@@ -101,6 +107,7 @@ function ProductCard(props) {
 
 ProductCard.propTypes = {
   product: PropTypes.object,
+  mobileView: PropTypes.bool,
 };
 
 export default ProductCard;

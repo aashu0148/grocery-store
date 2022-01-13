@@ -53,3 +53,14 @@
         }
     }
 }
+
+.mobileContainer {
+    width: 100%;
+    min-height: fit-content;
+    padding: 0;
+    gap: 20px;
+
+    * {
+        font-size: 0.875rem;
+    }
+}

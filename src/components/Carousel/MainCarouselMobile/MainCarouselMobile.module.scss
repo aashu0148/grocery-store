@@ -39,14 +39,13 @@
             height: 7px;
             border-radius: 40px;
             transition: 400ms;
-            border: 1px solid $bg-dark;
-            background-color: $bg-light-gray;
+            border: 1px solid $bg-primary;
+            background-color: $bg-greenish-white-2;
             transform-origin: right;
         }
 
         .activeDot {
             width: 33px;
-            transition-delay: 150ms;
         }
     }
 }
