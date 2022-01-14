@@ -118,3 +118,50 @@
     }
 
 }
+
+.mobileContainer {
+    width: 47%;
+    max-width: 180px;
+
+    * {
+        font-size: 0.875rem;
+    }
+
+    &:hover {
+        transform: none;
+    }
+
+    .imageContainer {
+        height: 90px;
+    }
+
+    .body {
+        padding: 10px 0;
+
+        .title {
+            font-size: 0.875rem;
+        }
+
+        .quantity {
+            svg {
+                height: 12px;
+                width: 12px;
+            }
+
+            input {
+                font-size: 0.875rem;
+            }
+        }
+    }
+
+    .footer {
+        button {
+            padding: 5px 12px;
+
+            svg {
+                height: 16px;
+                width: 16px
+            }
+        }
+    }
+}

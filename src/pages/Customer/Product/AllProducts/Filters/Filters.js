@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Button from "components/Button/Button";
 import InputSelect from "components/InputControl/InputSelect/InputSelect";
@@ -18,7 +18,7 @@ function Filters(props) {
   const { createSliderWithTooltip } = Slider;
   const Range = createSliderWithTooltip(Slider.Range);
   const navigate = useNavigate();
-  const location = useLocation();
+  const isMobileView = props.mobileView ? true : false;
 
   const [allCategories, setAllCategories] = useState([]);
   const [price, setPrice] = useState([0, maxPriceValue]);
@@ -55,7 +55,8 @@ function Filters(props) {
     setPrice([0, maxPriceValue]);
     setFiltersToUrl(tempFilters);
     setFilters(tempFilters);
-    if (props.onApply) props.onApply(tempFilters);
+    if (props.onApply) props.onApply(tempFilters, true);
+    if (props.onClose) props.onClose();
   };
 
   const setFiltersToUrl = (filters) => {
@@ -98,46 +99,6 @@ function Filters(props) {
     });
   };
 
-  const getFiltersFromUrl = (onlyUpdate) => {
-    const queryParams = new URLSearchParams(location?.search);
-    const refCategory = queryParams.get("refCategory") || "";
-    const sortBy = queryParams.get("sortBy") || "";
-    const search = queryParams.get("search") || "";
-    const minimumPrice = queryParams.get("minimumPrice")
-      ? parseInt(queryParams.get("minimumPrice"))
-      : "";
-    const maximumPrice = queryParams.get("maximumPrice")
-      ? parseInt(queryParams.get("maximumPrice"))
-      : "";
-    let selectedCategory;
-    try {
-      selectedCategory = JSON.parse(queryParams.get("selectedCategory")) || "";
-    } catch (err) {
-      selectedCategory = "";
-    }
-    let selectedSortBy;
-    try {
-      selectedSortBy = JSON.parse(queryParams.get("selectedSortBy")) || "";
-    } catch (err) {
-      selectedSortBy = "";
-    }
-
-    const tempFilters = {
-      search,
-      refCategory,
-      sortBy,
-      minimumPrice,
-      maximumPrice,
-    };
-    if (props.onApply && !onlyUpdate) props.onApply(tempFilters);
-    setFilters(tempFilters);
-    setPrice([minimumPrice || 0, maximumPrice || maxPriceValue]);
-    setSelectedOptions({
-      category: selectedCategory,
-      sortBy: selectedSortBy,
-    });
-  };
-
   const submission = () => {
     const tempFilters = { ...filters };
     if (price[0] && price[1] !== maxPriceValue) {
@@ -156,21 +117,39 @@ function Filters(props) {
 
     setFiltersToUrl(tempFilters);
     if (props.onApply) props.onApply(tempFilters);
+    if (props.onClose) props.onClose();
   };
 
   useEffect(() => {
     fetchAllCategories();
-    getFiltersFromUrl();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    getFiltersFromUrl(true);
+    setFilters({
+      search: props?.filters?.search || "",
+      refCategory: props?.filters?.refCategory || "",
+      minimumPrice: props?.filters?.minimumPrice || "",
+      maximumPrice: props?.filters?.maximumPrice || "",
+      sortBy: props?.filters?.sortBy || "",
+    });
+    setSelectedOptions({
+      sortBy: props?.filters?.selectedSortBy || selectedOptions.sortBy,
+      category: props?.filters?.selectedCategory || selectedOptions.category,
+    });
+    setPrice([
+      props?.filters?.minimumPrice || 0,
+      props?.filters?.maximumPrice || maxPriceValue,
+    ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.search]);
+  }, [props.filters]);
 
   return (
-    <div className={styles.container}>
+    <div
+      className={`${styles.container} ${
+        isMobileView ? styles.mobileContainer : ""
+      }`}
+    >
       <div className={styles.header}>
         <p className={styles.heading}>Filter out results</p>
         <div className={styles.buttons}>
@@ -185,14 +164,16 @@ function Filters(props) {
       </div>
 
       <div className={styles.body}>
-        <InputControl
-          label="Search Product Name"
-          placeholder="Type product name"
-          value={filters.search || ""}
-          onChange={(event) =>
-            setFilters((prev) => ({ ...prev, search: event.target?.value }))
-          }
-        />
+        {!isMobileView && (
+          <InputControl
+            label="Search Product Name"
+            placeholder="Type product name"
+            value={filters.search || ""}
+            onChange={(event) =>
+              setFilters((prev) => ({ ...prev, search: event.target?.value }))
+            }
+          />
+        )}
         <InputSelect
           label="Choose Category"
           placeholder="Select Category"
@@ -258,6 +239,9 @@ function Filters(props) {
 
 Filters.propTypes = {
   onApply: PropTypes.func,
+  filters: PropTypes.object,
+  mobileView: PropTypes.bool,
+  onClose: PropTypes.func,
 };
 
 export default Filters;

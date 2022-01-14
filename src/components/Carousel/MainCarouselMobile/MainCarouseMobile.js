@@ -30,6 +30,7 @@ function MainCarouselMobile(props) {
 
     return () => {
       clearInterval(autoInterval);
+      autoInterval = undefined;
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

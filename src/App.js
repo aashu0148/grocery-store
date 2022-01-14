@@ -37,7 +37,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isMerchant, setIsMerchant] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(token ? false : true);
-  const [isMobileView, setIsMobileView] = useState(window.outerWidth < 769);
+  const [isMobileView, setIsMobileView] = useState(window.outerWidth < 820);
 
   const handleLogout = () => {
     dispatch({
@@ -80,7 +80,7 @@ function App() {
 
   const handleResize = (event) => {
     const width = event.target.outerWidth;
-    if (width < 769) setIsMobileView(true);
+    if (width < 820) setIsMobileView(true);
     else setIsMobileView(false);
   };
 
@@ -140,14 +140,7 @@ function App() {
                 />
               )}
               {isMobileView && (
-                <Route
-                  path="/explore"
-                  element={
-                    <PrivateRoute auth={isAuthenticated}>
-                      <ExploreMobile />
-                    </PrivateRoute>
-                  }
-                />
+                <Route path="/explore" element={<ExploreMobile />} />
               )}
               <Route
                 path="/profile"

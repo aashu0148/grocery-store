@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Search, Filter } from "react-feather";
 
 import ProductCard from "./ProductCard/ProductCard";
 import Paginate from "components/Paginate/Paginate";
 import Filters from "./Filters/Filters";
 import Spinner from "components/Spinner/Spinner";
+import ModalMobile from "components/Modal/ModalMobile/ModalMobile";
 
 import { getAllProducts } from "api/user/product";
 
@@ -23,6 +26,9 @@ function AllProducts() {
   });
   const [fetchingMoreProducts, setFetchingMoreProducts] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+
+  const isMobileView = useSelector((state) => state.isMobileView);
 
   const fetchAllProducts = (givenFilters = filters, page = 1) => {
     getAllProducts(givenFilters, page).then((res) => {
@@ -78,6 +84,7 @@ function AllProducts() {
     } else {
       tempFilters.refCategory = id;
       tempFilters.refSubCategory = "";
+      tempFilters.selectedCategory = { value: id, label: name };
       replaceCategoryOnUrl(id, name);
     }
 
@@ -86,12 +93,18 @@ function AllProducts() {
     fetchAllProducts(tempFilters);
   };
 
-  const handleFiltersSubmission = (appliedFilters) => {
+  const handleFiltersSubmission = (appliedFilters, isReset) => {
     setProductsLoaded(false);
-    const tempFilters = {
-      ...appliedFilters,
-      refSubCategory: filters.refSubCategory,
-    };
+    let tempFilters;
+    if (isReset) tempFilters = {};
+    else
+      tempFilters = {
+        ...filters,
+        ...appliedFilters,
+        refSubCategory: appliedFilters?.refCategory
+          ? filters.refSubCategory
+          : "",
+      };
     setFilters(tempFilters);
     fetchAllProducts(tempFilters);
     setCurrentPage(1);
@@ -116,46 +129,136 @@ function AllProducts() {
     }
   };
 
+  const getFiltersFromUrl = () => {
+    const queryParams = new URLSearchParams(location?.search);
+    const refCategory = queryParams.get("refCategory") || "";
+    const sortBy = queryParams.get("sortBy") || "";
+    const search = queryParams.get("search") || "";
+    const minimumPrice = queryParams.get("minimumPrice")
+      ? parseInt(queryParams.get("minimumPrice"))
+      : "";
+    const maximumPrice = queryParams.get("maximumPrice")
+      ? parseInt(queryParams.get("maximumPrice"))
+      : "";
+    let selectedCategory;
+    try {
+      selectedCategory = JSON.parse(queryParams.get("selectedCategory")) || "";
+    } catch (err) {
+      selectedCategory = "";
+    }
+    let selectedSortBy;
+    try {
+      selectedSortBy = JSON.parse(queryParams.get("selectedSortBy")) || "";
+    } catch (err) {
+      selectedSortBy = "";
+    }
+
+    const tempFilters = {
+      search,
+      refCategory,
+      sortBy,
+      minimumPrice,
+      maximumPrice,
+      selectedSortBy,
+      selectedCategory,
+    };
+
+    setFilters(tempFilters);
+    handleFiltersSubmission(tempFilters);
+  };
+
+  const isFiltersEmpty = () => {
+    const tempFilters = { ...filters };
+    const keys = Object.keys(tempFilters);
+    if (keys.length === 0) return true;
+
+    let output = true;
+    keys.forEach((item) => (tempFilters[item] ? (output = false) : ""));
+    return output;
+  };
+
   useEffect(() => {
+    getFiltersFromUrl();
     if (currentPage < 1) setCurrentPage(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.left}>
-        <div className={styles.leftInner}>
-          <Filters onApply={handleFiltersSubmission} />
-        </div>
+  const secondaryFiltersDiv = (
+    <div className={styles.filters}>
+      <div className={styles.filtersInner}>
+        {filteredCategories?.map((item, index) => (
+          <React.Fragment key={item._id}>
+            <p
+              className={
+                item?.isSubcategory && item._id === filters?.refSubCategory
+                  ? styles.active
+                  : ""
+              }
+              onClick={() =>
+                handleSubCategoryChange(
+                  item._id,
+                  item?.isSubcategory,
+                  item.name
+                )
+              }
+            >
+              {item.name} ({item.total})
+            </p>
+            {index !== filteredCategories?.length - 1 && (
+              <span className={styles.bar} />
+            )}
+          </React.Fragment>
+        ))}
       </div>
-      <div className={styles.right}>
-        <div className={styles.filters}>
-          <div className={styles.filtersInner}>
-            {filteredCategories?.map((item, index) => (
-              <React.Fragment key={item._id}>
-                <p
-                  className={
-                    item?.isSubcategory && item._id === filters?.refSubCategory
-                      ? styles.active
-                      : ""
-                  }
-                  onClick={() =>
-                    handleSubCategoryChange(
-                      item._id,
-                      item?.isSubcategory,
-                      item.name
-                    )
-                  }
-                >
-                  {item.name} ({item.total})
-                </p>
-                {index !== filteredCategories?.length - 1 && (
-                  <span className={styles.bar} />
-                )}
-              </React.Fragment>
-            ))}
+    </div>
+  );
+
+  return (
+    <div
+      className={`${styles.container} ${
+        isMobileView ? styles.mobileContainer : ""
+      }`}
+    >
+      {!isMobileView && (
+        <div className={styles.left}>
+          <div className={styles.leftInner}>
+            <Filters onApply={handleFiltersSubmission} filters={filters} />
           </div>
         </div>
+      )}
+      {filtersOpen && (
+        <ModalMobile onClose={() => setFiltersOpen(false)}>
+          <Filters
+            onClose={() => setFiltersOpen(false)}
+            onApply={handleFiltersSubmission}
+            filters={filters}
+            mobileView
+          />
+        </ModalMobile>
+      )}
+      <div className={styles.right}>
+        {isMobileView && (
+          <div className={styles.header}>
+            <div className={styles.headerTop}>
+              <form className={styles.search}>
+                <input
+                  type="text"
+                  className="basic-input"
+                  placeholder="Search Store"
+                />
+                <Search />
+              </form>
+              <div className={styles.filterIcon}>
+                <Filter onClick={() => setFiltersOpen(true)} />
+                {isFiltersEmpty() ? "" : <div className={styles.dot} />}
+              </div>
+            </div>
+            {secondaryFiltersDiv}
+          </div>
+        )}
+
+        {!isMobileView && secondaryFiltersDiv}
+
         {productsLoaded ? (
           <div className={styles.productsContainer}>
             <p className={styles.title}>Products ({totalProducts})</p>
@@ -165,7 +268,11 @@ function AllProducts() {
                   <p>Oops no Products found with selected filter</p>
                 ) : (
                   products.map((item) => (
-                    <ProductCard key={item?._id} product={item} />
+                    <ProductCard
+                      key={item?._id}
+                      product={item}
+                      mobileView={isMobileView}
+                    />
                   ))
                 )}
               </div>

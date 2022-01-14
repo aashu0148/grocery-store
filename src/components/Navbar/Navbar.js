@@ -26,6 +26,7 @@ function Navbar(props) {
   const avatarLink = useSelector((state) => state.avatar);
   const isMobileView = useSelector((state) => state.isMobileView);
   const isAuthenticated = props.auth ? true : false;
+  const currentPathname = location.pathname + location.search;
 
   const [showUserDropdown, setShowUserDropdown] = useState(false);
 
@@ -42,6 +43,13 @@ function Navbar(props) {
     window.location.replace(`/product?search=${query.trim()}`);
   };
 
+  const activeLinks = {
+    explore: /explore|product/.test(currentPathname),
+    cart: /cart/.test(currentPathname),
+    wishlist: /wishlist/.test(currentPathname),
+    account: /account|login|register/.test(currentPathname),
+  };
+
   return isMobileView ? (
     <div className={styles.mobileNavbar}>
       <NavLink
@@ -54,10 +62,10 @@ function Navbar(props) {
         <p>Home</p>
       </NavLink>
       <NavLink
-        to="/explore"
-        className={(navData) =>
-          navData.isActive ? `${styles.activeIcon} ${styles.icon}` : styles.icon
-        }
+        to={activeLinks.explore ? currentPathname : "/explore"}
+        className={`${styles.icon} ${
+          activeLinks.explore ? styles.activeIcon : ""
+        }`}
       >
         <ExploreIcon />
         <p>Explore</p>
@@ -66,23 +74,19 @@ function Navbar(props) {
       {isAuthenticated && (
         <>
           <NavLink
-            to="/cart"
-            className={(navData) =>
-              navData.isActive
-                ? `${styles.activeIcon} ${styles.icon}`
-                : styles.icon
-            }
+            to={activeLinks.cart ? currentPathname : "/cart"}
+            className={`${styles.icon} ${
+              activeLinks.cart ? styles.activeIcon : ""
+            }`}
           >
             <CartIcon />
             <p>Cart</p>
           </NavLink>
           <NavLink
-            to="/wishlist"
-            className={(navData) =>
-              navData.isActive
-                ? `${styles.activeIcon} ${styles.icon}`
-                : styles.icon
-            }
+            to={activeLinks.wishlist ? currentPathname : "/wishlist"}
+            className={`${styles.icon} ${
+              activeLinks.wishlist ? styles.activeIcon : ""
+            }`}
           >
             <FavoriteIcon />
             <p>Wishlist</p>
@@ -90,10 +94,16 @@ function Navbar(props) {
         </>
       )}
       <NavLink
-        to={isAuthenticated ? "/account" : "/login"}
-        className={(navData) =>
-          navData.isActive ? `${styles.activeIcon} ${styles.icon}` : styles.icon
+        to={
+          activeLinks.account
+            ? currentPathname
+            : isAuthenticated
+            ? "/account"
+            : "/login"
         }
+        className={`${styles.icon} ${
+          activeLinks.account ? styles.activeIcon : ""
+        }`}
       >
         <UserIcon />
         <p>Account</p>
@@ -124,9 +134,9 @@ function Navbar(props) {
         </form>
         {!isAuthenticated ? (
           <div className={styles.auth}>
-            {location.pathname?.includes("register") ||
-            location.pathname?.includes("login") ? (
-              location.pathname?.includes("merchant") ? (
+            {currentPathname?.includes("register") ||
+            currentPathname?.includes("login") ? (
+              currentPathname?.includes("merchant") ? (
                 <Link to="/login" className="styled-link">
                   Are you a customer ?
                 </Link>
@@ -141,7 +151,7 @@ function Navbar(props) {
             <div className={styles.customerAuth}>
               <Link
                 to={
-                  location.pathname?.includes("merchant")
+                  currentPathname?.includes("merchant")
                     ? "/merchant/register"
                     : "/register"
                 }
@@ -151,7 +161,7 @@ function Navbar(props) {
               <span>/</span>
               <Link
                 to={
-                  location.pathname?.includes("merchant")
+                  currentPathname?.includes("merchant")
                     ? "/merchant/login"
                     : "/login"
                 }
