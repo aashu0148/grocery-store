@@ -13,14 +13,16 @@ import MerchantRegister from "pages/Merchant/Register/Register";
 import MerchantLoginPage from "pages/Merchant/LoginPage/LoginPage";
 import CustomerRegister from "pages/Customer/Register/Register";
 import CustomerLogin from "pages/Customer/LoginPage/LoginPage";
-import PageNotFound from "pages/common/PageNotFound/PageNotFound";
+import PageNotFound from "pages/Customer/PageNotFound/PageNotFound";
 import HomePage from "pages/Customer/HomePage/HomePage";
 import MerchantDashboard from "pages/Merchant/MerchantDashboard/MerchantDashboard";
 import PrivateRoute from "components/PrivateRoute/PrivateRoute";
 import AllProducts from "pages/Customer/Product/AllProducts/AllProducts";
-import PreLoader from "pages/common/PreLoader/PreLoader";
+import PreLoader from "pages/Customer/PreLoader/PreLoader";
 import Profile from "pages/Customer/Profile/Profile";
 import CartPage from "pages/Customer/Cart/CartPage";
+import AccountMobile from "pages/Customer/AccountMobile/AccountMobile";
+import ExploreMobile from "pages/Customer/ExploreMobile/ExploreMobile";
 
 import { checkAuth } from "api/user/authenticate";
 import { userTypes } from "utils/constants";
@@ -70,6 +72,7 @@ function App() {
         mobile: res?.data?.mobile,
         email: res?.data?.email,
         avatar: res?.data?.profileImage,
+        isMerchant: userType === userTypes.merchant,
       });
       setIsDataLoaded(true);
     });
@@ -126,6 +129,26 @@ function App() {
                   isAuthenticated ? <Navigate to="/" /> : <CustomerRegister />
                 }
               />
+              {isMobileView && (
+                <Route
+                  path="/account"
+                  element={
+                    <PrivateRoute auth={isAuthenticated}>
+                      <AccountMobile />
+                    </PrivateRoute>
+                  }
+                />
+              )}
+              {isMobileView && (
+                <Route
+                  path="/explore"
+                  element={
+                    <PrivateRoute auth={isAuthenticated}>
+                      <ExploreMobile />
+                    </PrivateRoute>
+                  }
+                />
+              )}
               <Route
                 path="/profile"
                 element={

@@ -45,6 +45,7 @@ function Register() {
       lastName: merchantObj.lastName,
       mobile: merchantObj.mobile,
       avatar: merchantObj.profileImage,
+      isMerchant: true,
     });
   };
 

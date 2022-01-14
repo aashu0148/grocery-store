@@ -7,6 +7,7 @@ import {
 const initialState = {
   auth: false,
   isMobileView: false,
+  isMerchant: false,
 };
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -19,12 +20,14 @@ const userReducer = (state = initialState, action) => {
         mobile: action.mobile,
         avatar: action.avatar,
         email: action.email,
+        isMerchant: action.isMerchant || false,
       };
     }
     case USER_LOGOUT: {
       return {
         auth: false,
         isMobileView: state.isMobileView,
+        isMerchant: false,
       };
     }
     case CHANGE_MOBILE_VIEW: {

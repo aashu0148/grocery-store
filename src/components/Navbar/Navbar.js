@@ -54,7 +54,7 @@ function Navbar(props) {
         <p>Home</p>
       </NavLink>
       <NavLink
-        to="/search"
+        to="/explore"
         className={(navData) =>
           navData.isActive ? `${styles.activeIcon} ${styles.icon}` : styles.icon
         }
@@ -90,7 +90,7 @@ function Navbar(props) {
         </>
       )}
       <NavLink
-        to={isAuthenticated ? "/profile" : "/login"}
+        to={isAuthenticated ? "/account" : "/login"}
         className={(navData) =>
           navData.isActive ? `${styles.activeIcon} ${styles.icon}` : styles.icon
         }

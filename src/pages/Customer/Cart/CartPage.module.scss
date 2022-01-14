@@ -16,14 +16,18 @@
       color: $text-dark-gray;
       span {
         font-size: 1.1rem;
-        color: $bg-black-translucent;
       }
+      color: $bg-black-translucent;
+    }
+    * {
+      user-select: none;
     }
     .leftInner {
       display: flex;
       flex-direction: column;
       padding-top: 3%;
       align-items: center;
+
       .productDetailsbox {
         width: 70%;
         min-height: 100vh;
@@ -32,22 +36,23 @@
         .productsList {
           width: 100%;
           display: flex;
-          align-items: center;
+          flex-direction: column;
+          margin-bottom: 1rem;
+          border-bottom: 1px solid $bg-light-gray;
+          background: $bg-white-2;
           .productCard {
             display: flex;
-            background: $bg-white-2;
-            border-bottom: 1px solid $bg-light-gray;
-            padding: 0.5rem 0;
-            margin-bottom: 1rem;
             justify-content: space-between;
             align-items: center;
             padding: 0.4rem 1rem;
-            flex: 2;
             color: $text-dark-gray;
             font-weight: 500;
             .productInfo {
+              height: 5rem;
+              justify-content: space-around;
               display: flex;
               align-items: center;
+              padding: 0.41rem 0;
               .productImgbox {
                 height: 5rem;
                 width: 5rem;
@@ -70,17 +75,26 @@
                 }
               }
               .aboutBox {
-                margin-left: 0.41rem;
+                margin-left: 0.61rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 100%;
+
                 .productName {
                   width: 10rem;
                   font-size: 15px;
                   overflow-x: hidden;
                   text-overflow: ellipsis;
-                  height: 2.9rem;
+                  white-space: nowrap;
                 }
                 .availableIn {
+                  font-weight: 400;
                   width: 60%;
                   display: flex;
+                }
+                .productPrice {
+                  font-weight: 400;
                 }
               }
             }
@@ -99,11 +113,17 @@
                 cursor: pointer;
                 height: 1.1rem;
                 width: 1.1rem;
+                &:hover {
+                  color: $bg-primary;
+                }
               }
               .qtyDec {
                 width: 1.1rem;
                 height: 1.1rem;
                 cursor: pointer;
+                &:hover {
+                  color: $bg-primary;
+                }
               }
             }
           }
@@ -112,25 +132,33 @@
             user-select: none;
           }
         }
-        .deleteItem {
-          flex: 0.15;
-          margin-bottom: 1rem;
+        .deleteItemBox {
+          display: flex;
           cursor: pointer;
+          width: 16rem;
           color: $text-dark-gray;
+          justify-content: center;
+          align-items: center;
+          font-weight: 400;
+          font-size: 1rem;
+          .deleteItemIcon {
+            width: 1.3rem;
+          }
         }
       }
     }
   }
 
   .rightPortion {
-    height: 100vh;
+    height: 92%;
     flex: 0.71;
-    background: $bg-black-translucent;
+    background: $bg-dark;
+
     .orderTitle {
       font-size: 2rem;
       margin-left: 1rem;
       text-align: center;
-      color: $bg-white-translucent;
+      color: $text-medium-gray;
       font-weight: 400;
       margin-top: 1rem;
     }
@@ -140,21 +168,34 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-around;
-      margin-top: 1rem;
-      .totalPrice_box {
+      .cartTotal_box {
         display: flex;
         flex-direction: column;
-        height: 3rem;
+        height: 40%;
         justify-content: space-between;
-        .cartTotal {
+        .cartTotal_details {
+          height: 100%;
           display: flex;
           justify-content: center;
-          text-align: center;
-          font-size: 1.2rem;
-          font-weight: 500;
-          color: $bg-gray;
+          flex-direction: column;
+          align-items: center;
+          .itemPrice,
+          .taxPrice,
+          .shippingCharges,
+          .totalPrice {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width:90%;
+          }
+          .totalPrice{
+            margin-top: .61rem;
+            border-top: 1px solid $bg-light-gray;
+          }
           .cartTotal_text {
-            margin-left: 1rem;
+            font-size: 1rem;
+            font-weight:400;
+            color: $text-medium-gray;
           }
           .cartTotal_number {
             color: $text-primary;
@@ -164,7 +205,7 @@
         }
         .totalPrice_bottomtext {
           font-size: 0.81rem;
-          color: $bg-gray;
+          color: $text-medium-gray;
         }
       }
       .checkoutBox {
@@ -181,11 +222,11 @@
           margin-top: auto;
           cursor: pointer;
           transition: ease 0.3s;
-          color: $bg-gray;
-          background: $bg-dark;
+          color: $text-medium-gray;
+          background: $bg-black-translucent;
           &:hover {
-            background: $bg-gray;
-            color: $bg-dark;
+            background: $bg-light-gray;
+            color: $text-dark;
           }
         }
       }
