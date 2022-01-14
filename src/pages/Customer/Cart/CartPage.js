@@ -49,9 +49,7 @@ const CartPage = () => {
                   />
                 </div>
                 <div className={styles.totalItem_price}>₹ 464.12</div>
-              </div>
-              <div className={styles.deleteItemBox}>
-                <X className={styles.deleteItemIcon} /> clear
+                <X className={styles.deleteItemIcon} />
               </div>
             </div>
             <div className={styles.productsList}>
@@ -87,9 +85,7 @@ const CartPage = () => {
                   />
                 </div>
                 <div className={styles.totalItem_price}>₹ 464.12</div>
-              </div>
-              <div className={styles.deleteItemBox}>
-                <X className={styles.deleteItemIcon} /> clear
+                <X className={styles.deleteItemIcon} />
               </div>
             </div>
             <div className={styles.productsList}>
@@ -125,9 +121,7 @@ const CartPage = () => {
                   />
                 </div>
                 <div className={styles.totalItem_price}>₹ 464.12</div>
-              </div>
-              <div className={styles.deleteItemBox}>
-                <X className={styles.deleteItemIcon} /> clear
+                <X className={styles.deleteItemIcon} />
               </div>
             </div>
             <div className={styles.productsList}>
@@ -163,13 +157,10 @@ const CartPage = () => {
                   />
                 </div>
                 <div className={styles.totalItem_price}>₹ 464.12</div>
-              </div>
-              <div className={styles.deleteItemBox}>
-                <X className={styles.deleteItemIcon} /> clear
+                <X className={styles.deleteItemIcon} />
               </div>
             </div>
-
-      
+           
           </div>
         </div>
       </div>

@@ -1,23 +1,24 @@
 @import "styles/variables";
 
+
 .outer {
   width: 100%;
-  display: flex;
   height: 100vh;
+  display: flex;
   .leftPortion {
     flex: 2;
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
     .shopTitle {
       font-size: 2rem;
-      margin-left: 1rem;
       font-weight: 400;
+      margin-left: 1rem;
       margin-top: 1rem;
-      color: $text-dark-gray;
+      color: $text-dark;
       span {
         font-size: 1.1rem;
+        color: $text-dark-gray;
       }
-      color: $bg-black-translucent;
     }
     * {
       user-select: none;
@@ -25,9 +26,8 @@
     .leftInner {
       display: flex;
       flex-direction: column;
-      padding-top: 3%;
       align-items: center;
-
+      padding-top: 3%;
       .productDetailsbox {
         width: 70%;
         min-height: 100vh;
@@ -38,28 +38,28 @@
           display: flex;
           flex-direction: column;
           margin-bottom: 1rem;
-          border-bottom: 1px solid $bg-light-gray;
-          background: $bg-white-2;
+          border-bottom: 1px solid $bg-gray;
+          background: $bg-white-1;
           .productCard {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0.4rem 1rem;
-            color: $text-dark-gray;
+            color: $text-dark;
             font-weight: 500;
             .productInfo {
               height: 5rem;
-              justify-content: space-around;
-              display: flex;
-              align-items: center;
               padding: 0.41rem 0;
+              display: flex;
+              justify-content: space-around;
+              align-items: center;
               .productImgbox {
+                position: relative;
                 height: 5rem;
                 width: 5rem;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                position: relative;
                 .productImg {
                   width: 100%;
                   height: 100%;
@@ -68,6 +68,7 @@
                 .discountPrice {
                   background: $bg-orange;
                   color: $text-dark;
+
                   font-weight: 500;
                   position: absolute;
                   left: -1rem;
@@ -75,11 +76,11 @@
                 }
               }
               .aboutBox {
+                height: 100%;
                 margin-left: 0.61rem;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
-                height: 100%;
 
                 .productName {
                   width: 10rem;
@@ -89,20 +90,21 @@
                   white-space: nowrap;
                 }
                 .availableIn {
-                  font-weight: 400;
                   width: 60%;
                   display: flex;
+                  font-weight: 400;
                 }
                 .productPrice {
-                  font-weight: 400;
+                  color: $text-dark-gray;
+                  font-weight: 500;
                 }
               }
             }
             .qtyCounter {
               display: flex;
-              font-weight: 500;
               justify-content: space-between;
               align-items: center;
+              font-weight: 500;
               width: 4rem;
               .qtyValue {
                 display: flex;
@@ -132,18 +134,9 @@
             user-select: none;
           }
         }
-        .deleteItemBox {
-          display: flex;
+        .deleteItemIcon {
           cursor: pointer;
-          width: 16rem;
-          color: $text-dark-gray;
-          justify-content: center;
-          align-items: center;
-          font-weight: 400;
-          font-size: 1rem;
-          .deleteItemIcon {
-            width: 1.3rem;
-          }
+          width: 1.3rem;
         }
       }
     }
@@ -152,26 +145,25 @@
   .rightPortion {
     height: 92%;
     flex: 0.71;
-    background: $bg-dark;
-
+    background: $bg-greenish-white-2;
     .orderTitle {
       font-size: 2rem;
-      margin-left: 1rem;
       text-align: center;
-      color: $text-medium-gray;
+      color: $text-dark;
       font-weight: 400;
       margin-top: 1rem;
+      margin-left: 1rem;
     }
     .rightInner {
       height: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: space-around;
+      align-items: center;
       .cartTotal_box {
+        height: 40%;
         display: flex;
         flex-direction: column;
-        height: 40%;
         justify-content: space-between;
         .cartTotal_details {
           height: 100%;
@@ -183,50 +175,50 @@
           .taxPrice,
           .shippingCharges,
           .totalPrice {
+            width: 90%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width:90%;
           }
-          .totalPrice{
-            margin-top: .61rem;
-            border-top: 1px solid $bg-light-gray;
+          .totalPrice {
+            margin-top: 0.61rem;
+            border-top: 1px solid $bg-gray;
           }
           .cartTotal_text {
             font-size: 1rem;
-            font-weight:400;
-            color: $text-medium-gray;
+            font-weight: 400;
+            color: $text-dark;
           }
           .cartTotal_number {
-            color: $text-primary;
+            color: $text-secondary;
             font-weight: bold;
             margin-left: 1rem;
           }
         }
         .totalPrice_bottomtext {
           font-size: 0.81rem;
-          color: $text-medium-gray;
+          color: $text-dark-gray;
         }
       }
       .checkoutBox {
         width: 100%;
         height: 6rem;
         display: flex;
+        z-index: 1;
 
         .checkoutButton {
-          font-weight: 500;
-          border: none;
-          font-size: 1.2rem;
-          height: 5rem;
           width: 100%;
+          height: 5rem;
+          border: none;
+          font-weight: 500;
+          font-size: 1.2rem;
           margin-top: auto;
           cursor: pointer;
           transition: ease 0.3s;
-          color: $text-medium-gray;
-          background: $bg-black-translucent;
+          color: $white;
+          background: $bg-primary;
           &:hover {
-            background: $bg-light-gray;
-            color: $text-dark;
+            background: $bg-secondary;
           }
         }
       }
