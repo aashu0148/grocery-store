@@ -26,7 +26,7 @@
     .inner {
         width: 100vw;
         height: fit-content;
-        max-height: 75%;
+        max-height: 80%;
         background-color: $white;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
@@ -42,7 +42,8 @@
             justify-content: space-between;
             align-items: center;
             padding-top: 20px;
-            margin-bottom: 20px;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
             z-index: 10;
 
             .heading {

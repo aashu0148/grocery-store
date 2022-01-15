@@ -59,7 +59,11 @@ function BasicCarousel(props) {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div
+      className={`${styles.container} ${
+        props.mobileView ? styles.mobileContainer : ""
+      }`}
+    >
       {!leftButtonDisabled && (
         <div
           className={`${styles.control} ${styles.leftControl}`}
@@ -86,6 +90,7 @@ function BasicCarousel(props) {
                   item={item}
                   onClick={props.onItemClick}
                   hideAddButton
+                  mobileView={props.mobileView}
                 />
               ))
             : ""}
@@ -98,6 +103,7 @@ function BasicCarousel(props) {
 BasicCarousel.propTypes = {
   items: PropTypes.array,
   onItemClick: PropTypes.func,
+  mobileView: PropTypes.bool,
 };
 
 export default BasicCarousel;

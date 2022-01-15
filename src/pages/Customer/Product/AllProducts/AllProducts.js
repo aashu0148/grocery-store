@@ -266,6 +266,7 @@ function AllProducts() {
                 <input
                   ref={searchInputRef}
                   type="text"
+                  defaultValue={filters.search}
                   className="basic-input"
                   placeholder="Search Store"
                 />
