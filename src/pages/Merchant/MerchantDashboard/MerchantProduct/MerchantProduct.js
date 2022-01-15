@@ -232,24 +232,36 @@ function MerchantProduct() {
           <div className={styles.firstChild_header}>
             <h3>Categories</h3>
           </div>
-          <div className={styles.categories}>
-            {userCategories.map((catergory, i) => (
-              <div className={styles.category_card} key={i}>
-                <div className={styles.category_image}>
-                  <img src={catergory.img_src} />
+          <div className={styles.categoriesContainer}>
+            <div className={styles.categories}>
+              {userCategories.map((catergory, i) => (
+                <div className={styles.category_card} key={i}>
+                  <div className={styles.category_image}>
+                    <img src={catergory.img_src} />
+                  </div>
+                  <p>{catergory.catergory}</p>
                 </div>
-                <p>{catergory.catergory}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
         <div className={styles.secondChild}>
           <div className={styles.secondChild_header}>
             <div className={styles.secondChild_header_left}>
-              <p onClick={(e) => setSelectedTab(e.target.innerHTML)}>
+              <p
+                className={
+                  selectedTab === "All Products" ? styles.activeTab : ""
+                }
+                onClick={(e) => setSelectedTab(e.target.innerHTML)}
+              >
                 All Products
               </p>
-              <p onClick={(e) => setSelectedTab(e.target.innerHTML)}>Orders</p>
+              <p
+                className={selectedTab === "Orders" ? styles.activeTab : ""}
+                onClick={(e) => setSelectedTab(e.target.innerHTML)}
+              >
+                Orders
+              </p>
             </div>
             <div className={styles.secondChild_header_right}>
               <form
