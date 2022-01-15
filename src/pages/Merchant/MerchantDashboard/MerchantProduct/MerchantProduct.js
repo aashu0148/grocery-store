@@ -231,9 +231,6 @@ function MerchantProduct() {
         <div className={styles.firstChild}>
           <div className={styles.firstChild_header}>
             <h3>Categories</h3>
-            {/* <Button onClick={() => setShowProductModal((prev) => !prev)}>
-              Add Product
-            </Button> */}
           </div>
           <div className={styles.categories}>
             {userCategories.map((catergory, i) => (
@@ -259,7 +256,6 @@ function MerchantProduct() {
                 className={styles.searchBox}
                 onSubmit={(event) => {
                   event.preventDefault();
-                  // handleSearch();
                 }}
               >
                 <input
