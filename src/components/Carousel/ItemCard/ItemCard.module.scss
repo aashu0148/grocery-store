@@ -60,3 +60,33 @@
 .quantityControlButton {
   color: $text-primary;
 }
+
+.mobileContainer {
+  width: 140px;
+
+  .addProduct {
+    bottom: 64px;
+    padding: 3px;
+
+    svg {
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  .image {
+    img {
+      height: 120px;
+    }
+  }
+
+  .details {
+    .discountedPrice {
+      color: $text-primary;
+    }
+
+    del {
+      font-size: 0.75rem;
+    }
+  }
+}

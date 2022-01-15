@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Search } from "react-feather";
 
 import Spinner from "components/Spinner/Spinner";
@@ -9,6 +9,9 @@ import { getAllCategories } from "api/user/category";
 import styles from "./ExploreMobile.module.scss";
 
 function ExploreMobile() {
+  const inputRef = useRef();
+  const navigate = useNavigate();
+
   const [categories, setCategories] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -20,6 +23,14 @@ function ExploreMobile() {
     });
   };
 
+  const handleSearch = () => {
+    const query = inputRef?.current?.value;
+
+    if (!query || !query.trim()) return;
+
+    navigate(`/product?search=${query.trim()}`);
+  };
+
   useEffect(() => {
     fetchAllCategories();
   }, []);
@@ -27,9 +38,20 @@ function ExploreMobile() {
     <div className={styles.container}>
       <p className={styles.heading}>Find Products</p>
 
-      <form className={styles.search}>
-        <input type="text" className="basic-input" placeholder="Search Store" />
-        <Search />
+      <form
+        className={styles.search}
+        onSubmit={(event) => {
+          event.preventDefault();
+          handleSearch();
+        }}
+      >
+        <input
+          type="text"
+          ref={inputRef}
+          className="basic-input"
+          placeholder="Search Store"
+        />
+        <Search onClick={handleSearch} />
       </form>
 
       <div className={styles.categories}>

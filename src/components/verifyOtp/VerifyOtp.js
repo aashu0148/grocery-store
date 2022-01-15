@@ -19,6 +19,8 @@ function VerifyOtp(props) {
   const [showTimer, setShowTimer] = useState(false);
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
+  const isMobileView = props.mobileView ? true : false;
+
   const handleSendOtp = async () => {
     setShowTimer(false);
     const mobileNumber = props.mobile;
@@ -82,7 +84,7 @@ function VerifyOtp(props) {
       onSubmit={handleOtpVerification}
       className={`${styles.otpForm} ${
         props.isBackgroundTransparent ? styles.transparentBackground : ""
-      }`}
+      } ${isMobileView ? styles.mobileOtpForm : ""}`}
     >
       <div
         className={`${styles.mainBody} ${
@@ -131,6 +133,7 @@ function VerifyOtp(props) {
 verifyOtp.propTypes = {
   mobile: PropTypes.string,
   onSuccess: PropTypes.func,
+  isMobileView: PropTypes.bool,
 };
 
 export default VerifyOtp;

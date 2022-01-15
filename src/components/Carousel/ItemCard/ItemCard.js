@@ -20,7 +20,11 @@ function ItemCard(props) {
 
   const availableIn = item?.availabilities ? item.availabilities[0] : "";
   return (
-    <div className={styles.itemCard}>
+    <div
+      className={`${styles.itemCard} ${
+        props.mobileView ? styles.mobileContainer : ""
+      }`}
+    >
       <div className={styles.image}>
         <img
           src={item?.thumbnail}
@@ -53,7 +57,7 @@ function ItemCard(props) {
         )}
       </div>
       <p className={styles.productName}>{item?.title}</p>
-      <p>
+      <p className={styles.details}>
         <span>
           {!availableIn?.quantity || availableIn?.quantity < 2
             ? "1"
@@ -83,6 +87,7 @@ ItemCard.propTypes = {
   onClick: PropTypes.func,
   item: PropTypes.object,
   hideAddButton: PropTypes.bool,
+  mobileView: PropTypes.bool,
 };
 
 export default ItemCard;

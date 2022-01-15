@@ -102,7 +102,11 @@ function LoginPage() {
           </div>
         )}
         {showVerifyOtp ? (
-          <VerifyOtp mobile={mobile} onSuccess={handleLogin} />
+          <VerifyOtp
+            mobile={mobile}
+            onSuccess={handleLogin}
+            mobileView={isMobileView}
+          />
         ) : (
           <form className={styles.loginForm} onSubmit={handleFormSubmit}>
             <div className={styles["loginRightPanel-mainBody"]}>

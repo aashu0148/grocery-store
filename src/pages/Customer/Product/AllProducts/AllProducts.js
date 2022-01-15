@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Search, Filter } from "react-feather";
@@ -16,6 +16,7 @@ import styles from "./AllProducts.module.scss";
 function AllProducts() {
   const navigate = useNavigate();
   const location = useLocation();
+  const searchInputRef = useRef();
 
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
@@ -173,8 +174,23 @@ function AllProducts() {
     if (keys.length === 0) return true;
 
     let output = true;
-    keys.forEach((item) => (tempFilters[item] ? (output = false) : ""));
+    keys.forEach((item) =>
+      item !== "search" && tempFilters[item] ? (output = false) : ""
+    );
     return output;
+  };
+
+  const handleProductSearch = () => {
+    let query = searchInputRef?.current?.value;
+
+    if (!query || !query.trim()) query = "";
+
+    const tempFilters = {
+      ...filters,
+      search: query,
+    };
+    setFilters(tempFilters);
+    handleFiltersSubmission(tempFilters);
   };
 
   useEffect(() => {
@@ -240,13 +256,21 @@ function AllProducts() {
         {isMobileView && (
           <div className={styles.header}>
             <div className={styles.headerTop}>
-              <form className={styles.search}>
+              <form
+                className={styles.search}
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  handleProductSearch();
+                }}
+              >
                 <input
+                  ref={searchInputRef}
                   type="text"
+                  defaultValue={filters.search}
                   className="basic-input"
                   placeholder="Search Store"
                 />
-                <Search />
+                <Search onClick={handleProductSearch} />
               </form>
               <div className={styles.filterIcon}>
                 <Filter onClick={() => setFiltersOpen(true)} />

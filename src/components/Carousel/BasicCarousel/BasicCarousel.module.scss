@@ -48,3 +48,13 @@
         }
     }
 }
+
+.mobileContainer {
+    .control {
+        display: none;
+    }
+
+    .containerInner {
+        overflow-x: auto;
+    }
+}
