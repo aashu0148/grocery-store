@@ -20,7 +20,7 @@ import PrivateRoute from "components/PrivateRoute/PrivateRoute";
 import AllProducts from "pages/Customer/Product/AllProducts/AllProducts";
 import PreLoader from "pages/Customer/PreLoader/PreLoader";
 import Profile from "pages/Customer/Profile/Profile";
-import CartPage from "pages/Customer/Cart/CartPage";
+import CartPage from "pages/Customer/Cart/CartDesign/CartPage";
 import AccountMobile from "pages/Customer/AccountMobile/AccountMobile";
 import ExploreMobile from "pages/Customer/ExploreMobile/ExploreMobile";
 
@@ -157,8 +157,9 @@ function App() {
                   isAuthenticated ? <Navigate to="/" /> : <CustomerLogin />
                 }
               />
-              <Route path="/" element={<HomePage />} />
+              
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/" element={<HomePage />} />
 
               {/* --> Merchant Routes  */}
               <Route
