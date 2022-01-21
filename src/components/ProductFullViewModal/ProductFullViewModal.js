@@ -43,6 +43,8 @@ function ProductFullViewModal(props) {
     getProductById(id).then((res) => {
       setProductLoaded(true);
       if (!res) return;
+      setProduct(res.data);
+      setIsFavorite(res.data?.isFavorite || false);
       setSimilarProducts(res?.similarProducts);
     });
   };
