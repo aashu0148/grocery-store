@@ -1,5 +1,6 @@
 import axios from "axios";
 import { errorToastLogger } from "utils/util";
+import { axiosConfig } from "utils/constants";
 
 const backendApiUrl = process.env.REACT_APP_BACKEND_APP_URL;
 
@@ -14,7 +15,7 @@ export const getAllProducts = async (filters, page) => {
     }&minimumPrice=${filters?.minimumPrice || ""}&maximumPrice=${
       filters?.maximumPrice || ""
     }`;
-    const result = await axios.get(reqUrl);
+    const result = await axios.get(reqUrl, axiosConfig);
 
     if (!result.data?.status) {
       errorToastLogger("", result.data?.message);
@@ -31,7 +32,7 @@ export const getAllProducts = async (filters, page) => {
 export const getProductById = async (id) => {
   try {
     const reqUrl = `${backendApiUrl}/user/product/${id}`;
-    const result = await axios.get(reqUrl);
+    const result = await axios.get(reqUrl, axiosConfig);
 
     if (!result.data?.status) {
       errorToastLogger("", result.data?.message);

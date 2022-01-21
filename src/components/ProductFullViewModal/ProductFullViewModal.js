@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
+import toast from "react-hot-toast";
 import { Minus, Plus, X, ChevronDown, ChevronUp } from "react-feather";
-import { BiHeart as HeartIcon } from "react-icons/bi";
+import {
+  AiFillHeart as HeartIcon,
+  AiOutlineHeart as HeartOutline,
+} from "react-icons/ai";
 
 import Modal from "components/Modal/Modal";
 import ModalMobile from "components/Modal/ModalMobile/ModalMobile";
@@ -13,6 +17,7 @@ import Spinner from "components/Spinner/Spinner";
 
 import { getDiscountedPrice } from "utils/util";
 import { getProductById } from "api/user/product";
+import { addToWishlist, deleteFromWishlist } from "api/user/Wishlist";
 
 import styles from "./ProductFullViewModal.module.scss";
 
@@ -24,8 +29,12 @@ function ProductFullViewModal(props) {
   const [productLoaded, setProductLoaded] = useState(false);
   const [similarProducts, setSimilarProducts] = useState([]);
   const [productDetailsOpen, setProductDetailsOpen] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(
+    props?.product?.isFavorite || false
+  );
 
   const isMobileView = useSelector((state) => state.isMobileView);
+  const isAuthenticated = useSelector((state) => state.auth);
 
   const fetchProduct = () => {
     const id = product?._id;
@@ -34,8 +43,36 @@ function ProductFullViewModal(props) {
     getProductById(id).then((res) => {
       setProductLoaded(true);
       if (!res) return;
+      setProduct(res.data);
+      setIsFavorite(res.data?.isFavorite || false);
       setSimilarProducts(res?.similarProducts);
     });
+  };
+
+  const updateFavoriteOnDb = (isDelete) => {
+    if (isDelete)
+      deleteFromWishlist(product._id).then((res) => {
+        if (!res) {
+          setIsFavorite(true);
+          return;
+        }
+        toast.success("Deleted from Wishlist");
+      });
+    else
+      addToWishlist(product._id).then((res) => {
+        if (!res) {
+          setIsFavorite(false);
+          return;
+        }
+        toast.success("Added to Wishlist");
+      });
+  };
+
+  const toggleIsFavorite = () => {
+    const isFav = !isFavorite;
+    setIsFavorite(isFav);
+
+    updateFavoriteOnDb(!isFav);
   };
 
   useEffect(() => {
@@ -106,7 +143,16 @@ function ProductFullViewModal(props) {
             <div className={styles.details}>
               <div className={styles.titleContainer}>
                 <p className={styles.title}>{product?.title}</p>
-                {isMobileView && <HeartIcon />}
+                {isAuthenticated && (
+                  <div
+                    className={
+                      isFavorite ? `sweet-shake ${styles.activeHeartIcon}` : ""
+                    }
+                    onClick={toggleIsFavorite}
+                  >
+                    {isFavorite ? <HeartIcon /> : <HeartOutline />}
+                  </div>
+                )}
               </div>
               <div className={styles.availableIn}>
                 <p className={styles.title}>Available In</p>

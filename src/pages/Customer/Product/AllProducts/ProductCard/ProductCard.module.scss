@@ -24,6 +24,25 @@
         padding: 3px 8px;
     }
 
+    .heartIcon {
+        position: absolute;
+        top: 9px;
+        right: 5px;
+        cursor: pointer;
+
+        svg {
+            height: 24px;
+            width: 24px;
+            color: $text-dark;
+        }
+    }
+
+    .activeHeartIcon {
+        svg {
+            color: $text-red;
+        }
+    }
+
     .red {
         background-color: $bg-red;
     }

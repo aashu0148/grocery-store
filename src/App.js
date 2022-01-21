@@ -20,6 +20,7 @@ import PrivateRoute from "components/PrivateRoute/PrivateRoute";
 import AllProducts from "pages/Customer/Product/AllProducts/AllProducts";
 import PreLoader from "pages/Customer/PreLoader/PreLoader";
 import Profile from "pages/Customer/Profile/Profile";
+import Wishlist from "pages/Customer/Wishlist/Wishlist";
 import CartPage from "pages/Customer/Cart/CartDesign/CartPage";
 import AccountMobile from "pages/Customer/AccountMobile/AccountMobile";
 import ExploreMobile from "pages/Customer/ExploreMobile/ExploreMobile";
@@ -27,7 +28,6 @@ import ExploreMobile from "pages/Customer/ExploreMobile/ExploreMobile";
 import { checkAuth } from "api/user/authenticate";
 import { userTypes } from "utils/constants";
 import * as actionTypes from "store/actionTypes";
-
 
 import "styles/main.scss";
 function App() {
@@ -150,6 +150,14 @@ function App() {
                   </PrivateRoute>
                 }
               />
+              <Route
+                path="/wishlist"
+                element={
+                  <PrivateRoute auth={isAuthenticated}>
+                    <Wishlist />
+                  </PrivateRoute>
+                }
+              />
               <Route path="/product" element={<AllProducts />} />
               <Route
                 path="/login"
@@ -157,7 +165,7 @@ function App() {
                   isAuthenticated ? <Navigate to="/" /> : <CustomerLogin />
                 }
               />
-              
+
               <Route path="/cart" element={<CartPage />} />
               <Route path="/" element={<HomePage />} />
 

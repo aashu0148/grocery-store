@@ -1,22 +1,57 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import { Minus, Plus, ShoppingCart } from "react-feather";
+import {
+  AiFillHeart as HeartIcon,
+  AiOutlineHeart as HeartOutline,
+} from "react-icons/ai";
 
 import Button from "components/Button/Button";
 import ProductFullViewModal from "components/ProductFullViewModal/ProductFullViewModal";
 
 import { getDiscountedPrice } from "utils/util";
+import { addToWishlist, deleteFromWishlist } from "api/user/Wishlist";
 
 import styles from "./ProductCard.module.scss";
+import toast from "react-hot-toast";
 
 function ProductCard(props) {
   const { product } = props;
 
   const [quantity, setQuantity] = useState(1);
   const [showProductModal, setShowProductModal] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(product?.isFavorite || false);
 
+  const isAuthenticated = useSelector((state) => state.auth);
   const availableIn = product?.availabilities ? product?.availabilities[0] : "";
   const isMobileView = props?.mobileView ? true : false;
+
+  const updateFavoriteOnDb = (isDelete) => {
+    if (isDelete)
+      deleteFromWishlist(product._id).then((res) => {
+        if (!res) {
+          setIsFavorite(true);
+          return;
+        }
+        toast.success("Deleted from Wishlist");
+      });
+    else
+      addToWishlist(product._id).then((res) => {
+        if (!res) {
+          setIsFavorite(false);
+          return;
+        }
+        toast.success("Added to Wishlist");
+      });
+  };
+
+  const toggleIsFavorite = () => {
+    const isFav = !isFavorite;
+    setIsFavorite(isFav);
+
+    updateFavoriteOnDb(!isFav);
+  };
 
   return (
     <>
@@ -42,6 +77,18 @@ function ProductCard(props) {
         ) : (
           ""
         )}
+
+        {isAuthenticated && (
+          <div
+            className={`${styles.heartIcon} ${
+              isFavorite ? `sweet-shake ${styles.activeHeartIcon}` : ""
+            }`}
+            onClick={toggleIsFavorite}
+          >
+            {isFavorite ? <HeartIcon /> : <HeartOutline />}
+          </div>
+        )}
+
         <div
           className={styles.imageContainer}
           onClick={() => setShowProductModal(true)}
