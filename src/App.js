@@ -20,6 +20,7 @@ import PrivateRoute from "components/PrivateRoute/PrivateRoute";
 import AllProducts from "pages/Customer/Product/AllProducts/AllProducts";
 import PreLoader from "pages/Customer/PreLoader/PreLoader";
 import Profile from "pages/Customer/Profile/Profile";
+import CartPage from "pages/Customer/Cart/CartDesign/CartPage";
 import AccountMobile from "pages/Customer/AccountMobile/AccountMobile";
 import ExploreMobile from "pages/Customer/ExploreMobile/ExploreMobile";
 
@@ -27,8 +28,8 @@ import { checkAuth } from "api/user/authenticate";
 import { userTypes } from "utils/constants";
 import * as actionTypes from "store/actionTypes";
 
-import "styles/main.scss";
 
+import "styles/main.scss";
 function App() {
   const dispatch = useDispatch();
 
@@ -156,6 +157,8 @@ function App() {
                   isAuthenticated ? <Navigate to="/" /> : <CustomerLogin />
                 }
               />
+              
+              <Route path="/cart" element={<CartPage />} />
               <Route path="/" element={<HomePage />} />
 
               {/* --> Merchant Routes  */}
