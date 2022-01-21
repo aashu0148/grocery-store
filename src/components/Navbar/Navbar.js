@@ -172,7 +172,7 @@ function Navbar(props) {
           </div>
         ) : (
           <>
-            <div className={styles.shoppingCart}>
+            <div className={styles.shoppingCart} onClick={()=> navigate("/cart")}>
               <ShoppingCart />
             </div>
             <div
