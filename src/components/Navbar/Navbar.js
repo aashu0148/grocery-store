@@ -209,6 +209,9 @@ function Navbar(props) {
                     <li onClick={() => setShowUserDropdown(false)}>
                       <Link to={"/profile"}>Profile</Link>
                     </li>
+                    <li onClick={() => setShowUserDropdown(false)}>
+                      <Link to={"/wishlist"}>Wishlist</Link>
+                    </li>
                     <li onClick={onLogout}>Logout</li>
                   </div>
                 </Dropdown>

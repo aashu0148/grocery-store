@@ -147,3 +147,25 @@ li {
     min-height: 100vh;
   }
 }
+
+@keyframes shake {
+  25% {
+    transform: rotate(10deg) translateX(5px);
+  }
+
+  75% {
+    transform: rotate(-10deg) translateX(-5px);
+  }
+
+  100% {
+    transform: rotate(0deg) translateX(0px);
+  }
+}
+
+.sweet-shake {
+  transform-origin: center center;
+
+  :hover {
+    animation: shake 500ms linear;
+  }
+}

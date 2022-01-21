@@ -20,6 +20,7 @@ import PrivateRoute from "components/PrivateRoute/PrivateRoute";
 import AllProducts from "pages/Customer/Product/AllProducts/AllProducts";
 import PreLoader from "pages/Customer/PreLoader/PreLoader";
 import Profile from "pages/Customer/Profile/Profile";
+import Wishlist from "pages/Customer/Wishlist/Wishlist";
 import AccountMobile from "pages/Customer/AccountMobile/AccountMobile";
 import ExploreMobile from "pages/Customer/ExploreMobile/ExploreMobile";
 
@@ -146,6 +147,14 @@ function App() {
                 element={
                   <PrivateRoute auth={isAuthenticated}>
                     <Profile />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/wishlist"
+                element={
+                  <PrivateRoute auth={isAuthenticated}>
+                    <Wishlist />
                   </PrivateRoute>
                 }
               />
