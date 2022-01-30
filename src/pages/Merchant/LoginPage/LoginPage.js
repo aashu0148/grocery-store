@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import Button from "components/Button/Button";
@@ -10,7 +10,7 @@ import InputControl from "components/InputControl/InputControl";
 
 import { validateEmail } from "utils/util";
 import { login } from "api/user/login";
-import { IS_MERCHANT_LOGGED } from "store/actionTypes";
+import { IS_USER_LOGGED } from "store/actionTypes";
 
 import styles from "./LoginPage.module.scss";
 import ForgotPassword from "components/ForgotPassword/ForgotPassword";
@@ -20,8 +20,9 @@ function LoginPage() {
   const passRef = useRef();
   const [errors, setErrors] = useState({});
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
-  const navigate = useNavigate();
+  const isMobileView = useSelector((state) => state.isMobileView);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const validateForm = () => {
@@ -55,11 +56,14 @@ function LoginPage() {
 
   const handleMerchantAuth = (merchantObj) => {
     dispatch({
-      type: IS_MERCHANT_LOGGED,
-      merchantAuth: true,
-      merchantFirstName: merchantObj.firstName,
-      merchantLastName: merchantObj.lastName,
-      merchantMobile: merchantObj.mobile,
+      type: IS_USER_LOGGED,
+      auth: true,
+      firstName: merchantObj.firstName,
+      lastName: merchantObj.lastName,
+      mobile: merchantObj.mobile,
+      email: merchantObj.email,
+      avatar: merchantObj.profileImage,
+      isMerchant: true,
     });
   };
 
@@ -89,11 +93,26 @@ function LoginPage() {
   };
 
   return (
-    <div className={styles.login}>
-      <div className={styles.loginLeft}>
-        <LoginInfo />
-      </div>
+    <div
+      className={`${styles.login} ${
+        isMobileView ? styles.mobileContainer : ""
+      }`}
+    >
+      {!isMobileView && (
+        <div className={styles.loginLeft}>
+          <LoginInfo />
+        </div>
+      )}
       <div className={styles.loginRightPanel}>
+        {isMobileView && (
+          <div className={styles.header}>
+            <p className={styles.heading}>Merchant</p>
+            <Link to="/login" className={`styled-link ${styles.link}`}>
+              Not a merchant ?
+            </Link>{" "}
+          </div>
+        )}
+
         <form className={styles.loginForm} onSubmit={handleFormSubmit}>
           <div className={styles["loginRightPanel-mainBody"]}>
             <h2>Login</h2>

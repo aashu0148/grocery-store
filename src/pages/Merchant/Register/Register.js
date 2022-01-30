@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import LoginInfo from "components/LoginInfo/LoginInfo";
@@ -11,7 +11,7 @@ import VerifyOtp from "components/verifyOtp/VerifyOtp";
 
 import { validateEmail, validateMobile, validatePassword } from "utils/util";
 import { checkRegisterDetails, register } from "api/user/register";
-import { IS_MERCHANT_LOGGED } from "store/actionTypes";
+import { IS_USER_LOGGED } from "store/actionTypes";
 
 import styles from "./Register.module.scss";
 
@@ -27,9 +27,9 @@ function Register() {
     confirmpass: "",
   });
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
+  const isMobileView = useSelector((state) => state.isMobileView);
 
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const changeURl = (homepage) => {
@@ -39,11 +39,13 @@ function Register() {
 
   const handleMerchantAuth = (merchantObj) => {
     dispatch({
-      type: IS_MERCHANT_LOGGED,
-      merchantAuth: true,
-      merchantFirstName: merchantObj.firstName,
-      merchantLastName: merchantObj.lastName,
-      merchantMobile: merchantObj.mobile,
+      type: IS_USER_LOGGED,
+      auth: true,
+      firstName: merchantObj.firstName,
+      lastName: merchantObj.lastName,
+      mobile: merchantObj.mobile,
+      avatar: merchantObj.profileImage,
+      isMerchant: true,
     });
   };
 
@@ -147,12 +149,40 @@ function Register() {
   };
 
   return (
-    <div className={styles.register}>
-      <div className={styles.registerLeftPanel}>
-        <LoginInfo />
-      </div>
-      {!otpPage ? (
+    <div
+      className={`${styles.register} ${
+        isMobileView ? styles.mobileContainer : ""
+      }`}
+    >
+      {!isMobileView && (
+        <div className={styles.registerLeftPanel}>
+          <LoginInfo />
+        </div>
+      )}
+
+      {otpPage ? (
+        <div className={styles.registerRightPanel_otp}>
+          {isMobileView && (
+            <div className={styles.header}>
+              <p className={styles.heading}>Merchant</p>
+              <Link to="/register" className={`styled-link ${styles.link}`}>
+                Not a merchant ?
+              </Link>
+            </div>
+          )}
+          <VerifyOtp mobile={values.mobile} onSuccess={handleOtpVerification} />
+        </div>
+      ) : (
         <div className={styles.registerRightPanel}>
+          {isMobileView && (
+            <div className={styles.header}>
+              <p className={styles.heading}>Merchant</p>
+              <Link to="/register" className={`styled-link ${styles.link}`}>
+                Not a merchant ?
+              </Link>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit}>
             <div className={styles["registerRightPanel-mainBody"]}>
               <h2>Create an account</h2>
@@ -235,10 +265,6 @@ function Register() {
               </Button>
             </div>
           </form>
-        </div>
-      ) : (
-        <div className={styles.registerRightPanel_otp}>
-          <VerifyOtp mobile={values.mobile} onSuccess={handleOtpVerification} />
         </div>
       )}
     </div>

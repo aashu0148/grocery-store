@@ -1,0 +1,60 @@
+@import "styles/variables";
+
+.container {
+    position: relative;
+
+    .control {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-100%);
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $white;
+        padding: 5px;
+        z-index: 10;
+        border-radius: 50%;
+        box-shadow: 0 1px 6px 0 $bg-light-gray;
+        cursor: pointer;
+
+        svg {
+            color: $text-primary;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 28px;
+            width: 28px;
+        }
+    }
+
+    .rightControl {
+        right: 0;
+    }
+
+    .leftControl {
+        left: 0;
+    }
+
+    .containerInner {
+        width: 100%;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+
+        .items {
+            display: flex;
+            width: fit-content;
+            gap: 20px;
+        }
+    }
+}
+
+.mobileContainer {
+    .control {
+        display: none;
+    }
+
+    .containerInner {
+        overflow-x: auto;
+    }
+}

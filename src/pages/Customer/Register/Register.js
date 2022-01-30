@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import LoginInfo from "components/LoginInfo/LoginInfo";
@@ -11,7 +11,7 @@ import VerifyOtp from "components/verifyOtp/VerifyOtp";
 
 import { validateEmail, validateMobile } from "utils/util";
 import { checkRegisterDetails, register } from "api/user/register";
-import { IS_CUSTOMER_LOGGED } from "store/actionTypes";
+import { IS_USER_LOGGED } from "store/actionTypes";
 
 import styles from "./Register.module.scss";
 
@@ -27,9 +27,9 @@ function Register() {
     confirmpass: "",
   });
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
+  const isMobileView = useSelector((state) => state.isMobileView);
 
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const changeURL = (homepage) => {
@@ -39,11 +39,12 @@ function Register() {
 
   const handleCustomerAuth = (obj) => {
     dispatch({
-      type: IS_CUSTOMER_LOGGED,
-      customerAuth: true,
-      customerFirstName: obj.firstName,
-      customerLastName: obj.lastName,
-      customerMobile: obj.mobile,
+      type: IS_USER_LOGGED,
+      auth: true,
+      firstName: obj.firstName,
+      lastName: obj.lastName,
+      mobile: obj.mobile,
+      avatar: obj.profileImage,
     });
   };
 
@@ -125,12 +126,46 @@ function Register() {
   };
 
   return (
-    <div className={styles.register}>
-      <div className={styles.registerLeftPanel}>
-        <LoginInfo />
-      </div>
-      {!otpPage ? (
+    <div
+      className={`${styles.register} ${
+        isMobileView ? styles.mobileContainer : ""
+      }`}
+    >
+      {!isMobileView && (
+        <div className={styles.registerLeftPanel}>
+          <LoginInfo />
+        </div>
+      )}
+      {otpPage ? (
+        <div className={styles.registerRightPanel_otp}>
+          {isMobileView && (
+            <div className={styles.header}>
+              <p className={styles.heading}>Customer</p>
+              <Link
+                to="/merchant/register"
+                className={`styled-link ${styles.link}`}
+              >
+                Not a customer ?
+              </Link>
+            </div>
+          )}
+
+          <VerifyOtp mobile={values.mobile} onSuccess={handleOtpVerification} />
+        </div>
+      ) : (
         <div className={styles.registerRightPanel}>
+          {isMobileView && (
+            <div className={styles.header}>
+              <p className={styles.heading}>Customer</p>
+              <Link
+                to="/merchant/register"
+                className={`styled-link ${styles.link}`}
+              >
+                Not a customer ?
+              </Link>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit}>
             <div className={styles["registerRightPanel-mainBody"]}>
               <h2>Create an account</h2>
@@ -191,10 +226,6 @@ function Register() {
               </Button>
             </div>
           </form>
-        </div>
-      ) : (
-        <div className={styles.registerRightPanel_otp}>
-          <VerifyOtp mobile={values.mobile} onSuccess={handleOtpVerification} />
         </div>
       )}
     </div>

@@ -25,6 +25,7 @@
       &::placeholder {
         color: $text-light-gray;
       }
+
       &:disabled {
         background-color: $bg-greenish-white;
       }
@@ -46,6 +47,7 @@
       svg {
         height: 100%;
         width: 100%;
+        color: $text-dark-gray;
       }
     }
   }
@@ -60,4 +62,17 @@
 
 .selectContainer {
   margin: 3px 0;
+}
+
+@media (max-width:768px) {
+  .container {
+    .label {
+      font-size: 0.875rem;
+    }
+
+    input {
+      height: 35px;
+      font-size: 0.875rem;
+    }
+  }
 }

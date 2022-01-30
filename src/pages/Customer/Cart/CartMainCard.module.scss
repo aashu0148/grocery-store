@@ -1,0 +1,112 @@
+@import "styles/variables";
+
+.productDetailsbox {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+
+  .productsList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid $bg-gray;
+    background: $bg-white-1;
+    .productCard {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 1rem;
+      color: $text-dark;
+      font-weight: 500;
+      .productInfo {
+        height: 5rem;
+        padding: 0.41rem 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        .productImgbox {
+          position: relative;
+          height: 5rem;
+          width: 5rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .productImg {
+            width: 100%;
+            height: 100%;
+            border-radius: 15%;
+          }
+          .discountPrice {
+            background: $bg-orange;
+            color: $text-dark;
+            font-weight: 500;
+            position: absolute;
+            left: -1rem;
+            top: -0.41rem;
+          }
+        }
+        .aboutBox {
+          height: 100%;
+          margin-left: 0.61rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+
+          .productName {
+            width: 10rem;
+            font-size: 15px;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          .availableIn {
+            width: 60%;
+            display: flex;
+            font-weight: 400;
+          }
+          .productPrice {
+            color: $text-dark-gray;
+            font-weight: 500;
+          }
+        }
+      }
+      .qtyCounter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 500;
+        width: 4rem;
+        .qtyValue {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .qtyInc {
+          cursor: pointer;
+          height: 1.1rem;
+          width: 1.1rem;
+          &:hover {
+            color: $bg-primary;
+          }
+        }
+        .qtyDec {
+          width: 1.1rem;
+          height: 1.1rem;
+          cursor: pointer;
+          &:hover {
+            color: $bg-primary;
+          }
+        }
+      }
+    }
+    .totalItem_price {
+      font-weight: 500;
+      user-select: none;
+    }
+  }
+  .deleteItemIcon {
+    cursor: pointer;
+    width: 1.3rem;
+  }
+}

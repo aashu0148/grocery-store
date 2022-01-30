@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
-import { StopCircle, Edit } from "react-feather";
+import { StopCircle, Folder } from "react-feather";
 import { useSelector } from "react-redux";
 
 import { validateMobile } from "utils/util";
@@ -12,27 +12,18 @@ import InputControl from "components/InputControl/InputControl";
 import Modal from "components/Modal/Modal";
 import VerifyOtp from "components/verifyOtp/VerifyOtp";
 import ForgotPassword from "components/ForgotPassword/ForgotPassword";
+import Spinner from "components/Spinner/Spinner";
 
 import styles from "./ProfileComponent.module.scss";
 
 function ProfileComponent() {
-  const fnameSelector = useSelector((state) => state.merchantReducer.firstName);
-  const lnameSelector = useSelector((state) => state.merchantReducer.lastName);
-  const mobileSelector = useSelector((state) => state.merchantReducer.mobile);
-  const emailSelector = useSelector((state) => state.merchantReducer.email);
+  const fnameSelector = useSelector((state) => state.firstName);
+  const lnameSelector = useSelector((state) => state.lastName);
+  const mobileSelector = useSelector((state) => state.mobile);
+  const emailSelector = useSelector((state) => state.email);
+  const avatarSelector = useSelector((state) => state.avatar);
 
-  const [profileUrl, setProfileUrl] = useState(
-    "https://as2.ftcdn.net/v2/jpg/02/15/84/43/1000_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
-  );
-  const [details, setDetails] = useState({
-    fname: fnameSelector,
-    lname: lnameSelector,
-    mobile: mobileSelector,
-    email: emailSelector,
-    streetAddress: "",
-    cityAddress: "",
-  });
-
+  const [profileUrl, setProfileUrl] = useState(avatarSelector || "");
   const [errorMsg, setErrorMsg] = useState("");
   const [isChangeMobileOtpSent, setIsChangeMobileOtpSent] = useState(false);
   const [newMobile, setNewMobile] = useState("");
@@ -42,6 +33,8 @@ function ProfileComponent() {
     men: [],
     women: [],
   });
+  const [avatarLoaded, setAvatarLoaded] = useState(false);
+  const [showOverlaySpinner, setShowOverlaySpinner] = useState(false);
   const newMobileRef = useRef();
   const profileInputRef = useRef();
 
@@ -80,15 +73,9 @@ function ProfileComponent() {
 
   // const
   const handleAvatar = (url) => {
-    if (!url) return;
+    if (!url || url === profileUrl) return;
+    setShowOverlaySpinner(true);
     setProfileUrl(url);
-    setFile("");
-  };
-
-  const removeAvatar = () => {
-    setProfileUrl(
-      "https://as2.ftcdn.net/v2/jpg/02/15/84/43/1000_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
-    );
     setFile("");
   };
 
@@ -148,13 +135,19 @@ function ProfileComponent() {
     </div>
   );
 
-  useEffect(() => {
+  const fetchAvatars = () => {
     getAvatarLink().then((res) => {
+      setAvatarLoaded(true);
+      if (!res) return;
       setAvatarUrl({
         men: res?.data?.men,
         women: res?.data?.women,
       });
     });
+  };
+
+  useEffect(() => {
+    fetchAvatars();
   }, []);
 
   return (
@@ -167,53 +160,61 @@ function ProfileComponent() {
       <div className={styles.profile}>
         <div className={styles.leftMainContainer}>
           <div className={styles.left}>
-            <div className={styles.profile_image}>
-              <ImagePreview
-                className={styles.additionalStyle}
-                large
-                hideDeleteIcon={true}
-                isCrop={true}
-                src={typeof file === "object" ? null : profileUrl}
-                file={typeof file === "object" ? file : null}
-              />
-              <input
-                id={styles.imageInput}
-                type="file"
-                ref={profileInputRef}
-                onChange={imageUploadHandler}
-              />
-              <div
-                className={styles.editProfileIcon}
-                onClick={() => profileInputRef.current.click()}
-              >
-                <Edit />
+            {showOverlaySpinner && (
+              <div className={styles.overlaySpinner}>
+                <Spinner />
               </div>
-            </div>
-            <div className={styles.avatarsContainer}>
-              {avatarUrl?.men.map((avatar, index) => (
-                <div
-                  className={styles.avatar}
-                  onClick={() => handleAvatar(avatar)}
-                  key={index}
-                >
-                  <img src={avatar} alt="avatar" />
+            )}
+            {avatarLoaded ? (
+              <React.Fragment>
+                <div className={styles.profile_image}>
+                  <ImagePreview
+                    onFileLoad={() => setShowOverlaySpinner(false)}
+                    className={styles.additionalStyle}
+                    large
+                    hideDeleteIcon={true}
+                    isCrop={true}
+                    src={typeof file === "object" ? null : profileUrl}
+                    file={typeof file === "object" ? file : null}
+                  />
+
+                  <input
+                    id={styles.imageInput}
+                    type="file"
+                    ref={profileInputRef}
+                    onChange={imageUploadHandler}
+                  />
+                  <div
+                    className={styles.editProfileIcon}
+                    onClick={() => profileInputRef.current.click()}
+                  >
+                    <Folder />
+                  </div>
                 </div>
-              ))}
-              {avatarUrl?.women.map((avatar, index) => (
-                <div
-                  className={styles.avatar}
-                  onClick={() => handleAvatar(avatar)}
-                  key={index}
-                >
-                  <img src={avatar} alt="avatar" />
+                <div className={styles.avatarsContainer}>
+                  {avatarUrl?.men.map((avatar, index) => (
+                    <div
+                      className={styles.avatar}
+                      onClick={() => handleAvatar(avatar)}
+                      key={index}
+                    >
+                      <img src={avatar} alt="avatar" />
+                    </div>
+                  ))}
+                  {avatarUrl?.women.map((avatar, index) => (
+                    <div
+                      className={styles.avatar}
+                      onClick={() => handleAvatar(avatar)}
+                      key={index}
+                    >
+                      <img src={avatar} alt="avatar" />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <div className={styles.buttonContainer}>
-              <Button delete onClick={removeAvatar}>
-                Remove Profile
-              </Button>
-            </div>
+              </React.Fragment>
+            ) : (
+              <Spinner />
+            )}
           </div>
         </div>
         <div className={styles.rightMainContainer}>

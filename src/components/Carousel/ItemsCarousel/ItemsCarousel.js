@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { ChevronLeft, ChevronRight } from "react-feather";
 
-import ItemCard from "./ItemCard/ItemCard";
+import ItemCard from "../ItemCard/ItemCard";
 
 import styles from "./ItemsCarousel.module.scss";
 

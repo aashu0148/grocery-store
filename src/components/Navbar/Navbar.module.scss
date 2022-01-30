@@ -4,8 +4,8 @@
   padding: 0rem 1rem;
   display: flex;
   height: 55px;
-  background-color: #fff;
   align-items: center;
+  background-color: #fff;
   box-shadow: 0 0 10px 0 $bg-greenish-white;
   justify-content: space-between;
   z-index: 50;
@@ -134,6 +134,16 @@
         width: 30px;
       }
 
+      .userName {
+        color: $text-dark;
+        margin-left: 5px;
+
+        span {
+          text-transform: capitalize;
+          font-weight: 500;
+        }
+      }
+
       .userDropdown {
         padding: 10px;
         display: flex;
@@ -162,6 +172,48 @@
           border: none
         }
       }
+    }
+  }
+}
+
+.mobileNavbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: 100vw;
+  height: 65px;
+  padding: 10px 20px;
+  background-color: $white;
+  box-shadow: 0 0 10px 0 $bg-greenish-white;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-evenly;
+  z-index: 50;
+
+  .icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    svg {
+      color: $bg-dark;
+      height: 18px;
+      width: 18px;
+    }
+
+    p {
+      color: $text-dark;
+    }
+  }
+
+  .activeIcon {
+
+    svg,
+    p {
+      color: $text-primary;
     }
   }
 }

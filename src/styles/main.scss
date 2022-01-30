@@ -15,6 +15,18 @@ p {
   font-size: 1rem;
 }
 
+@media (max-width: 768px) {
+  p {
+    line-height: 21px;
+  }
+
+  a,
+  p,
+  li {
+    font-size: 0.875rem;
+  }
+}
+
 a {
   text-decoration: none;
 }
@@ -126,4 +138,34 @@ li {
   width: 100%;
   background-color: $bg-light-gray;
   margin: 10px 0;
+}
+
+@media (max-width: 768px) {
+  .app {
+    padding-bottom: 65px;
+    height: 100%;
+    min-height: 100vh;
+  }
+}
+
+@keyframes shake {
+  25% {
+    transform: rotate(10deg) translateX(5px);
+  }
+
+  75% {
+    transform: rotate(-10deg) translateX(-5px);
+  }
+
+  100% {
+    transform: rotate(0deg) translateX(0px);
+  }
+}
+
+.sweet-shake {
+  transform-origin: center center;
+
+  :hover {
+    animation: shake 500ms linear;
+  }
 }
