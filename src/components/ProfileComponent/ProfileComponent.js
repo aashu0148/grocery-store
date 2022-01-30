@@ -24,10 +24,19 @@ function ProfileComponent() {
   const [profileUrl, setProfileUrl] = useState(
     "https://as2.ftcdn.net/v2/jpg/02/15/84/43/1000_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
   );
+  const [details, setDetails] = useState({
+    fname: fnameSelector,
+    lname: lnameSelector,
+    mobile: mobileSelector,
+    email: emailSelector,
+    streetAddress: "",
+    cityAddress: "",
+  });
+
   const [errorMsg, setErrorMsg] = useState("");
   const [isChangeMobileOtpSent, setIsChangeMobileOtpSent] = useState(false);
   const [newMobile, setNewMobile] = useState("");
-  const [changeInfo, setChangeInfo] = useState({ type: "" });
+  const [mobileOrPass, setmobileOrPass] = useState({ type: "" });
   const [file, setFile] = useState("");
   const [avatarUrl, setAvatarUrl] = useState({
     men: [],
@@ -37,14 +46,15 @@ function ProfileComponent() {
   const profileInputRef = useRef();
 
   const closeEditingModal = () => {
-    setChangeInfo({
+    setmobileOrPass({
       type: "",
     });
     setErrorMsg("");
+    setIsChangeMobileOtpSent(false);
+    setNewMobile("");
   };
 
   const handleChangeMobileNumber = () => {
-    console.log(newMobileRef);
     if (!newMobileRef?.current.value) {
       setErrorMsg("Enter new number");
       return;
@@ -57,16 +67,18 @@ function ProfileComponent() {
     setNewMobile(newMobileRef?.current?.value);
     setIsChangeMobileOtpSent(true);
   };
+
   const handleChangePassword = () => {
     //will do it later when api will be ready
   };
 
   const handleEditingModal = (type) => {
-    setChangeInfo({
+    setmobileOrPass({
       type: type,
     });
   };
 
+  // const
   const handleAvatar = (url) => {
     if (!url) return;
     setProfileUrl(url);
@@ -102,9 +114,20 @@ function ProfileComponent() {
   );
 
   const changeMobile = (
-    <div className={styles.changeDetailModal}>
+    <div>
       {isChangeMobileOtpSent ? (
-        <VerifyOtp mobile={newMobile} />
+        <VerifyOtp
+          isBackgroundTransparent={true}
+          mobile={newMobile}
+          onSuccess={() => {
+            console.log("otp verified success");
+            const dummyDetails = { ...details };
+            dummyDetails.mobile = newMobileRef.current.value;
+            setDetails(dummyDetails);
+            closeEditingModal();
+            console.log(dummyDetails, details);
+          }}
+        />
       ) : (
         <div className={styles.changeDetailModal}>
           <InputControl
@@ -133,8 +156,6 @@ function ProfileComponent() {
       });
     });
   }, []);
-
-  useEffect(() => {}, [isChangeMobileOtpSent]);
 
   return (
     <div className={styles.container}>
@@ -206,12 +227,12 @@ function ProfileComponent() {
                 <InputControl
                   label="First name"
                   placeholder="Enter first name"
-                  defaultValue={fnameSelector}
+                  defaultValue={details?.fname}
                 />
                 <InputControl
                   label="Last name"
                   placeholder="Enter last name"
-                  defaultValue={lnameSelector}
+                  defaultValue={details?.lname}
                 />
               </div>
             </div>
@@ -223,7 +244,7 @@ function ProfileComponent() {
               <div className={styles.inputControlContainer}>
                 <InputControl
                   label="Email"
-                  defaultValue={emailSelector}
+                  defaultValue={details?.email}
                   placeholder="Enter email"
                 />
               </div>
@@ -231,7 +252,7 @@ function ProfileComponent() {
                 <InputControl
                   label="Mobile"
                   placeholder="Enter Mobile number"
-                  defaultValue={mobileSelector}
+                  defaultValue={details?.mobile}
                   disabled
                 />
                 <span onClick={() => handleEditingModal("mobile")}>Change</span>
@@ -263,12 +284,14 @@ function ProfileComponent() {
                 <InputControl
                   label={`Street address`}
                   placeholder="house no./ Street no./ landmark"
+                  defaultValue={details?.streetAddress}
                 />
               </div>
               <div className={styles.inputControlContainer}>
                 <InputControl
                   label={`Address`}
                   placeholder="city/state/country"
+                  defaultValue={details?.cityAddress}
                 />
               </div>
             </div>
@@ -280,9 +303,9 @@ function ProfileComponent() {
           </div>
         </div>
       </div>
-      {changeInfo?.type === "mobile" ? (
+      {mobileOrPass?.type === "mobile" ? (
         <Modal onClose={closeEditingModal}>{changeMobile}</Modal>
-      ) : changeInfo?.type === "password" ? (
+      ) : mobileOrPass?.type === "password" ? (
         <Modal onClose={closeEditingModal}>{changePassword}</Modal>
       ) : (
         ""
