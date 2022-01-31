@@ -23,7 +23,7 @@ function Navbar(props) {
   const location = useLocation();
   const searchInputRef = useRef();
   const name = useSelector((state) => state.firstName);
-  const avatarLink = useSelector((state) => state.avatar);
+  const profileImage = useSelector((state) => state.profileImage);
   const isMobileView = useSelector((state) => state.isMobileView);
   const isAuthenticated = props.auth ? true : false;
   const currentPathname = location.pathname + location.search;
@@ -172,7 +172,10 @@ function Navbar(props) {
           </div>
         ) : (
           <>
-            <div className={styles.shoppingCart} onClick={()=> navigate("/cart")}>
+            <div
+              className={styles.shoppingCart}
+              onClick={() => navigate("/cart")}
+            >
               <ShoppingCart />
             </div>
             <div
@@ -180,7 +183,7 @@ function Navbar(props) {
               onClick={() => setShowUserDropdown(true)}
             >
               <img
-                src={avatarLink || ""}
+                src={profileImage || ""}
                 onError={(event) => {
                   event.target.src = avatar;
                   event.target.onerror = null;

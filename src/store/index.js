@@ -2,6 +2,8 @@ import {
   CHANGE_MOBILE_VIEW,
   IS_USER_LOGGED,
   USER_LOGOUT,
+  CHANGE_MOBILE,
+  UPDATE_PROFILE,
 } from "store/actionTypes";
 
 const initialState = {
@@ -18,8 +20,10 @@ const userReducer = (state = initialState, action) => {
         firstName: action.firstName,
         lastName: action.lastName,
         mobile: action.mobile,
-        avatar: action.avatar,
+        profileImage: action.profileImage,
         email: action.email,
+        deliveryAddress: action.deliveryAddress,
+        refLocation: action.refLocation,
         isMerchant: action.isMerchant || false,
       };
     }
@@ -36,6 +40,25 @@ const userReducer = (state = initialState, action) => {
         isMobileView: action.isMobileView,
       };
     }
+    case CHANGE_MOBILE: {
+      return {
+        ...state,
+        mobile: action.mobile,
+      };
+    }
+    case UPDATE_PROFILE: {
+      return {
+        ...state,
+        firstName: action.firstname,
+        lastName: action.lastName,
+        mobile: action.mobile,
+        email: action.email,
+        deliveryAddress: action.deliveryAddress,
+        refLocation: action.refLocation,
+        profileImage: action.profileImage,
+      };
+    }
+
     default:
       return state;
   }

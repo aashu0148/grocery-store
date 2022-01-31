@@ -71,7 +71,9 @@ function App() {
         lastName: res?.data?.lastName,
         mobile: res?.data?.mobile,
         email: res?.data?.email,
-        avatar: res?.data?.profileImage,
+        profileImage: res?.data?.profileImage,
+        deliveryAddress: res?.data?.deliveryAddress,
+        refLocation: res?.data?.refLocation,
         isMerchant: userType === userTypes.merchant,
       });
       setIsDataLoaded(true);

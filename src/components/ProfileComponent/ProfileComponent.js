@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
+import toast from "react-hot-toast";
 import { StopCircle, Folder } from "react-feather";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { validateMobile } from "utils/util";
 import { getAvatarLink } from "api/user/avatar";
+import { updateProfile } from "api/user/profile";
+import { CHANGE_MOBILE, UPDATE_PROFILE } from "store/actionTypes";
 
 import Button from "components/Button/Button";
 import ImagePreview from "components/ImagePreview/ImagePreview";
@@ -17,13 +20,25 @@ import Spinner from "components/Spinner/Spinner";
 import styles from "./ProfileComponent.module.scss";
 
 function ProfileComponent() {
-  const fnameSelector = useSelector((state) => state.firstName);
-  const lnameSelector = useSelector((state) => state.lastName);
+  const firstNameSelector = useSelector((state) => state.firstName);
+  const lastNameSelector = useSelector((state) => state.lastName);
   const mobileSelector = useSelector((state) => state.mobile);
   const emailSelector = useSelector((state) => state.email);
-  const avatarSelector = useSelector((state) => state.avatar);
+  const profileImageSelector = useSelector((state) => state.profileImage);
+  const deliveryAddress = useSelector((state) => state.deliveryAddress);
+  const refLocation = useSelector((state) => state.refLocation);
+  const dispatch = useDispatch();
 
-  const [profileUrl, setProfileUrl] = useState(avatarSelector || "");
+  const [details, setDetails] = useState({
+    firstName: firstNameSelector,
+    lastName: lastNameSelector,
+    mobile: mobileSelector,
+    email: emailSelector,
+    profileImage: profileImageSelector,
+    deliveryAddress: deliveryAddress,
+    refLocation: refLocation,
+  });
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [isChangeMobileOtpSent, setIsChangeMobileOtpSent] = useState(false);
   const [newMobile, setNewMobile] = useState("");
@@ -38,6 +53,12 @@ function ProfileComponent() {
   const newMobileRef = useRef();
   const profileInputRef = useRef();
 
+  const handleEditingModal = (type) => {
+    setmobileOrPass({
+      type: type,
+    });
+  };
+
   const closeEditingModal = () => {
     setmobileOrPass({
       type: "",
@@ -45,6 +66,31 @@ function ProfileComponent() {
     setErrorMsg("");
     setIsChangeMobileOtpSent(false);
     setNewMobile("");
+  };
+
+  const handleChangeDetails = (event, valueName) => {
+    const dummyDetails = { ...details };
+    dummyDetails[valueName] = event.target.value;
+    setDetails(dummyDetails);
+  };
+
+  const handleUpdateProfile = () => {
+    setSubmitButtonDisabled(true);
+    updateProfile(details).then((res) => {
+      if (!res) return;
+      toast.success(res.message);
+      dispatch({
+        type: UPDATE_PROFILE,
+        firstName: details.firstName,
+        lastName: details.lastName,
+        email: details.email,
+        deliveryAddress: details.deliveryAddress,
+        refLocation: details.refLocation,
+        mobile: details.mobile,
+        profileImage: details.profileImage,
+      });
+      setSubmitButtonDisabled(false);
+    });
   };
 
   const handleChangeMobileNumber = () => {
@@ -60,22 +106,28 @@ function ProfileComponent() {
     setNewMobile(newMobileRef?.current?.value);
     setIsChangeMobileOtpSent(true);
   };
+  const handleMobileOnFrontend = () => {
+    setDetails({ ...details, mobile: newMobile });
+
+    updateProfile({ mobile: newMobile }).then((res) => {
+      if (!res) return;
+      dispatch({
+        type: CHANGE_MOBILE,
+        newMobile: newMobile,
+      });
+      setSubmitButtonDisabled(false);
+    });
+    closeEditingModal();
+  };
 
   const handleChangePassword = () => {
     //will do it later when api will be ready
   };
 
-  const handleEditingModal = (type) => {
-    setmobileOrPass({
-      type: type,
-    });
-  };
-
-  // const
   const handleAvatar = (url) => {
-    if (!url || url === profileUrl) return;
+    if (!url || url === details?.profileImage) return;
     setShowOverlaySpinner(true);
-    setProfileUrl(url);
+    setDetails({ ...details, profileImage: url });
     setFile("");
   };
 
@@ -106,14 +158,7 @@ function ProfileComponent() {
         <VerifyOtp
           isBackgroundTransparent={true}
           mobile={newMobile}
-          onSuccess={() => {
-            console.log("otp verified success");
-            const dummyDetails = { ...details };
-            dummyDetails.mobile = newMobileRef.current.value;
-            setDetails(dummyDetails);
-            closeEditingModal();
-            console.log(dummyDetails, details);
-          }}
+          onSuccess={handleMobileOnFrontend}
         />
       ) : (
         <div className={styles.changeDetailModal}>
@@ -154,7 +199,10 @@ function ProfileComponent() {
     <div className={styles.container}>
       <div className={styles.titleSection}>
         <h2>My Profile</h2>
-        <Button>Save</Button>
+        <Button onClick={handleUpdateProfile} disabled={submitButtonDisabled}>
+          Save
+          {submitButtonDisabled && <Spinner small white />}
+        </Button>
       </div>
 
       <div className={styles.profile}>
@@ -174,7 +222,9 @@ function ProfileComponent() {
                     large
                     hideDeleteIcon={true}
                     isCrop={true}
-                    src={typeof file === "object" ? null : profileUrl}
+                    src={
+                      typeof file === "object" ? null : details?.profileImage
+                    }
                     file={typeof file === "object" ? file : null}
                   />
 
@@ -228,12 +278,14 @@ function ProfileComponent() {
                 <InputControl
                   label="First name"
                   placeholder="Enter first name"
-                  defaultValue={details?.fname}
+                  value={details?.firstName}
+                  onChange={(event) => handleChangeDetails(event, "firstName")}
                 />
                 <InputControl
                   label="Last name"
                   placeholder="Enter last name"
-                  defaultValue={details?.lname}
+                  value={details?.lastName}
+                  onChange={(event) => handleChangeDetails(event, "lastName")}
                 />
               </div>
             </div>
@@ -245,7 +297,8 @@ function ProfileComponent() {
               <div className={styles.inputControlContainer}>
                 <InputControl
                   label="Email"
-                  defaultValue={details?.email}
+                  value={details?.email}
+                  onChange={(event) => handleChangeDetails(event, "email")}
                   placeholder="Enter email"
                 />
               </div>
@@ -253,7 +306,7 @@ function ProfileComponent() {
                 <InputControl
                   label="Mobile"
                   placeholder="Enter Mobile number"
-                  defaultValue={details?.mobile}
+                  value={details?.mobile}
                   disabled
                 />
                 <span onClick={() => handleEditingModal("mobile")}>Change</span>
@@ -285,14 +338,20 @@ function ProfileComponent() {
                 <InputControl
                   label={`Street address`}
                   placeholder="house no./ Street no./ landmark"
-                  defaultValue={details?.streetAddress}
+                  value={details?.deliveryAddress}
+                  onChange={(event) =>
+                    handleChangeDetails(event, "deliveryAddress")
+                  }
                 />
               </div>
               <div className={styles.inputControlContainer}>
                 <InputControl
                   label={`Address`}
                   placeholder="city/state/country"
-                  defaultValue={details?.cityAddress}
+                  value={details?.refLocation}
+                  onChange={(event) =>
+                    handleChangeDetails(event, "refLocation")
+                  }
                 />
               </div>
             </div>
@@ -316,8 +375,8 @@ function ProfileComponent() {
 }
 
 ProfileComponent.propTypes = {
-  fname: PropTypes.string,
-  lname: PropTypes.string,
+  firstName: PropTypes.string,
+  lastName: PropTypes.string,
   mobile: PropTypes.string,
   email: PropTypes.string,
 };
