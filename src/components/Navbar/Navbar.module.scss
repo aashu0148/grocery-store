@@ -28,7 +28,6 @@
     gap: 30px;
     height: 100%;
 
-
     .searchBox {
       display: flex;
       border-radius: 5px;
@@ -75,7 +74,6 @@
         }
       }
     }
-
 
     .shoppingCart {
       height: 100%;
@@ -130,6 +128,8 @@
       position: relative;
 
       img {
+        background-color: $white;
+        border-radius: 50%;
         height: 30px;
         width: 30px;
       }
@@ -169,7 +169,7 @@
         }
 
         li:last-child {
-          border: none
+          border: none;
         }
       }
     }
@@ -210,7 +210,6 @@
   }
 
   .activeIcon {
-
     svg,
     p {
       color: $text-primary;

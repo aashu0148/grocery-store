@@ -1,0 +1,29 @@
+@import "styles/variables";
+
+.topSellingProduct {
+  display: flex;
+  background-color: $bg-gray-unique;
+  border-radius: 10px;
+
+  img {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    background-color: $white;
+  }
+  .productDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    .productName {
+      font-weight: 700;
+      color: $text-dark;
+    }
+    .productPrice {
+      color: $text-primary;
+    }
+  }
+}

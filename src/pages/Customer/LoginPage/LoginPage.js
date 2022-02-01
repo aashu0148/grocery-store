@@ -119,7 +119,6 @@ function LoginPage() {
                 onChange={(event) => setMobile(event.target.value)}
                 error={errors?.mobile}
               />
-
               <p>
                 Not registered ?
                 <span

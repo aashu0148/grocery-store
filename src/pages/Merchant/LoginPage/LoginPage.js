@@ -13,6 +13,7 @@ import { login } from "api/user/login";
 import { IS_USER_LOGGED } from "store/actionTypes";
 
 import styles from "./LoginPage.module.scss";
+import ForgotPassword from "components/ForgotPassword/ForgotPassword";
 
 function LoginPage() {
   const emailRef = useRef();
@@ -130,7 +131,7 @@ function LoginPage() {
             />
             <p>
               <span className={styles["loginRightPanel_helper-text"]}>
-                Forgot password?
+                <ForgotPassword />
               </span>
             </p>
             <p>

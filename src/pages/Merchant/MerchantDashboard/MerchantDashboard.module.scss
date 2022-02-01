@@ -1,8 +1,9 @@
 .container {
-    display: flex;
-    gap: 30px;
+  display: flex;
+  gap: 10px;
 
-    .right {
-        flex: 1;
-    }
+  .right {
+    flex: 1;
+    display: flex;
+  }
 }
