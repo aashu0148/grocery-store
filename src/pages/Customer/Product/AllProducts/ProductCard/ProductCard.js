@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-import { Minus, Plus, ShoppingCart } from "react-feather";
+import { Minus, Plus, ShoppingCart, Trash } from "react-feather";
 import {
   AiFillHeart as HeartIcon,
   AiOutlineHeart as HeartOutline,
@@ -12,6 +12,7 @@ import ProductFullViewModal from "components/ProductFullViewModal/ProductFullVie
 
 import { getDiscountedPrice } from "utils/util";
 import { addToWishlist, deleteFromWishlist } from "api/user/Wishlist";
+import { updateCart } from "api/user/cart";
 
 import styles from "./ProductCard.module.scss";
 import toast from "react-hot-toast";
@@ -22,6 +23,7 @@ function ProductCard(props) {
   const [quantity, setQuantity] = useState(1);
   const [showProductModal, setShowProductModal] = useState(false);
   const [isFavorite, setIsFavorite] = useState(product?.isFavorite || false);
+  const [isAddedInCart, setIsAddedInCart] = useState(false);
 
   const isAuthenticated = useSelector((state) => state.auth);
   const availableIn = product?.availabilities ? product?.availabilities[0] : "";
@@ -51,6 +53,14 @@ function ProductCard(props) {
     setIsFavorite(isFav);
 
     updateFavoriteOnDb(!isFav);
+  };
+
+  const handleUpdateCart = (quantity) => {
+    updateCart({ productId: product._id, quantity: quantity }).then((res) => {
+      if (!res) return;
+      setIsAddedInCart(true);
+      toast.success("Added to cart");
+    });
   };
 
   return (
@@ -143,9 +153,19 @@ function ProductCard(props) {
             />
             <Plus onClick={() => setQuantity((prev) => prev + 1)} />
           </div>
-          <Button>
-            <ShoppingCart />
-          </Button>
+          {isAuthenticated ? (
+            isAddedInCart ? (
+              <Button delete>
+                <Trash onClick={() => handleUpdateCart(-1)} />
+              </Button>
+            ) : (
+              <Button>
+                <ShoppingCart onClick={() => handleUpdateCart(quantity)} />
+              </Button>
+            )
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </>

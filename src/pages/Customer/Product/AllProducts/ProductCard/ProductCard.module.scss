@@ -1,186 +1,185 @@
-@import 'styles/variables';
+@import "styles/variables";
 
 .container {
-    width: 220px;
-    border-radius: 10px;
-    border: 1px solid $bg-light-gray;
+  width: 220px;
+  border-radius: 10px;
+  border: 1px solid $bg-light-gray;
+  padding: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: 200ms;
+
+  &:hover {
+    transform: scale(1.03);
+  }
+
+  .discount {
+    position: absolute;
+    top: 10px;
+    left: -5px;
+    font-size: 0.875rem;
+    background-color: $bg-orange;
+    color: $white;
+    border-radius: 5px;
+    padding: 3px 8px;
+  }
+
+  .heartIcon {
+    position: absolute;
+    top: 9px;
+    right: 5px;
+    cursor: pointer;
+
+    svg {
+      height: 24px;
+      width: 24px;
+      color: $text-dark;
+    }
+  }
+
+  .activeHeartIcon {
+    svg {
+      color: $text-red;
+    }
+  }
+
+  .red {
+    background-color: $bg-red;
+  }
+
+  .imageContainer {
+    cursor: pointer;
+    width: 100%;
+    height: 180px;
+
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .body {
+    cursor: pointer;
     padding: 10px;
-    position: relative;
-    overflow: hidden;
-    transition: 200ms;
+    padding-top: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 
-    &:hover {
-        transform: scale(1.03);
+    .title {
+      user-select: none;
+      font-weight: 500;
+      font-size: 1rem;
+      width: 100%;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    .discount {
-        position: absolute;
-        top: 10px;
-        left: -5px;
-        font-size: 0.875rem;
-        background-color: $bg-orange;
-        color: $white;
-        border-radius: 5px;
-        padding: 3px 8px;
+    .price {
+      user-select: none;
+
+      span {
+        font-weight: 500;
+      }
     }
+  }
 
-    .heartIcon {
-        position: absolute;
-        top: 9px;
-        right: 5px;
-        cursor: pointer;
+  .footer {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
 
-        svg {
-            height: 24px;
-            width: 24px;
-            color: $text-dark;
-        }
-    }
+    .quantity {
+      display: flex;
+      align-items: center;
+      gap: 5px;
 
-    .activeHeartIcon {
-        svg {
-            color: $text-red;
-        }
-    }
-
-    .red {
-        background-color: $bg-red;
-    }
-
-    .imageContainer {
-        cursor: pointer;
-        width: 100%;
-        height: 180px;
-
-        img {
-            height: 100%;
-            width: 100%;
-            object-fit: contain;
-        }
-    }
-
-    .body {
-        cursor: pointer;
-        padding: 10px;
-        padding-top: 5px;
+      svg {
+        height: 16px;
+        width: 16px;
         display: flex;
-        flex-direction: column;
-        gap: 20px;
-
-        .title {
-            user-select: none;
-            font-weight: 500;
-            font-size: 1rem;
-            width: 100%;
-            overflow-x: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .price {
-            user-select: none;
-
-            span {
-                font-weight: 500;
-            }
-        }
-    }
-
-    .footer {
-        display: flex;
-        gap: 10px;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
+        cursor: pointer;
+        transition: 200ms;
 
-        .quantity {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-
-            svg {
-                height: 16px;
-                width: 16px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                transition: 200ms;
-
-                &:active {
-                    transform: scale(0.8);
-                }
-            }
-
-            input {
-                border: none;
-                outline: none;
-                max-width: 28px;
-                width: fit-content;
-                font-size: 1rem;
-                text-align: center
-            }
+        &:active {
+          transform: scale(0.8);
         }
+      }
 
-        button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            svg {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 20px;
-                width: 20px;
-            }
-        }
+      input {
+        border: none;
+        outline: none;
+        max-width: 28px;
+        width: fit-content;
+        font-size: 1rem;
+        text-align: center;
+      }
     }
 
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      svg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 20px;
+        width: 20px;
+      }
+    }
+  }
 }
 
 .mobileContainer {
-    width: 47%;
-    max-width: 180px;
+  width: 47%;
+  max-width: 180px;
 
-    * {
+  * {
+    font-size: 0.875rem;
+  }
+
+  &:hover {
+    transform: none;
+  }
+
+  .imageContainer {
+    height: 90px;
+  }
+
+  .body {
+    padding: 10px 0;
+
+    .title {
+      font-size: 0.875rem;
+    }
+
+    .quantity {
+      svg {
+        height: 12px;
+        width: 12px;
+      }
+
+      input {
         font-size: 0.875rem;
+      }
     }
+  }
 
-    &:hover {
-        transform: none;
+  .footer {
+    button {
+      padding: 5px 12px;
+
+      svg {
+        height: 16px;
+        width: 16px;
+      }
     }
-
-    .imageContainer {
-        height: 90px;
-    }
-
-    .body {
-        padding: 10px 0;
-
-        .title {
-            font-size: 0.875rem;
-        }
-
-        .quantity {
-            svg {
-                height: 12px;
-                width: 12px;
-            }
-
-            input {
-                font-size: 0.875rem;
-            }
-        }
-    }
-
-    .footer {
-        button {
-            padding: 5px 12px;
-
-            svg {
-                height: 16px;
-                width: 16px
-            }
-        }
-    }
+  }
 }

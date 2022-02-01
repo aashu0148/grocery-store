@@ -17,6 +17,7 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         auth: action.auth,
+        userId: action.userId,
         firstName: action.firstName,
         lastName: action.lastName,
         mobile: action.mobile,

@@ -1,20 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+import { getDetailsOfCart } from "api/user/cart";
 
 import styles from "./CartPage.module.scss";
 
-import CartData from "../CartData";
 import CartMainCard from "../CartMainCard";
 
 const CartPage = () => {
+  const [cartData, setCartData] = useState([]);
+
+  useEffect(() => {
+    getDetailsOfCart().then((res) => {
+      console.log(res.data.products);
+      setCartData(res.data?.products);
+    });
+  }, []);
+
   return (
     <div className={styles.outer}>
       <div className={styles.leftPortion}>
         <div className={styles.shopTitle}>
-          Your Shopping Cart <span>(2 Items)</span>
+          Your Shopping Cart <span>({cartData.length} Items)</span>
         </div>
         <div className={styles.leftInner}>
-          {CartData.map((Items) => {
-            return <CartMainCard key={Items.productId} items={Items} />;
+          {cartData.map((item) => {
+            return <CartMainCard key={item._id} item={item} />;
           })}
         </div>
       </div>

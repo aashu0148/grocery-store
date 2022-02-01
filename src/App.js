@@ -67,6 +67,7 @@ function App() {
       dispatch({
         type: actionTypes.IS_USER_LOGGED,
         auth: true,
+        userId: res?.data?._id,
         firstName: res?.data?.firstName,
         lastName: res?.data?.lastName,
         mobile: res?.data?.mobile,
