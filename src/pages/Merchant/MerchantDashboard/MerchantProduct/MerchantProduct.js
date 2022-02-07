@@ -237,7 +237,7 @@ function MerchantProduct() {
               {userCategories.map((catergory, i) => (
                 <div className={styles.category_card} key={i}>
                   <div className={styles.category_image}>
-                    <img src={catergory.img_src} />
+                    <img src={catergory.img_src} alt="category" />
                   </div>
                   <p>{catergory.catergory}</p>
                 </div>

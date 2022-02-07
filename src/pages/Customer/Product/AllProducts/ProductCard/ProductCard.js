@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-import { Minus, Plus, ShoppingCart, Trash } from "react-feather";
+import { Minus, Plus, ShoppingCart } from "react-feather";
 import {
   AiFillHeart as HeartIcon,
   AiOutlineHeart as HeartOutline,
@@ -23,7 +23,6 @@ function ProductCard(props) {
   const [quantity, setQuantity] = useState(1);
   const [showProductModal, setShowProductModal] = useState(false);
   const [isFavorite, setIsFavorite] = useState(product?.isFavorite || false);
-  const [isAddedInCart, setIsAddedInCart] = useState(false);
 
   const isAuthenticated = useSelector((state) => state.auth);
   const availableIn = product?.availabilities ? product?.availabilities[0] : "";
@@ -56,9 +55,10 @@ function ProductCard(props) {
   };
 
   const handleUpdateCart = (quantity) => {
+    console.log("clicked");
     updateCart({ productId: product._id, quantity: quantity }).then((res) => {
+      console.log(res);
       if (!res) return;
-      setIsAddedInCart(true);
       toast.success("Added to cart");
     });
   };
@@ -154,15 +154,9 @@ function ProductCard(props) {
             <Plus onClick={() => setQuantity((prev) => prev + 1)} />
           </div>
           {isAuthenticated ? (
-            isAddedInCart ? (
-              <Button delete>
-                <Trash onClick={() => handleUpdateCart(-1)} />
-              </Button>
-            ) : (
-              <Button>
-                <ShoppingCart onClick={() => handleUpdateCart(quantity)} />
-              </Button>
-            )
+            <Button onClick={() => handleUpdateCart(quantity)}>
+              <ShoppingCart />
+            </Button>
           ) : (
             ""
           )}

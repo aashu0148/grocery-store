@@ -16,7 +16,7 @@ export const updateCart = async (body) => {
       return result.data;
     }
   } catch (error) {
-    errorToastLogger(error, "Failed to add to cart");
+    errorToastLogger(error, "Failed to update cart");
     return false;
   }
 };
