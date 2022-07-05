@@ -1,0 +1,38 @@
+@import "styles/variables";
+
+.overviewContainer {
+  hr {
+    background-color: $bg-light-gray;
+    border: 1px solid $bg-light-gray;
+  }
+  width: 100%;
+  .firstRow {
+    display: flex;
+    height: fit-content;
+    .lastWeekChart {
+      flex: 0.85;
+      display: flex;
+      align-self: center;
+      width: 100%;
+      padding: 15px;
+    }
+    .categoriesChartContainer {
+      flex: 0.6;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 15px;
+      .categoriesChart {
+        h4 {
+          text-align: center;
+          color: $text-dark-gray;
+        }
+      }
+    }
+  }
+  .lastMonthsChart {
+    display: flex;
+    width: 94%;
+    padding: 15px;
+  }
+}

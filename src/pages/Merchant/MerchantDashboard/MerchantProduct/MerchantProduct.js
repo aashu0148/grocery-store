@@ -361,8 +361,8 @@ function MerchantProduct() {
         <div className={styles.topSellingSection}>
           <h3>Top Selling Products</h3>
           <div className={styles.productList}>
-            {topSelling.map((product) => (
-              <TopSellingProduct productDetails={product} />
+            {topSelling.map((product, i) => (
+              <TopSellingProduct key={i} productDetails={product} />
             ))}
           </div>
         </div>

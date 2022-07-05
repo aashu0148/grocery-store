@@ -12,11 +12,10 @@ const CartPage = () => {
   const [isCartDataFetched, setIsCartDataFetched] = useState(false);
   const [shippingCharge, setShippingCharge] = useState(0);
   let total = 0;
-
   const calcFirstBill = () => {
     if (cartData.length === 0) return 0;
     const priceArr = cartData.map(
-      (item) => item.quantity * item.refProduct.availabilities[0].price
+      (item) => item.quantity * item?.refProduct?.availabilities[0]?.price
     );
     total = priceArr.reduce((acc, curr) => acc + curr);
     return total;

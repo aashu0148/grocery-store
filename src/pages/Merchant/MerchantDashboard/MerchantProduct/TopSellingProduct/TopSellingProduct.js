@@ -3,7 +3,6 @@ import React from "react";
 import styles from "./TopSellingProduct.module.scss";
 
 function TopSellingProduct(props) {
-  console.log(props.productDetails);
   return (
     <div className={styles.topSellingProduct}>
       <img src={props?.productDetails.img_src} alt="product" />

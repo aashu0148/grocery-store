@@ -9,7 +9,7 @@ const CartMainCard = (props) => {
   const itemData = props.item;
   const [quantity, setQuantity] = useState(itemData.quantity || 1);
   const [totalOfOneItem, setTotalOfOneItem] = useState(
-    itemData.quantity * itemData.refProduct.availabilities[0].price || 0
+    itemData.quantity * itemData?.refProduct?.availabilities[0]?.price || 0
   );
   let finalPrice = totalOfOneItem;
 
@@ -22,14 +22,14 @@ const CartMainCard = (props) => {
 
   const handleIncreaseQuantity = () => {
     setQuantity((prev) => prev + 1);
-    finalPrice += itemData.refProduct.availabilities[0].price;
+    finalPrice += itemData?.refProduct?.availabilities[0]?.price;
     setTotalOfOneItem(finalPrice);
     handleUpdateCart(itemData.refProduct._id, quantity + 1);
   };
 
   const handleDecreaseQantity = () => {
     setQuantity((prev) => (prev > 1 ? prev - 1 : prev));
-    finalPrice -= itemData.refProduct.availabilities[0].price;
+    finalPrice -= itemData?.refProduct?.availabilities[0]?.price;
     setTotalOfOneItem(finalPrice);
     if (quantity === 1) return;
     else handleUpdateCart(itemData.refProduct._id, quantity - 1);
@@ -37,7 +37,7 @@ const CartMainCard = (props) => {
 
   useEffect(() => {
     const price =
-      itemData.quantity * itemData.refProduct.availabilities[0].price;
+      itemData.quantity * itemData?.refProduct?.availabilities[0]?.price;
     setTotalOfOneItem(price);
   }, [finalPrice]);
 
@@ -48,24 +48,24 @@ const CartMainCard = (props) => {
           <div className={styles.productInfo}>
             <div className={styles.productImgbox}>
               <img
-                src={itemData.refProduct.thumbnail}
+                src={itemData?.refProduct?.thumbnail}
                 className={styles.productImg}
-                alt={itemData.refProduct.title}
+                alt={itemData?.refProduct?.title}
               />
               <div className={styles.discountPrice}>
                 {" "}
-                {itemData.refProduct.availabilities[0].discount}%
+                {itemData?.refProduct?.availabilities[0]?.discount}%
               </div>
             </div>
             <div className={styles.aboutBox}>
               <span className={styles.productName}>
-                {itemData.refProduct.title}
+                {itemData?.refProduct?.title}
               </span>
               <span className={styles.availableIn}>
-                {`${itemData.refProduct.availabilities[0].quantity} g`}
+                {`${itemData?.refProduct?.availabilities[0]?.quantity} g`}
               </span>
               <span className={styles.productPrice}>
-                ₹ {itemData.refProduct.availabilities[0].price}
+                ₹ {itemData?.refProduct?.availabilities[0]?.price}
               </span>
             </div>
           </div>
@@ -75,10 +75,10 @@ const CartMainCard = (props) => {
             <Plus className={styles.qtyInc} onClick={handleIncreaseQuantity} />
           </div>
           <div className={styles.totalItem_price}>
-            ₹ {quantity * itemData.refProduct.availabilities[0].price}
+            ₹ {quantity * itemData?.refProduct?.availabilities[0]?.price}
           </div>
           <X
-            onClick={() => handleUpdateCart(itemData.refProduct._id, -1)}
+            onClick={() => handleUpdateCart(itemData?.refProduct?._id, -1)}
             className={styles.deleteItemIcon}
           />
         </div>
