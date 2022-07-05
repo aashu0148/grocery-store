@@ -237,7 +237,7 @@ function MerchantProduct() {
               {userCategories.map((catergory, i) => (
                 <div className={styles.category_card} key={i}>
                   <div className={styles.category_image}>
-                    <img src={catergory.img_src} />
+                    <img src={catergory.img_src} alt="category" />
                   </div>
                   <p>{catergory.catergory}</p>
                 </div>
@@ -361,8 +361,8 @@ function MerchantProduct() {
         <div className={styles.topSellingSection}>
           <h3>Top Selling Products</h3>
           <div className={styles.productList}>
-            {topSelling.map((product) => (
-              <TopSellingProduct productDetails={product} />
+            {topSelling.map((product, i) => (
+              <TopSellingProduct key={i} productDetails={product} />
             ))}
           </div>
         </div>

@@ -1,12 +1,45 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
 import { Minus, Plus, X } from "react-feather";
+
+import { updateCart } from "api/user/cart";
 
 import styles from "./CartMainCard.module.scss";
 
 const CartMainCard = (props) => {
-  const [quantity, setQuantity] = useState(1);
-  const itemData = props.items;
+  const itemData = props.item;
+  const [quantity, setQuantity] = useState(itemData.quantity || 1);
+  const [totalOfOneItem, setTotalOfOneItem] = useState(
+    itemData.quantity * itemData?.refProduct?.availabilities[0]?.price || 0
+  );
+  let finalPrice = totalOfOneItem;
+
+  const handleUpdateCart = (productId, quantity) => {
+    props.refreshCartData(itemData._id, quantity);
+    updateCart({ productId, quantity }).then((res) => {
+      if (!res) return false;
+    });
+  };
+
+  const handleIncreaseQuantity = () => {
+    setQuantity((prev) => prev + 1);
+    finalPrice += itemData?.refProduct?.availabilities[0]?.price;
+    setTotalOfOneItem(finalPrice);
+    handleUpdateCart(itemData.refProduct._id, quantity + 1);
+  };
+
+  const handleDecreaseQantity = () => {
+    setQuantity((prev) => (prev > 1 ? prev - 1 : prev));
+    finalPrice -= itemData?.refProduct?.availabilities[0]?.price;
+    setTotalOfOneItem(finalPrice);
+    if (quantity === 1) return;
+    else handleUpdateCart(itemData.refProduct._id, quantity - 1);
+  };
+
+  useEffect(() => {
+    const price =
+      itemData.quantity * itemData?.refProduct?.availabilities[0]?.price;
+    setTotalOfOneItem(price);
+  }, [finalPrice]);
 
   return (
     <div className={styles.productDetailsbox}>
@@ -15,41 +48,39 @@ const CartMainCard = (props) => {
           <div className={styles.productInfo}>
             <div className={styles.productImgbox}>
               <img
-                src={itemData.productImg}
+                src={itemData?.refProduct?.thumbnail}
                 className={styles.productImg}
-                alt={itemData.productName}
+                alt={itemData?.refProduct?.title}
               />
               <div className={styles.discountPrice}>
                 {" "}
-                {itemData.discountPr}%
+                {itemData?.refProduct?.availabilities[0]?.discount}%
               </div>
             </div>
             <div className={styles.aboutBox}>
-              <div className={styles.productName}>{itemData.productName}</div>
-              <div className={styles.availableIn}>{itemData.availIn} kg</div>
-              <div className={styles.productPrice}>
-                ₹ {itemData.productPrice}
-              </div>
+              <span className={styles.productName}>
+                {itemData?.refProduct?.title}
+              </span>
+              <span className={styles.availableIn}>
+                {`${itemData?.refProduct?.availabilities[0]?.quantity} g`}
+              </span>
+              <span className={styles.productPrice}>
+                ₹ {itemData?.refProduct?.availabilities[0]?.price}
+              </span>
             </div>
           </div>
           <div className={styles.qtyCounter}>
-            <Minus
-              className={styles.qtyDec}
-              onClick={() =>
-                setQuantity((prev) => (prev > 1 ? prev - 1 : prev))
-              }
-            />
+            <Minus className={styles.qtyDec} onClick={handleDecreaseQantity} />
             <div className={styles.qtyValue}>{quantity}</div>
-            <Plus
-              className={styles.qtyInc}
-              onClick={() => setQuantity((prev) => prev + 1)}
-            />
+            <Plus className={styles.qtyInc} onClick={handleIncreaseQuantity} />
           </div>
           <div className={styles.totalItem_price}>
-            ₹ {itemData.totalProductPrice}
+            ₹ {quantity * itemData?.refProduct?.availabilities[0]?.price}
           </div>
-          <X className={styles.deleteItemIcon} />
-          {/* <span className={styles.deleteItem}>Remove</span> */}
+          <X
+            onClick={() => handleUpdateCart(itemData?.refProduct?._id, -1)}
+            className={styles.deleteItemIcon}
+          />
         </div>
       </div>
     </div>

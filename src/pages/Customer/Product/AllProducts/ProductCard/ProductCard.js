@@ -12,6 +12,7 @@ import ProductFullViewModal from "components/ProductFullViewModal/ProductFullVie
 
 import { getDiscountedPrice } from "utils/util";
 import { addToWishlist, deleteFromWishlist } from "api/user/Wishlist";
+import { updateCart } from "api/user/cart";
 
 import styles from "./ProductCard.module.scss";
 import toast from "react-hot-toast";
@@ -51,6 +52,15 @@ function ProductCard(props) {
     setIsFavorite(isFav);
 
     updateFavoriteOnDb(!isFav);
+  };
+
+  const handleUpdateCart = (quantity) => {
+    console.log("clicked");
+    updateCart({ productId: product._id, quantity: quantity }).then((res) => {
+      console.log(res);
+      if (!res) return;
+      toast.success("Added to cart");
+    });
   };
 
   return (
@@ -143,9 +153,13 @@ function ProductCard(props) {
             />
             <Plus onClick={() => setQuantity((prev) => prev + 1)} />
           </div>
-          <Button>
-            <ShoppingCart />
-          </Button>
+          {isAuthenticated ? (
+            <Button onClick={() => handleUpdateCart(quantity)}>
+              <ShoppingCart />
+            </Button>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </>

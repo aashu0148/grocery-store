@@ -27,6 +27,7 @@ function ProfileComponent() {
   const profileImageSelector = useSelector((state) => state.profileImage);
   const deliveryAddress = useSelector((state) => state.deliveryAddress);
   const refLocation = useSelector((state) => state.refLocation);
+
   const dispatch = useDispatch();
 
   const [details, setDetails] = useState({

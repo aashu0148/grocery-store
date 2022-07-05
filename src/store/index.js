@@ -9,7 +9,6 @@ import {
 const initialState = {
   auth: false,
   isMobileView: false,
-  isMerchant: false,
 };
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -17,6 +16,7 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         auth: action.auth,
+        userId: action.userId,
         firstName: action.firstName,
         lastName: action.lastName,
         mobile: action.mobile,
@@ -49,7 +49,7 @@ const userReducer = (state = initialState, action) => {
     case UPDATE_PROFILE: {
       return {
         ...state,
-        firstName: action.firstname,
+        firstName: action.firstName,
         lastName: action.lastName,
         mobile: action.mobile,
         email: action.email,
